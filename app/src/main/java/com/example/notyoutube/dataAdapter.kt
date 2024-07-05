@@ -40,5 +40,9 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.typeView.text = dataList.get(position).viewType
+        holder.binding.root.setOnClickListener{
+            Toast.makeText(context, "abcd", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "abcd2", Toast.LENGTH_SHORT).show()
+        }
     }
 }
