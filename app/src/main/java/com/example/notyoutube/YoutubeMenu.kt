@@ -28,11 +28,11 @@ class YoutubeMenu {
                                 .context(context)
                                 .type(Type.INFORMATION)
                                 .message("Pay Premium Fees")
-//                                .cancelable(false or true) Optional Default: False
+                                .cancelable(true)
                                 .iconSize(24)
 //                                 .textSize(int size) Optional Default 18sp
 //                                 .animation(false or true) Optional Default: True
-                                .duration(4000)
+                                .duration(2000)
                                 .backgroundColor(R.color.cadet_blue)// Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
                                 .icon(R.drawable.money_icon)// Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
                                 .build()
@@ -44,11 +44,11 @@ class YoutubeMenu {
                                 .context(context)
                                 .type(Type.ERROR)
                                 .message("Some Error occurred")
-//                                .cancelable(false or true) Optional Default: False
+                                .cancelable(true)
                                 .iconSize(24)
 //                                 .textSize(int size) Optional Default 18sp
 //                                 .animation(false or true) Optional Default: True
-                                .duration(4000)
+                                .duration(2000)
                                 .backgroundColor(R.color.fire_brick)// Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
 //                                .icon(R.drawable.money_icon)// Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
                                 .build()

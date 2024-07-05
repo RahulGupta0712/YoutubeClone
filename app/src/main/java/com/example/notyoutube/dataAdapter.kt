@@ -2,6 +2,8 @@ package com.example.notyoutube
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -20,13 +22,7 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
 
     var onItemClick : ((Int) -> Unit)? = null   // click listener for an item
     inner class MyViewHolder(var binding: ItemViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init{
-            binding.root.setOnClickListener{    // when anywhere inside item is clicked, then this is shown
-                onItemClick?.invoke(adapterPosition)
-            }
-        }
-    }
+        RecyclerView.ViewHolder(binding.root) {}
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -40,9 +36,13 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.typeView.text = dataList.get(position).viewType
-        holder.binding.root.setOnClickListener{
-            Toast.makeText(context, "abcd", Toast.LENGTH_SHORT).show()
-            Toast.makeText(context, "abcd2", Toast.LENGTH_SHORT).show()
+
+        holder.binding.root.setOnClickListener{    // when anywhere inside item is clicked, then this is shown
+            holder.binding.typeView.setTextColor(context.resources.getColor(R.color.white)) // when clicked, change to white
+            Handler(Looper.getMainLooper()).postDelayed({
+                holder.binding.typeView.setTextColor(context.resources.getColor(R.color.gray))  //after 1 s, back to gray
+            }, 1000)
+            onItemClick?.invoke(holder.adapterPosition)
         }
     }
 }

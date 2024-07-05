@@ -11,7 +11,7 @@
         android:padding="10dp"
         android:text="Type of View"
         android:textSize="20sp"
-        android:textColor="@color/gray"
+        android:textColor= "@color/gray"
         />
 
 

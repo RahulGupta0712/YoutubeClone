@@ -16,9 +16,9 @@ import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
 import com.example.notyoutube.databinding.FragmentProfileLiveBinding
 
 class ProfileLiveFragment : Fragment() {
-    private lateinit var adapter2: dataAdapter
+
     private lateinit var binding: FragmentProfileLiveBinding
-    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -32,27 +32,7 @@ class ProfileLiveFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        adapter2 = dataAdapter(dataStore().getData(), context as Profile)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.adapter = adapter2
-
-        navController = Navigation.findNavController(view)
-
-        adapter2.onItemClick = { position ->
-            when (position) {
-                0 -> navController.navigate(R.id.action_profileLiveFragment_to_profileHomeFragment)
-                1 -> navController.navigate(R.id.action_profileLiveFragment_to_profileVideosFragment)
-                2 -> navController.navigate(R.id.action_profileLiveFragment_to_profileShortsFragment)
-                4 -> navController.navigate(R.id.action_profileLiveFragment_to_profilePlaylistsFragment)
-                5 -> navController.navigate(R.id.action_profileLiveFragment_to_profileCommunityFragment)
-            }
-        }
-
-    }
 
     companion object {
 

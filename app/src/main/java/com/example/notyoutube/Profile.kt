@@ -1,6 +1,8 @@
 package com.example.notyoutube
 
 import android.content.Context
+import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notyoutube.ProfileFragments.ProfileCommunityFragment
@@ -25,32 +28,78 @@ class Profile : AppCompatActivity() {
         ActivityProfileBinding.inflate(layoutInflater)
     }
 
-
+    private lateinit var adapter2: dataAdapter
+    private lateinit var fragment : Fragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
 
-//        var pos = intent.getIntExtra("", 0)
-//        val fragment = when (pos) {
-//            0 -> ProfileHomeFragment()
-//            1 -> ProfileVideosFragment()
-//            2 -> ProfileShortsFragment()
-//            3 -> ProfileLiveFragment()
-//            4 -> ProfilePlaylistsFragment()
-//            5 -> ProfileCommunityFragment()
-//            else -> ProfileHomeFragment()
-//        }
 
-//        var trans = supportFragmentManager.beginTransaction()
-//        trans.replace(R.id.frame, fragment)
-//        trans.commit()
-//
-//        adapter2 = dataAdapter(dataStore().getData(), this)
-//        binding.recyclerView.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        binding.recyclerView.adapter = adapter2
+        adapter2 = dataAdapter(dataStore().getData(), this)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerView.adapter = adapter2
+
+        fragment = ProfileHomeFragment()    // default
+        var trans = supportFragmentManager.beginTransaction()
+        trans.replace(R.id.frame, fragment)
+        trans.commit()
+
+
+
+        adapter2.onItemClick = { pos ->
+            when(pos){
+                0 -> {
+                    fragment = ProfileHomeFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+                1 -> {
+
+                    fragment = ProfileVideosFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+                2 -> {
+                    fragment = ProfileShortsFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+                3 -> {
+                    fragment = ProfileLiveFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+                4 -> {
+                    fragment = ProfilePlaylistsFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+                5 -> {
+                    fragment = ProfileCommunityFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+                else -> {
+                    fragment = ProfileHomeFragment()
+                    var trans = supportFragmentManager.beginTransaction()
+                    trans.replace(R.id.frame, fragment)
+                    trans.commit()
+                }
+            }
+        }
+
+
+
+
+
     }
-
 
 }

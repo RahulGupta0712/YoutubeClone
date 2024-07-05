@@ -25,9 +25,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ProfilePlaylistsFragment : Fragment() {
-    private lateinit var adapter2: dataAdapter
+
     private lateinit var binding: FragmentProfilePlaylistsBinding
-    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -41,27 +41,7 @@ class ProfilePlaylistsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        adapter2 = dataAdapter(dataStore().getData(), context as Profile)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.adapter = adapter2
-
-        navController = Navigation.findNavController(view)
-
-        adapter2.onItemClick = { position ->
-            when (position) {
-                0 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileHomeFragment)
-                1 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileVideosFragment)
-                2 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileShortsFragment)
-                3 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileLiveFragment)
-                5 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileCommunityFragment)
-            }
-        }
-
-    }
 
     companion object {
 
