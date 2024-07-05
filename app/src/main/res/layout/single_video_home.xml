@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="200dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+
+
+        <TextView
+            android:id="@+id/dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:text=" . "
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/subs"
+            app:layout_constraintStart_toEndOf="@+id/subs" />
+
+        <ImageButton
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/float_transparent"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/nature" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@color/black"
+            android:padding="5dp"
+            android:text="MM:SS"
+            android:textColor="@color/white_smoke"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/thumbnail"
+            app:layout_constraintVertical_bias="0.92" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/c1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:cardCornerRadius="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thumbnail">
+
+            <ImageButton
+                android:id="@+id/profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:background="@color/float_transparent"
+                android:src="@drawable/user_avatar" />
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Title"
+            android:textColor="@color/floral_white"
+            app:layout_constraintBottom_toBottomOf="@+id/c1"
+            app:layout_constraintStart_toEndOf="@+id/c1"
+            app:layout_constraintTop_toTopOf="@+id/c1"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/channel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Channel Name"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/count_views"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X M"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/channel_name"
+            app:layout_constraintStart_toEndOf="@+id/dot1"
+            app:layout_constraintTop_toTopOf="@+id/channel_name" />
+
+        <TextView
+            android:id="@+id/dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:text=" . "
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/channel_name"
+            app:layout_constraintStart_toEndOf="@+id/channel_name" />
+
+        <TextView
+            android:id="@+id/subs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" views"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/count_views"
+            app:layout_constraintStart_toEndOf="@+id/count_views"
+            app:layout_constraintTop_toTopOf="@+id/count_views" />
+
+        <TextView
+            android:id="@+id/time_ago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X months"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/subs"
+            app:layout_constraintStart_toEndOf="@+id/dot2"
+            app:layout_constraintTop_toTopOf="@+id/subs" />
+
+        <TextView
+            android:id="@+id/ago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" ago"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/time_ago"
+            app:layout_constraintStart_toEndOf="@+id/time_ago"
+            app:layout_constraintTop_toTopOf="@+id/time_ago" />
+
+        <ImageButton
+            android:id="@+id/menuButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thumbnail"
+            app:srcCompat="@drawable/three_dots_white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
