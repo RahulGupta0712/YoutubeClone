@@ -31,25 +31,6 @@ class Profile : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-//        var pos = intent.getIntExtra("", 0)
-//        val fragment = when (pos) {
-//            0 -> ProfileHomeFragment()
-//            1 -> ProfileVideosFragment()
-//            2 -> ProfileShortsFragment()
-//            3 -> ProfileLiveFragment()
-//            4 -> ProfilePlaylistsFragment()
-//            5 -> ProfileCommunityFragment()
-//            else -> ProfileHomeFragment()
-//        }
-
-//        var trans = supportFragmentManager.beginTransaction()
-//        trans.replace(R.id.frame, fragment)
-//        trans.commit()
-//
-//        adapter2 = dataAdapter(dataStore().getData(), this)
-//        binding.recyclerView.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        binding.recyclerView.adapter = adapter2
     }
 
 
