@@ -20,7 +20,7 @@ import com.example.notyoutube.databinding.ItemViewBinding
 class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
     RecyclerView.Adapter<dataAdapter.MyViewHolder>() {
 
-    var onItemClick : ((Int) -> Unit)? = null   // click listener for an item
+
     inner class MyViewHolder(var binding: ItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {}
 
@@ -34,15 +34,16 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
         return dataList.size
     }
 
+    var onItemClick : ((Int) -> Unit)? = null   // click listener for an item (it is a lambda function)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.typeView.text = dataList.get(position).viewType
 
-        holder.binding.root.setOnClickListener{    // when anywhere inside item is clicked, then this is shown
+        holder.binding.root.setOnClickListener{
             holder.binding.typeView.setTextColor(context.resources.getColor(R.color.white)) // when clicked, change to white
             Handler(Looper.getMainLooper()).postDelayed({
                 holder.binding.typeView.setTextColor(context.resources.getColor(R.color.gray))  //after 1 s, back to gray
             }, 1000)
-            onItemClick?.invoke(holder.adapterPosition)
+            onItemClick?.invoke(holder.adapterPosition) // invoke click listener
         }
     }
 }

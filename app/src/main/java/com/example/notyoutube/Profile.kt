@@ -48,7 +48,7 @@ class Profile : AppCompatActivity() {
 
 
 
-        adapter2.onItemClick = { pos ->
+        adapter2.onItemClick = { pos -> // definition of click listener
             when(pos){
                 0 -> {
                     fragment = ProfileHomeFragment()
