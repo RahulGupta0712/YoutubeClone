@@ -36,6 +36,8 @@ class dataStorage {
         dataList.add(data_model_home_video(R.drawable.cover, "10:02", R.drawable.person, "How to make Time Machine in 2024", "InterestingFactzz", "600", "10 hours"))
         dataList.add(data_model_home_video(R.drawable.sky, "31:30", R.drawable.vk3, "Beautiful Sky in Florida", "Virat Kohli", "1B", "1 day"))
         dataList.add(data_model_home_video(R.drawable.add_to_cart_button, "1:07", R.drawable.round_dp, "Sun is coming", "Climate", "340K", "10 years"))
+
+        dataList.shuffle()
         return dataList
     }
 }

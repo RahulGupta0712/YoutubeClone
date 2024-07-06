@@ -47,8 +47,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation ("com.airbnb.android:lottie:6.4.1")  // Animation JSON
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.28") // animation gif
     // navigation graph for fragments
     val nav_version = "2.7.7"
+
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 

@@ -118,4 +118,5 @@ which-> FancyToast.makeText(this, "Logout Successful", FancyToast.LENGTH_LONG, F
         alert_dialog.setCancelable(false)
         alert_dialog.show()
     }
+
 }
