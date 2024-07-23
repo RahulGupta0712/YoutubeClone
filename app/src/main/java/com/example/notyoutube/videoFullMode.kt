@@ -1,11 +1,15 @@
 package com.example.notyoutube
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.notyoutube.databinding.ActivityVideoFullModeBinding
+import com.github.ybq.android.spinkit.style.FadingCircle
+import com.github.ybq.android.spinkit.style.Wave
 
 class videoFullMode : AppCompatActivity() {
     private val binding: ActivityVideoFullModeBinding by lazy {
@@ -22,15 +26,26 @@ class videoFullMode : AppCompatActivity() {
             insets
         }
 
-        dataList = dataStorage().getData()
-        val position = intent.getIntExtra("", -1)   // getting the position in dataList
-        if (position != -1) {
-            binding.profile.setImageResource(dataList.get(position).profile)
-            binding.title2.text = dataList.get(position).title
-            binding.viewCount.text = dataList.get(position).viewsCount
-            binding.timeAgo.text = dataList.get(position).timeAgo
-            binding.channelName.text = dataList.get(position).channelName
-            binding.background.setImageResource(dataList.get(position).thumbnail)
+        // remove the import statement of R, then do the following
+        val progressBar = findViewById<View>(R.id.spin_kit) as ProgressBar
+        progressBar.indeterminateDrawable = FadingCircle()
+
+        val prof = intent.getIntExtra("profile", -1)
+        val thumb = intent.getIntExtra("thumbnail", 0)
+
+        val titl = intent.getStringExtra("title")
+        val views = intent.getStringExtra("viewsCount")
+        val tim = intent.getStringExtra("time")
+        val timago = intent.getStringExtra("timeAgo")
+        val channel = intent.getStringExtra("channelName")
+
+        if (prof != -1) {
+            binding.profile.setImageResource(prof)
+            binding.title2.text = titl
+            binding.viewCount.text = views
+            binding.timeAgo.text = timago
+            binding.channelName.text = channel
+            binding.background.setImageResource(thumb)
             binding.subsCount.text = "6M"
         }
 

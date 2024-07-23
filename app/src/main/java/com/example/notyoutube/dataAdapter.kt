@@ -26,7 +26,7 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var binding = ItemViewBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemViewBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -34,15 +34,19 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
         return dataList.size
     }
 
+    var selectedPosition = 0
     var onItemClick : ((Int) -> Unit)? = null   // click listener for an item (it is a lambda function)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.typeView.text = dataList.get(position).viewType
+        if(selectedPosition == position)
+            holder.binding.typeView.setTextColor(context.resources.getColor(R.color.white))
+        else
+            holder.binding.typeView.setTextColor(context.resources.getColor(R.color.gray))  // default color grey
 
         holder.binding.root.setOnClickListener{
+            notifyItemChanged(selectedPosition) // change color of previous selected item to grey
+            selectedPosition = position
             holder.binding.typeView.setTextColor(context.resources.getColor(R.color.white)) // when clicked, change to white
-            Handler(Looper.getMainLooper()).postDelayed({
-                holder.binding.typeView.setTextColor(context.resources.getColor(R.color.gray))  //after 1 s, back to gray
-            }, 1000)
             onItemClick?.invoke(holder.adapterPosition) // invoke click listener
         }
     }

@@ -1,0 +1,60 @@
+package com.example.notyoutube
+
+class shortsDataList {
+    private lateinit var dataList : ArrayList<shortsDataModel>
+    fun getData() : ArrayList<shortsDataModel>{
+        dataList = ArrayList<shortsDataModel>()
+
+        dataList.add(shortsDataModel(R.drawable.background_img_1, R.drawable.vk3, R.drawable.textview_box_border, "Virat Kohli", "Beautiful Sky in London", "Vande Matram", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.pat_cummins_swag, R.drawable.pat_cummins, R.drawable.money_icon, "Pat Cummins", "Pat Cummins - The Silencer", "Pagol", "20M", "8M"))
+        dataList.add(shortsDataModel(R.drawable.shorts, R.drawable.narendra_modi, R.drawable.indian_flag, "Narendra Modi", "Meeting the Champions", "Vande Matram", "200M", "172M"))
+        dataList.add(shortsDataModel(R.drawable.shorts1, R.drawable.salman_khan, R.drawable.emoji, "Salman Khan", "I love Deers 💀", "Kyun kisi ko wafa ke badle", "21M", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts2, R.drawable.narendra_modi, R.drawable.background_img_1, "Narendra Modi", "Getting into Forest be like", "Bushes", "100M", "10M"))
+        dataList.add(shortsDataModel(R.drawable.short3, R.drawable.vk1, R.drawable.indian_flag, "Virat Kohli", "Team India in Driver's seat", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts4, R.drawable.vk2, R.drawable.indian_flag, "Virat Kohli", "M. Siraj after the win", "Goosebumps", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts5, R.drawable.vk3, R.drawable.indian_flag, "Virat Kohli", "India vs Pakistan", "Arjan Velli", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts6, R.drawable.vk4, R.drawable.indian_flag, "Virat Kohli", "India wins the T20 world cup 2024", "Maa Tujhe Salaam", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts7, R.drawable.vk5, R.drawable.indian_flag, "Virat Kohli", "Rohit-Kohli announces retirement", "Night Changes", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts8, R.drawable.vk1, R.drawable.indian_flag, "Virat Kohli", "World Cup winning team with PM", "Wins", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts9, R.drawable.vk1, R.drawable.indian_flag, "Virat Kohli", "Indian Team celebrating the win", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts10, R.drawable.vk1, R.drawable.indian_flag, "Virat Kohli", "The Men\n The Myth\n The Legends", "KGF Theme Song", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.password_illustration, R.drawable.person, R.drawable.emoji, "Unknown Alien", "Cryptography in Artificial Intelligence", "Chills", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.short11, R.drawable.vk4, R.drawable.indian_flag, "Virat Kohli", "Celebrations Galore in Barbados", "Kyun kisi ko wafa ke badle", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts12, R.drawable.vk2, R.drawable.indian_flag, "Virat Kohli", "Team India Parade in Mumbai", "Bushes", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts13, R.drawable.vk1, R.drawable.indian_flag, "Virat Kohli", "Photography in the Bus", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts14, R.drawable.emoji, R.drawable.money_icon, "CID", "Sachin from CID is all of us rn 🥲", "Goosebumps", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts15, R.drawable.emoji, R.drawable.emoji, "CID", "Faasi", "Arjan Velli", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts16, R.drawable.narendra_modi, R.drawable.money_icon, "Narendra Modi", "Jaan de denge aap ke liye\nKya Baat kr rhe h aap", "Maa Tujhe Salaam", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts17, R.drawable.emoji, R.drawable.emoji, "CID", "Abhijeet from CID (Cutie Investigation Dept) 🥰", "Night Changes", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts18, R.drawable.vk5, R.drawable.indian_flag, "Virat Kohli", "India celebrate the ICC trophy after 11 years of wait", "Wins", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts19, R.drawable.vk1, R.drawable.indian_flag, "Virat Kohli", "Indian Team dancing in Wankhede", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts20, R.drawable.emoji, R.drawable.money_icon, "CID", "Dialogue Forever", "KGF Theme Song", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts21, R.drawable.vk4, R.drawable.indian_flag, "Virat Kohli", "Trophy winning catches in WC for IND", "Vande Matram", "200M", "172M"))
+        dataList.add(shortsDataModel(R.drawable.shorts22, R.drawable.vk3, R.drawable.indian_flag, "Virat Kohli", "Snapshots from Parade by ICT in Mumbai", "Vande Matram", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts23, R.drawable.salman_khan, R.drawable.emoji, "Salman Khan", "Jay Shah - The Script Writer 🫡", "Chills", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts24, R.drawable.vk1, R.drawable.vk1, "Virat Kohli", "Kohli's first ODI century after COVID", "Pagol", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts25, R.drawable.vk2, R.drawable.vk4, "Virat Kohli", "Time when Kohli used to hit century for fun", "Kyun kisi ko wafa ke badle", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts26, R.drawable.vk3, R.drawable.vk5, "Virat Kohli", "2018 : The Virat Kohli's Year\nScored century in SA, AUS, ENG in Tests", "Bushes", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts27, R.drawable.vk4, R.drawable.vk1, "Virat Kohli", "Kohli's bows down to Dhoni - 2016 WC", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts28, R.drawable.vk5, R.drawable.vk1, "Virat Kohli", "Kohli's 71st century after a long wait", "Goosebumps", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts29, R.drawable.vk1, R.drawable.vk3, "Virat Kohli", "Kohli in IPL 2016\nWent on to make 973 runs in that season", "Arjan Velli", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts30, R.drawable.vk2, R.drawable.vk1, "Virat Kohli", "Kohli's century celebration (149) in Nottingham, England - 2018", "Maa Tujhe Salaam", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts31, R.drawable.emoji, R.drawable.money_icon, "CID", "Daya Bashing the goons", "Maa Tujhe Salaam", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts32, R.drawable.emoji, R.drawable.emoji, "CID", "Abhijeet in Good mood 😀", "Kyun kisi ko wafa ke badle", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts33, R.drawable.emoji, R.drawable.money_icon, "CID", "Censored Content", "Bushes", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts34, R.drawable.emoji, R.drawable.intenet_network, "CID", "Abhijeet 🌚", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts35, R.drawable.emoji, R.drawable.money_icon, "CID", "ACP Pradyuman from CID (Cutie Investigation Department)", "Goosebumps", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts36, R.drawable.emoji, R.drawable.emoji, "CID", "Dr. Salunkhe OP", "Arjan Velli", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts37, R.drawable.emoji, R.drawable.money_icon, "MEMERBOY", "Shabash Shehzade", "Maa Tujhe Salaam", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts38, R.drawable.salman_khan, R.drawable.emoji, "Salman Khan", "#NewYear", "Night Changes", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts39, R.drawable.narendra_modi, R.drawable.money_icon, "Narendra Modi", "Modiji Memes Part 1", "Wins", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts40, R.drawable.narendra_modi, R.drawable.emoji, "Narendra Modi", "Modiji Memes Part 2", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts41, R.drawable.emoji, R.drawable.money_icon, "IPL memes", "Amazing Catch", "KGF Theme Song", "60M", "10K"))
+        dataList.add(shortsDataModel(R.drawable.shorts42, R.drawable.vk1, R.drawable.vk3, "Virat Kohli", "Kohli's 27th ODI century with a six", "India waale", "21K", "654"))
+        dataList.add(shortsDataModel(R.drawable.shorts43, R.drawable.vk2, R.drawable.indian_flag, "Virat Kohli", "Snapshots from the Parade in mumbai", "India waale", "21K", "654"))
+
+        dataList.shuffle()
+
+        return dataList
+    }
+}

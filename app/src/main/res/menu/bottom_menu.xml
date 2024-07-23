@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/shorts"
+        android:icon="@drawable/reel"
+        android:title="Shorts" />
+    <item
+        android:id="@+id/create"
+        android:icon="@drawable/add_button"
+        android:title="Upload"
+        />
+    <item
+        android:id="@+id/Subscriptions"
+        android:icon="@drawable/subscriptions"
+        android:title="Subscriptions" />
+    <item
+        android:id="@+id/Library"
+        android:icon="@drawable/library"
+        android:title="Library" />
+
+</menu>

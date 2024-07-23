@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,71 +38,64 @@ class Profile : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-
         adapter2 = dataAdapter(dataStore().getData(), this)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerView.adapter = adapter2
+        binding.recyclerView.setItemAnimator(null);
 
         fragment = ProfileHomeFragment()    // default
-        var trans = supportFragmentManager.beginTransaction()
+        val trans = supportFragmentManager.beginTransaction()
         trans.replace(R.id.frame, fragment)
         trans.commit()
-
-
 
         adapter2.onItemClick = { pos -> // definition of click listener
             when(pos){
                 0 -> {
                     fragment = ProfileHomeFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
                 1 -> {
 
                     fragment = ProfileVideosFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
                 2 -> {
                     fragment = ProfileShortsFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
                 3 -> {
                     fragment = ProfileLiveFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
                 4 -> {
                     fragment = ProfilePlaylistsFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
                 5 -> {
                     fragment = ProfileCommunityFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
                 else -> {
                     fragment = ProfileHomeFragment()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.frame, fragment)
                     trans.commit()
                 }
             }
         }
 
-
-
-
-
+        binding.frameProfile.bringToFront()
     }
-
 }

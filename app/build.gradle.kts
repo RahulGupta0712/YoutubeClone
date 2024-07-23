@@ -47,12 +47,24 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation ("com.airbnb.android:lottie:6.4.1")  // Animation JSON
-    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.28") // animation gif
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
+    implementation(libs.androidx.legacy.support.v4) // animation gif
     // navigation graph for fragments
     val nav_version = "2.7.7"
 
+
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    implementation ("com.github.Spikeysanju:MotionToast:1.4")   // motion toast
+
+    implementation ("com.github.ibrahimsn98:NiceBottomBar:2.2") // animated bottom navigation bar
+
+    implementation ("com.github.gayanvoice:android-animations-kotlin:1.0.1") // animation on views
+    implementation ("com.github.ybq:Android-SpinKit:1.4.0") // loader
+
+    implementation ("nl.joery.timerangepicker:timerangepicker:1.0.0") // time range picker
+
 
     implementation(libs.material)
     implementation(libs.androidx.activity)

@@ -25,18 +25,18 @@
 
         </ImageView>
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view"
-            android:layout_width="350dp"
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.CubeGrid"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/trail_loading" />
+            app:SpinKit_Color="#F44336"
+            app:layout_constraintBottom_toBottomOf="@+id/background"
+            app:layout_constraintEnd_toEndOf="@+id/background"
+            app:layout_constraintStart_toStartOf="@+id/background"
+            app:layout_constraintTop_toTopOf="@+id/background" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

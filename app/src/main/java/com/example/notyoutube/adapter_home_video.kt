@@ -43,7 +43,14 @@ class adapter_home_video(var dataList: ArrayList<data_model_home_video>, var con
 
         holder.binding.thumbnail.setOnClickListener{
             val intent = Intent(context, videoFullMode::class.java)
-            intent.putExtra("", position)
+
+            intent.putExtra("thumbnail", dataList.get(position).thumbnail)
+            intent.putExtra("time", dataList.get(position).time)
+            intent.putExtra("profile", dataList.get(position).profile)
+            intent.putExtra("title", dataList.get(position).title)
+            intent.putExtra("channelName", dataList.get(position).channelName)
+            intent.putExtra("viewsCount", dataList.get(position).viewsCount)
+            intent.putExtra("timeAgo", dataList.get(position).timeAgo)
             context.startActivity(intent)
         }
 

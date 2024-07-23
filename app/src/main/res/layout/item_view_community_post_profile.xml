@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:background="@color/black">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView8"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profileChannelCommunityPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/emoji" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/channelNameCommunityPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Channel Name"
+        android:textColor="@color/floral_white"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView8"
+        app:layout_constraintStart_toEndOf="@+id/cardView8"
+        app:layout_constraintTop_toTopOf="@+id/cardView8"
+        app:layout_constraintVertical_bias="0.01999998" />
+
+    <TextView
+        android:id="@+id/timeAgoCommunityPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X Months"
+        android:textColor="@color/dim_gray"
+        app:layout_constraintStart_toStartOf="@+id/channelNameCommunityPost"
+        app:layout_constraintTop_toBottomOf="@+id/channelNameCommunityPost" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" ago"
+        android:textColor="@color/dim_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/timeAgoCommunityPost"
+        app:layout_constraintStart_toEndOf="@+id/timeAgoCommunityPost"
+        app:layout_constraintTop_toTopOf="@+id/timeAgoCommunityPost" />
+
+    <ImageView
+        android:id="@+id/menuButtonCommunityPost"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeAgoCommunityPost"
+        app:srcCompat="@drawable/three_dots_white" />
+
+    <TextView
+        android:id="@+id/textPostCommunityPost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="This is my First Post on WatchU"
+        android:textColor="@color/white_smoke"
+        app:layout_constraintEnd_toStartOf="@+id/menuButtonCommunityPost"
+        app:layout_constraintStart_toStartOf="@+id/cardView8"
+        app:layout_constraintTop_toBottomOf="@+id/cardView8" />
+
+    <ImageView
+        android:id="@+id/imagePostCommunityPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPostCommunityPost"
+        app:srcCompat="@drawable/shorts10" />
+
+    <ImageView
+        android:id="@+id/likeButtonCommunityPost"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/textPostCommunityPost"
+        app:layout_constraintTop_toBottomOf="@+id/imagePostCommunityPost"
+        app:srcCompat="@drawable/like"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/dislikeButtonCommunityPost"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="50dp"
+        android:rotationX="180"
+        android:rotationY="180"
+        app:layout_constraintBottom_toBottomOf="@+id/likeButtonCommunityPost"
+        app:layout_constraintStart_toEndOf="@+id/likeCountCommunityPost"
+        app:layout_constraintTop_toTopOf="@+id/likeButtonCommunityPost"
+        app:srcCompat="@drawable/like"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/shareButtonCommunityPost"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/commentButtonCommunityPost"
+        app:layout_constraintEnd_toStartOf="@+id/commentButtonCommunityPost"
+        app:layout_constraintTop_toTopOf="@+id/commentButtonCommunityPost"
+        app:srcCompat="@drawable/share_icon"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/commentButtonCommunityPost"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/commentCountCommunityPost"
+        app:layout_constraintTop_toBottomOf="@+id/imagePostCommunityPost"
+        app:srcCompat="@drawable/comment"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/likeCountCommunityPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Y M"
+        android:textColor="@color/white_smoke"
+        app:layout_constraintBottom_toBottomOf="@+id/likeButtonCommunityPost"
+        app:layout_constraintStart_toEndOf="@+id/likeButtonCommunityPost"
+        app:layout_constraintTop_toTopOf="@+id/likeButtonCommunityPost" />
+
+    <TextView
+        android:id="@+id/commentCountCommunityPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="Z M"
+        android:textColor="@color/ghost_white"
+        app:layout_constraintBottom_toBottomOf="@+id/commentButtonCommunityPost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/commentButtonCommunityPost" />
+</androidx.constraintlayout.widget.ConstraintLayout>

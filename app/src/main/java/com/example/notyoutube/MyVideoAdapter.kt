@@ -28,6 +28,7 @@ class MyVideoAdapter(var dataList : ArrayList<descriptionVideo>, var context : C
         holder.binding.time1.text = dataList.get(position).time
         holder.binding.likeCount.text = dataList.get(position).likeCount
         holder.binding.commentCount.text = dataList.get(position).commentCount
+        holder.binding.stream.text = dataList[position].stream
 
         holder.binding.root.setOnClickListener{
             var intent = Intent(context, videoFullModeProfile::class.java)

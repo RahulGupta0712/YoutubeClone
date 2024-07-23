@@ -97,7 +97,7 @@
             android:textColor="@color/dark_gray"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView6"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintStart_toEndOf="@+id/stream"
             app:layout_constraintTop_toTopOf="@+id/textView6" />
 
         <TextView
@@ -190,5 +190,16 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/cardView2"
             app:layout_constraintTop_toTopOf="@+id/cardView2" />
+
+        <TextView
+            android:id="@+id/stream"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Streamed "
+            android:textColor="@color/dark_gray"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/textView7"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

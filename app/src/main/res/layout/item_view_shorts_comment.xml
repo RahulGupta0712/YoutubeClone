@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:background="@color/black">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profileShortsComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/narendra_modi" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/channelNameShortsComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Channel Name"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.17000002" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text=" . "
+        android:textColor="@color/gray"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/channelNameShortsComment"
+        app:layout_constraintStart_toEndOf="@+id/channelNameShortsComment" />
+
+    <TextView
+        android:id="@+id/timeAgoCommentShorts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10 years"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/channelNameShortsComment"
+        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintTop_toTopOf="@+id/channelNameShortsComment" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" ago"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/timeAgoCommentShorts"
+        app:layout_constraintStart_toEndOf="@+id/timeAgoCommentShorts"
+        app:layout_constraintTop_toTopOf="@+id/timeAgoCommentShorts" />
+
+    <TextView
+        android:id="@+id/commentCommentShorts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Hi i am ---- \n WHat a saVage ReplY"
+        android:textColor="@color/floral_white"
+        app:layout_constraintEnd_toStartOf="@+id/menuButtonCommentShorts"
+        app:layout_constraintStart_toStartOf="@+id/channelNameShortsComment"
+        app:layout_constraintTop_toBottomOf="@+id/channelNameShortsComment" />
+
+    <ImageView
+        android:id="@+id/menuButtonCommentShorts"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/three_dots_white" />
+
+    <ImageView
+        android:id="@+id/likeButtonCommentShorts"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/commentCommentShorts"
+        app:layout_constraintTop_toBottomOf="@+id/commentCommentShorts"
+        app:srcCompat="@drawable/like"
+        app:tint="@color/gray" />
+
+    <ImageView
+        android:id="@+id/dislikeButtonCommentShorts"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:rotationX="180"
+        android:rotationY="180"
+        app:layout_constraintBottom_toBottomOf="@+id/likeButtonCommentShorts"
+        app:layout_constraintStart_toEndOf="@+id/likeButtonCommentShorts"
+        app:layout_constraintTop_toTopOf="@+id/likeButtonCommentShorts"
+        app:srcCompat="@drawable/like"
+        app:tint="@color/gray" />
+
+    <ImageView
+        android:id="@+id/commentButtonCommentShorts"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dislikeButtonCommentShorts"
+        app:layout_constraintStart_toEndOf="@+id/dislikeButtonCommentShorts"
+        app:layout_constraintTop_toTopOf="@+id/dislikeButtonCommentShorts"
+        app:srcCompat="@drawable/comment"
+        app:tint="@color/gray" />
+
+    <TextView
+        android:id="@+id/replyCountCommentShorts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="10M"
+        android:textColor="@color/dodger_blue"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/likeButtonCommentShorts"
+        app:layout_constraintTop_toBottomOf="@+id/likeButtonCommentShorts" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" replies"
+        android:textColor="@color/dodger_blue"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/replyCountCommentShorts"
+        app:layout_constraintStart_toEndOf="@+id/replyCountCommentShorts"
+        app:layout_constraintTop_toTopOf="@+id/replyCountCommentShorts" />
+</androidx.constraintlayout.widget.ConstraintLayout>

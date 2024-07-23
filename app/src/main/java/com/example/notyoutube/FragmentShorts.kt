@@ -16,9 +16,13 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notyoutube.databinding.FragmentShortsBinding
+import com.github.ybq.android.spinkit.style.Wave
 import com.shashank.sony.fancytoastlib.FancyToast
+import render.animations.Fade
+import render.animations.Render
+import render.animations.Zoom
 
-class FragmentShorts : Fragment() {
+class FragmentShorts(var datalist: ArrayList<shortsDataModel> = shortsDataList().getData()) : Fragment() {
     private lateinit var binding :FragmentShortsBinding
     private lateinit var adapter: shortsAdapter
 
@@ -32,6 +36,10 @@ class FragmentShorts : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentShortsBinding.inflate(inflater, container, false)
+        val render = Render(context as AppCompatActivity)
+        render.setAnimation(Zoom().In(binding.root))
+        render.setDuration(300)
+        render.start()
         return binding.root
     }
 
@@ -40,7 +48,7 @@ class FragmentShorts : Fragment() {
 
         var activity = context as AppCompatActivity
 
-        adapter = shortsAdapter(shortsDataList().getData(), activity)
+        adapter = shortsAdapter(datalist, activity)
         binding.rvShorts.layoutManager = LinearLayoutManager(activity)
         binding.rvShorts.adapter = adapter
 

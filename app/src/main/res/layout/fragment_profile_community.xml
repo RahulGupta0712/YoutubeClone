@@ -4,15 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/greenYellow"
     tools:context=".ProfileFragments.ProfileCommunityFragment">
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/forest_green"
-            android:gravity="center"
-            android:text="Your Community Posts will Appear here"
-            android:textSize="30sp" />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCommunityPost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>
