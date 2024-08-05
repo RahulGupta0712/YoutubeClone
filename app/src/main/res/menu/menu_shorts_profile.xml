@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/EditShorts"
+        android:title="Edit"
+        />
+    <item
+        android:id="@+id/shareShorts"
+        android:title="Share"
+        />
+    <item
+        android:id="@+id/deleteShort"
+        android:title="Delete"
+        />
+    <item
+        android:id="@+id/DownloadShorts"
+        android:title="Download"
+        />
+
+</menu>
