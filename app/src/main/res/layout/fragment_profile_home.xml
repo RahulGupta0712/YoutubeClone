@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/dim_gray"
     tools:context=".ProfileFragments.ProfileHomeFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -29,7 +29,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Popular Videos"
-                android:textColor="@color/floral_white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginBottom="10dp"
                 android:text="Shorts"
-                android:textColor="@color/floral_white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

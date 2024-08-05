@@ -18,13 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.emreesen.sntoast.SnToast
 import com.emreesen.sntoast.Type
+import com.example.notyoutube.DataModelVideoDetails
 import com.example.notyoutube.MyVideoAdapter
 import com.example.notyoutube.Profile
 import com.example.notyoutube.R
 import com.example.notyoutube.dataAdapter
 import com.example.notyoutube.dataStore
-import com.example.notyoutube.dataVideos
 import com.example.notyoutube.databinding.FragmentVideoHomeBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.shashank.sony.fancytoastlib.FancyToast
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
@@ -46,12 +53,43 @@ class ProfileVideosFragment : Fragment() {
         return binding.root
     }
 
+    private lateinit var auth:FirebaseAuth
+    private lateinit var databaseRef:DatabaseReference
+    private lateinit var videoList : ArrayList<DataModelVideoDetails>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapterObject = MyVideoAdapter(dataVideos().getData(), context as AppCompatActivity)
+        auth = FirebaseAuth.getInstance()
+        databaseRef = FirebaseDatabase.getInstance().reference
+        videoList = ArrayList<DataModelVideoDetails>()
+        adapterObject = MyVideoAdapter(videoList, context as AppCompatActivity)
         binding.videos.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         binding.videos.adapter = adapterObject
+
+        val user = auth.currentUser
+        user?.let{
+            databaseRef.child("users").child(user.uid).child("Videos").addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    videoList.clear()
+                    for(snap in snapshot.children){
+                        val data = snap.getValue<DataModelVideoDetails>()
+                        data?.let{
+                            videoList.add(data)
+                        }
+                    }
+
+                    videoList.reverse()
+
+                    adapterObject.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+        }
 
         val datalist = listOf("Latest", "Popular", "Oldest")
         val adapter = ArrayAdapter(context as AppCompatActivity, android.R.layout.simple_list_item_1, datalist)

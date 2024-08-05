@@ -14,35 +14,36 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintBottom_toBottomOf="@+id/watchU"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/watchU"
         app:srcCompat="@drawable/notyoutube_icon" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/watchU"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="5dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center_vertical"
         android:text="WatchU"
-        android:textColor="@color/white"
+        android:textColor="#6495ED"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView15"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
 
     <ImageView
         android:id="@+id/imageView16"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginEnd="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintBottom_toBottomOf="@+id/watchU"
         app:layout_constraintEnd_toStartOf="@+id/imageView17"
-        app:layout_constraintTop_toTopOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/watchU"
         app:srcCompat="@drawable/cast"
         app:tint="@color/white" />
 
@@ -109,6 +110,15 @@
         app:layout_constraintStart_toStartOf="@+id/imageView18"
         app:layout_constraintTop_toTopOf="@+id/imageView18" />
 
+    <Button
+        android:id="@+id/recordButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@color/float_transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView17"
+        app:layout_constraintStart_toStartOf="@+id/imageView17"
+        app:layout_constraintTop_toTopOf="@+id/imageView17" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
@@ -124,18 +134,10 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13">
+        app:layout_constraintTop_toBottomOf="@+id/watchU">
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/recordButton"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@color/float_transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView17"
-        app:layout_constraintStart_toStartOf="@+id/imageView17"
-        app:layout_constraintTop_toTopOf="@+id/imageView17" />
 
     <me.ibrahimsn.lib.NiceBottomBar
         android:id="@+id/bottomBar"

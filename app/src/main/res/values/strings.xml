@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WatchU</string>
-    <string name="text">\@TheMemerBoy</string>
+    <string name="text">username</string>
     <string name="fried_burger">The Memes</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="web_client_id">296670000726-app708cgqh1ua1aoh779epbleesfr33p.apps.googleusercontent.com</string>
 </resources>

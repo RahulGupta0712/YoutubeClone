@@ -71,17 +71,30 @@ class FragmentLibrary : Fragment() {
         // submit the time to update in picker
         binding.submitButton.setOnClickListener{
             // input
-            val hour = binding.editTextNumber.text.toString().toInt()
-            val minute = binding.editTextNumber2.text.toString().toInt()
-
-            if(hour > 23 || minute >= 60)   // negative numbers are not accepted in number edittext, so no need to check for that
-                FancyToast.makeText(context as AppCompatActivity, "Invalid Hour/Minute", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+            val hourString = binding.editTextNumber.text.toString()
+            val minuteString = binding.editTextNumber2.text.toString()
+            if(hourString.isEmpty() || minuteString.isEmpty()){
+                Toast.makeText(context, "Invalid Hour/minute", Toast.LENGTH_SHORT).show()
+            }
             else {
-                // update time in picker
-                binding.picker.startTime = TimeRangePicker.Time(hour, minute)
+                val hour = hourString.toInt()
+                val minute = minuteString.toInt()
 
-                // update display time
-                binding.startTime.text = binding.picker.startTime.toString()
+                if (hour > 23 || minute >= 60)   // negative numbers are not accepted in number edittext, so no need to check for that
+                    FancyToast.makeText(
+                        context as AppCompatActivity,
+                        "Invalid Hour/Minute",
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.ERROR,
+                        false
+                    ).show()
+                else {
+                    // update time in picker
+                    binding.picker.startTime = TimeRangePicker.Time(hour, minute)
+
+                    // update display time
+                    binding.startTime.text = binding.picker.startTime.toString()
+                }
             }
         }
 

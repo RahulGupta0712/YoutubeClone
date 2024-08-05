@@ -8,10 +8,28 @@
     android:background="@color/black"
     tools:context=".videoFullMode">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/abcd00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/abcd00"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,9 +37,9 @@
         <ImageView
             android:id="@+id/background00"
             android:layout_width="match_parent"
-            android:src="@drawable/cover"
+            android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:layout_height="match_parent">
+            android:src="@drawable/cover">
 
         </ImageView>
 
@@ -129,7 +147,7 @@
         android:layout_marginTop="20dp"
         app:cardCornerRadius="100dp"
         app:layout_constraintStart_toEndOf="@+id/guideline200"
-        app:layout_constraintTop_toBottomOf="@+id/viewCount00">
+        app:layout_constraintTop_toBottomOf="@+id/description00">
 
 
         <ImageButton
@@ -137,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/float_transparent"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/user_avatar" />
 
     </androidx.cardview.widget.CardView>
@@ -162,10 +180,10 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:background="@color/float_transparent"
-        app:tint="@color/ghost_white"
         app:layout_constraintStart_toStartOf="@+id/guideline200"
         app:layout_constraintTop_toBottomOf="@+id/cardView600"
-        app:srcCompat="@drawable/like" />
+        app:srcCompat="@drawable/like"
+        app:tint="@color/ghost_white" />
 
     <ImageButton
         android:id="@+id/imageButton300"
@@ -173,14 +191,14 @@
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
         android:background="@color/float_transparent"
-        app:tint="@color/ghost_white"
         android:rotationX="180"
         android:rotationY="180"
         app:layout_constraintBottom_toBottomOf="@+id/like00"
         app:layout_constraintStart_toEndOf="@+id/likeCount00"
         app:layout_constraintTop_toTopOf="@+id/like00"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/like" />
+        app:srcCompat="@drawable/like"
+        app:tint="@color/ghost_white" />
 
     <TextView
         android:id="@+id/likeCount00"
@@ -200,11 +218,11 @@
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
         android:background="@color/float_transparent"
-        app:tint="@color/ghost_white"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton300"
         app:layout_constraintStart_toEndOf="@+id/imageButton300"
         app:layout_constraintTop_toTopOf="@+id/imageButton300"
-        app:srcCompat="@drawable/comment" />
+        app:srcCompat="@drawable/comment"
+        app:tint="@color/ghost_white" />
 
     <TextView
         android:id="@+id/commentCount00"
@@ -217,6 +235,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/description00"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/dim_gray"
+        android:padding="10dp"
+        android:textColor="@color/floral_white"
+        android:textSize="16sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/sub00"
+        app:layout_constraintStart_toStartOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/viewCount00" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@
     android:background="@color/black"
     tools:context=".Profile">
 
+
     <FrameLayout
         android:id="@+id/frameProfile"
         android:layout_width="0dp"
@@ -22,6 +23,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView4"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="120dp"
                     android:layout_margin="10dp"
                     android:layout_marginStart="1dp"
                     android:layout_marginEnd="1dp"
@@ -56,10 +58,10 @@
 
                         <ImageView
                             android:id="@+id/coverPicture"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:scaleType="fitXY"
-                            android:src="@drawable/cover2"
+                            android:src="@drawable/dp_background"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -86,8 +88,8 @@
                             android:id="@+id/profilePicture"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/emoji"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/user_avatar_2"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/fried_burger"
+                    android:text="Channel name"
                     android:textColor="@color/ghost_white"
                     android:textSize="30sp"
                     android:textStyle="bold"
@@ -114,11 +116,10 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/text"
                     android:textColor="@color/dark_gray"
-                    app:layout_constraintStart_toEndOf="@+id/cardView5"
+                    app:layout_constraintStart_toEndOf="@+id/textView33"
                     app:layout_constraintTop_toBottomOf="@+id/channelName" />
 
                 <TextView
@@ -126,9 +127,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_marginTop="5dp"
                     android:text="34 subscribers . 20 videos"
                     android:textColor="@color/dark_gray"
-                    app:layout_constraintStart_toStartOf="@+id/username"
+                    app:layout_constraintStart_toStartOf="@+id/textView33"
                     app:layout_constraintTop_toBottomOf="@+id/username" />
 
                 <TextView
@@ -227,7 +229,7 @@
                         tools:layout_editor_absoluteY="381dp">
 
                         <ImageButton
-                            android:id="@+id/imageButton4"
+                            android:id="@+id/editChannelButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/float_transparent"
@@ -239,6 +241,16 @@
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@"
+                    android:textColor="@color/light_grey"
+                    app:layout_constraintBottom_toBottomOf="@+id/username"
+                    app:layout_constraintStart_toStartOf="@+id/channelName"
+                    app:layout_constraintTop_toTopOf="@+id/username" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView

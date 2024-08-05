@@ -36,20 +36,17 @@
         app:trp_clockFace="SAMSUNG"
         app:trp_clockLabelColor="#A7F095"
 
-
         app:trp_clockLabelSize="28sp"
         app:trp_clockTickColor="#FFEB3B"
 
         app:trp_clockVisible="true"
         app:trp_sliderColor="#3106DC"
-        app:trp_sliderRangeGradientEnd="#FF5722"
-        app:trp_sliderRangeGradientMiddle="#03A9F4"
-        app:trp_sliderRangeGradientStart="#06EB10"
+        app:trp_sliderRangeColor="@color/yellow"
         app:trp_sliderWidth="24dp"
         app:trp_stepTimeMinutes="1"
-        app:trp_thumbColor="#009688"
+        app:trp_thumbColor="@color/float_transparent"
         app:trp_thumbIconEnd="@drawable/end"
-        app:trp_thumbIconSize="40dp"
+        app:trp_thumbIconSize="30dp"
         app:trp_thumbIconStart="@drawable/start"
         app:trp_thumbSize="42dp"
         app:trp_thumbSizeActiveGrow="1.25" />
