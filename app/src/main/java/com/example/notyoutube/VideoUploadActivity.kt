@@ -1,26 +1,40 @@
 package com.example.notyoutube
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.example.notyoutube.databinding.ActivityVideoUploadBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
+
 import com.shashank.sony.fancytoastlib.FancyToast
-import okio.Okio
-import java.time.LocalDateTime
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
+
 import java.util.UUID
 
 class VideoUploadActivity : AppCompatActivity() {
@@ -34,6 +48,7 @@ class VideoUploadActivity : AppCompatActivity() {
     private var videoUrl: String? = null
     private var videoLength: Long = 0    // in seconds
     private var thumbnailUrl: String? = null
+    private var visibility = "Public"
 
     // for handling cases when video/thumbnail is uploading and activity gets destroyed --- provides more robustness to application
     private var videoUploadTask: UploadTask? = null
@@ -46,6 +61,39 @@ class VideoUploadActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference
+
+        val firestore = Firebase.firestore
+
+        if (auth.currentUser == null) {
+            FancyToast.makeText(
+                this,
+                "Sign-in to upload a video",
+                FancyToast.LENGTH_LONG,
+                FancyToast.ERROR,
+                false
+            ).show()
+        }
+
+        // setting spinner for visibility - public, private
+        val data = listOf("Public", "Private")
+        val visAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
+        visAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        binding.visibility.adapter = visAdapter
+
+        // update visibility
+        binding.visibility.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                visibility = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
 
         binding.videoUploadButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -60,44 +108,136 @@ class VideoUploadActivity : AppCompatActivity() {
         }
 
         binding.postButton.setOnClickListener {
+
+//            // check condition
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
+//                // When permission is granted
+////                selectVideo();
+//            }
+//            else {
+//                // When permission is not granted -> request permission
+//                ActivityCompat.requestPermissions(this, arrayOf( Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),1);
+//            }
+
             val title = binding.titleEditTextVideo.text.toString()
             val desc = binding.DescriptionEditText.text.toString()
 
             if (title.isEmpty()) {
-                FancyToast.makeText(this, "Title can't be empty", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+                FancyToast.makeText(
+                    this,
+                    "Title can't be empty",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.ERROR,
+                    false
+                ).show()
             } else if (videoUrl == null) {
-                FancyToast.makeText(this, "Please upload video", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
+                FancyToast.makeText(
+                    this,
+                    "Please upload video",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.WARNING,
+                    false
+                ).show()
             } else if (thumbnailUrl == null) {
-                FancyToast.makeText(this, "Please upload thumbnail", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
+                FancyToast.makeText(
+                    this,
+                    "Please upload thumbnail",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.WARNING,
+                    false
+                ).show()
             } else {
                 // all details correct
                 val currentUser = auth.currentUser
                 if (currentUser != null) {
-                    val type = if(videoLength <= 60) "Shorts" else "Videos"
+                    val type = if (videoLength <= 60) "Shorts" else "Videos"
                     val ref = databaseRef.child("users").child(currentUser.uid).child(type)
                     val key = ref.push().key
                     key?.let {
-                        ref.child(key).setValue(
-                            DataModelVideoDetails(
-                                key,
-                                title,
-                                desc,
-                                thumbnailUrl!!,
-                                videoUrl!!,
-                                videoLength, System.currentTimeMillis()
-                            )
-                        )
-                            .addOnSuccessListener {
-                                FancyToast.makeText(this, "Post successful", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
-                                startActivity(Intent(this, MainActivity::class.java))
-                                finish()
-                            }
-                            .addOnFailureListener {
-                                FancyToast.makeText(this, "Post Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                            }
+                        databaseRef.child("users").child(currentUser.uid).child("Channel Name")
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val channelName = snapshot.getValue<String>()
+                                    channelName?.let {
+                                        // got the channel name, now time for profile picture
+                                        databaseRef.child("users").child(currentUser.uid)
+                                            .child("Profile Picture")
+                                            .addValueEventListener(object : ValueEventListener {
+                                                override fun onDataChange(snapshot: DataSnapshot) {
+                                                    val profilePicUri = snapshot.getValue<String>()
+                                                    profilePicUri?.let {
+                                                        // got the channel details, now add video
+                                                        val video = DataModelVideoDetails(
+                                                            key,
+                                                            title,
+                                                            desc,
+                                                            thumbnailUrl!!,
+                                                            videoUrl!!,
+                                                            videoLength,
+                                                            System.currentTimeMillis(),
+                                                            visibility, channelName, profilePicUri, currentUser.uid
+                                                        )
+
+                                                        // add in main feed --- firestore database
+                                                        if (visibility == "Public") {
+                                                            firestore.collection(type)
+                                                                .add(video)  // depending on type - video or shorts
+                                                        }
+
+
+                                                        ref.child(key).setValue(video)
+                                                            .addOnSuccessListener {
+                                                                FancyToast.makeText(
+                                                                    this@VideoUploadActivity,
+                                                                    "Post successful",
+                                                                    FancyToast.LENGTH_SHORT,
+                                                                    FancyToast.SUCCESS,
+                                                                    false
+                                                                ).show()
+                                                                startActivity(
+                                                                    Intent(
+                                                                        this@VideoUploadActivity,
+                                                                        MainActivity::class.java
+                                                                    )
+                                                                )
+                                                                finish()
+                                                            }
+                                                            .addOnFailureListener {
+                                                                FancyToast.makeText(
+                                                                    this@VideoUploadActivity,
+                                                                    "Post Failed",
+                                                                    FancyToast.LENGTH_SHORT,
+                                                                    FancyToast.ERROR,
+                                                                    false
+                                                                ).show()
+                                                            }
+
+
+                                                    }
+                                                }
+
+                                                override fun onCancelled(error: DatabaseError) {
+
+                                                }
+
+                                            })
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+
+                                }
+
+                            })
                     }
                 } else {
-                    FancyToast.makeText(this, "First Sign in to upload a video", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
+                    FancyToast.makeText(
+                        this,
+                        "First Sign in to upload a video",
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.WARNING,
+                        false
+                    ).show()
                 }
             }
         }
@@ -108,14 +248,28 @@ class VideoUploadActivity : AppCompatActivity() {
         }
     }
 
-    private val videoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val videoLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK && result.data != null) {
-                val ref = Firebase.storage.reference.child(
+                val destinationUri =
                     "Videos/" + UUID.randomUUID().toString() + "_" + System.currentTimeMillis()
                         .toString()
-                )
+                val sourceUri = result.data!!.data.toString()
+//                val filePath = SiliCompressor.with(this).compressVideo(sourceUri, destinationUri)
 
-                FancyToast.makeText(this, "Uploading Video", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show()
+                Log.d("abc", "source: $sourceUri")
+                Log.d("abc", "dest: $destinationUri")
+//                Log.d("abc", "filepath: $filePath")
+
+                val ref = Firebase.storage.reference.child(destinationUri)
+
+                FancyToast.makeText(
+                    this,
+                    "Uploading Video",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.INFO,
+                    false
+                ).show()
 
                 binding.progressBar.isVisible = true
 
@@ -126,50 +280,97 @@ class VideoUploadActivity : AppCompatActivity() {
                         ref.downloadUrl
                             .addOnSuccessListener { url ->
                                 videoUrl = url.toString()
-                                FancyToast.makeText(this, "Video Uploaded successfully", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
+                                FancyToast.makeText(
+                                    this,
+                                    "Video Uploaded successfully",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS,
+                                    false
+                                ).show()
+
                                 getVideoLength(result.data!!.data!!)    // find video length
                                 binding.progressBar.isVisible = false
                             }
-                            .addOnFailureListener{
-                                FancyToast.makeText(this, "Video Upload Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+                            .addOnFailureListener {
+                                FancyToast.makeText(
+                                    this,
+                                    "Video Upload Failed",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.ERROR,
+                                    false
+                                ).show()
                             }
 
                     } else {
-                        FancyToast.makeText(this, "Video Upload Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+                        FancyToast.makeText(
+                            this,
+                            "Video Upload Failed",
+                            FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR,
+                            false
+                        ).show()
                     }
                 }
+
             }
         }
-    private val thumbnailLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+
+    private val thumbnailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK && result.data != null) {
                 val ref = Firebase.storage.reference.child(
                     "Thumbnails/" + UUID.randomUUID().toString() + "_" + System.currentTimeMillis()
                         .toString()
                 )
 
-                FancyToast.makeText(this, "Uploading Thumbnail", FancyToast.LENGTH_SHORT, FancyToast.INFO, false).show()
+                FancyToast.makeText(
+                    this,
+                    "Uploading Thumbnail",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.INFO,
+                    false
+                ).show()
                 binding.progressBar2.isVisible = true
 
                 thumbnailUploadTask = ref.putFile(result.data!!.data!!)
-                    thumbnailUploadTask?.addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            // thumbnail uploaded successfully, now download url and save it in a string
-                            ref.downloadUrl
-                                .addOnSuccessListener { uri ->
-                                    // uri downloaded successfully
-                                    thumbnailUrl = uri.toString()
-                                    FancyToast.makeText(this, "Thumbnail Upload Successfully", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
+                thumbnailUploadTask?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        // thumbnail uploaded successfully, now download url and save it in a string
+                        ref.downloadUrl
+                            .addOnSuccessListener { uri ->
+                                // uri downloaded successfully
+                                thumbnailUrl = uri.toString()
+                                FancyToast.makeText(
+                                    this,
+                                    "Thumbnail Upload Successfully",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS,
+                                    false
+                                ).show()
 
-                                    binding.progressBar2.isVisible = false
-                                }
-                                .addOnFailureListener {
-                                    FancyToast.makeText(this, "Thumbnail Upload Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                                    ref.delete()    // since url downloading failed, so delete thumbnail from storage database as it will occupy unnecessary storage
-                                }
-                        } else {
-                            FancyToast.makeText(this, "Thumbnail Upload Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                        }
+                                binding.progressBar2.isVisible = false
+                            }
+                            .addOnFailureListener {
+                                FancyToast.makeText(
+                                    this,
+                                    "Thumbnail Upload Failed",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.ERROR,
+                                    false
+                                ).show()
+                                ref.delete()    // since url downloading failed, so delete thumbnail from storage database as it will occupy unnecessary storage
+                            }
+                    } else {
+                        FancyToast.makeText(
+                            this,
+                            "Thumbnail Upload Failed",
+                            FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR,
+                            false
+                        ).show()
                     }
+                }
             }
         }
 

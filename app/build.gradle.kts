@@ -52,7 +52,8 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
-    implementation(libs.firebase.storage) // animation gif
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore) // animation gif
     // navigation graph for fragments
     val nav_version = "2.7.7"
 
@@ -77,7 +78,8 @@ dependencies {
     // picasso
     implementation ("com.squareup.picasso:picasso:+")
 
-
+    // sili compressor for videos
+//    implementation ("com.github.pgmacdesign:silicompressor:3.0.6")
 
     implementation(libs.material)
     implementation(libs.androidx.activity)

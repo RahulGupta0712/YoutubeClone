@@ -19,7 +19,6 @@ import com.example.notyoutube.Profile
 import com.example.notyoutube.R
 import com.example.notyoutube.dataAdapter
 import com.example.notyoutube.dataStore
-import com.example.notyoutube.dataVideos
 import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
 import com.example.notyoutube.databinding.FragmentProfileHomeBinding
 
@@ -44,24 +43,24 @@ class ProfileHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // popular videos
-        val data = dataVideos().getData()
-        data.shuffle()
-        val popularVideosAdapter = MyVideoAdapter(data, context as AppCompatActivity)
-        binding.popularVideosHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
-        binding.popularVideosHomeProfile.adapter = popularVideosAdapter
-
-
-        // videos
-        val VideosAdapter = MyVideoAdapter(dataVideos().getData(), context as AppCompatActivity)
-        binding.videosHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
-        binding.videosHomeProfile.adapter = VideosAdapter
+//        val data = dataVideos().getData()
+//        data.shuffle()
+//        val popularVideosAdapter = MyVideoAdapter(data, context as AppCompatActivity)
+//        binding.popularVideosHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.popularVideosHomeProfile.adapter = popularVideosAdapter
+//
+//
+//        // videos
+//        val VideosAdapter = MyVideoAdapter(dataVideos().getData(), context as AppCompatActivity)
+//        binding.videosHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.videosHomeProfile.adapter = VideosAdapter
 
 
         // shorts
-        val dataShorts = DataListShortsFragment().getData()
-        val shortsAdapter = DataAdapterShortsProfile(context as AppCompatActivity, dataShorts)
-        binding.shortsHomeProfile.layoutManager = GridLayoutManager(context as AppCompatActivity, 3)
-        binding.shortsHomeProfile.adapter = shortsAdapter
+//        val dataShorts = DataListShortsFragment().getData()
+//        val shortsAdapter = DataAdapterShortsProfile(context as AppCompatActivity, dataShorts)
+//        binding.shortsHomeProfile.layoutManager = GridLayoutManager(context as AppCompatActivity, 3)
+//        binding.shortsHomeProfile.adapter = shortsAdapter
 
         // playlists
 

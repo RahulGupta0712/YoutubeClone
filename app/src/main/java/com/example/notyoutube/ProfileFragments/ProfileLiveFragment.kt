@@ -18,7 +18,7 @@ import com.emreesen.sntoast.Type
 import com.example.notyoutube.MyVideoAdapter
 import com.example.notyoutube.Profile
 import com.example.notyoutube.R
-import com.example.notyoutube.dataAdapter
+
 import com.example.notyoutube.dataLive
 import com.example.notyoutube.dataStore
 import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
@@ -30,7 +30,7 @@ import www.sanju.motiontoast.MotionToastStyle
 class ProfileLiveFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileLiveBinding
-    private lateinit var Adapter: MyVideoAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -47,9 +47,9 @@ class ProfileLiveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Adapter = MyVideoAdapter(dataLive().getData(), context as AppCompatActivity)
-        binding.rvLive.layoutManager = LinearLayoutManager(context as AppCompatActivity)
-        binding.rvLive.adapter = Adapter
+//        Adapter = MyVideoAdapter(dataLive().getData(), context as AppCompatActivity)
+//        binding.rvLive.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.rvLive.adapter = Adapter
 
         val datalist = listOf("Latest", "Popular", "Oldest")
         val adapter = ArrayAdapter(

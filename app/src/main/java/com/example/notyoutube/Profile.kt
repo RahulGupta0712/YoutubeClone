@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,7 @@ import com.example.notyoutube.ProfileFragments.ProfileVideosFragment
 import com.example.notyoutube.databinding.ActivityProfileBinding
 import com.example.notyoutube.databinding.EditChannelPopupBinding
 import com.example.notyoutube.databinding.ProfileVideosBinding
+import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.github.ybq.android.spinkit.style.Wave
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -66,7 +68,9 @@ class Profile : AppCompatActivity() {
         setContentView(binding.root)
 
         // hide the screen till you get the channel name and username
-        binding.root.visibility = View.INVISIBLE
+        binding.main20020.visibility = View.INVISIBLE
+        binding.progressBar7.isVisible = true
+        binding.progressBar7.indeterminateDrawable = DoubleBounce()
 
         // initialise firebase variables
         auth = FirebaseAuth.getInstance()
@@ -257,7 +261,6 @@ class Profile : AppCompatActivity() {
             }
         }
 
-        binding.frameProfile.bringToFront()
 
         // profile picture menu
         binding.profilePicture.setOnClickListener{
@@ -345,7 +348,8 @@ class Profile : AppCompatActivity() {
     private fun showActivity() {
         if (cnt == 4) {
             // username and channel name and profile pic and cover pic are retrieved, show the activity
-            binding.root.visibility = View.VISIBLE
+            binding.main20020.visibility = View.VISIBLE
+            binding.progressBar7.isVisible = false
         }
     }
 

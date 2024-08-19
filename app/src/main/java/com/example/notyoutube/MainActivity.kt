@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -96,7 +96,7 @@ private lateinit var auth : FirebaseAuth
                     var fragment = FragmentSubscriptions()
                     var trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
-                    trans.addToBackStack(null)
+                    trans.addToBackStack("FragmentSubscriptions")
                     trans.commit()
                 }
 
@@ -137,7 +137,7 @@ private lateinit var auth : FirebaseAuth
                     var fragment = FragmentSubscriptions()
                     var trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
-                    trans.addToBackStack("subs")
+                    trans.addToBackStack("FragmentSubscriptions")
                     trans.commit()
                 }
 
@@ -242,7 +242,13 @@ private lateinit var auth : FirebaseAuth
         dialog.setPositiveButton("YES") { it,
                                           which ->
             auth.signOut()    // sign out the channel from app
-            FancyToast.makeText(this,"Logout Successful",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show()
+            FancyToast.makeText(
+                this,
+                "Logout Successful",
+                FancyToast.LENGTH_LONG,
+                FancyToast.SUCCESS,
+                false
+            ).show()
             it.dismiss()
         }
         dialog.setNegativeButton("NO") { dialogInterface,

@@ -11,20 +11,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notyoutube.databinding.FragmentShortsBinding
+import com.github.ybq.android.spinkit.style.WanderingCubes
 import com.github.ybq.android.spinkit.style.Wave
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.shashank.sony.fancytoastlib.FancyToast
 import render.animations.Fade
 import render.animations.Render
 import render.animations.Zoom
 
-class FragmentShorts(var datalist: ArrayList<shortsDataModel> = shortsDataList().getData()) : Fragment() {
+class FragmentShorts() : Fragment() {
     private lateinit var binding :FragmentShortsBinding
     private lateinit var adapter: shortsAdapter
+    private lateinit var datalist:ArrayList<DataModelVideoDetails>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +52,33 @@ class FragmentShorts(var datalist: ArrayList<shortsDataModel> = shortsDataList()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var activity = context as AppCompatActivity
+        binding.rvShorts.isVisible = false
+        binding.progressBar5.isVisible = true
 
+        binding.progressBar5.indeterminateDrawable = WanderingCubes()
+
+        var activity = context as AppCompatActivity
+        datalist = ArrayList()
         adapter = shortsAdapter(datalist, activity)
         binding.rvShorts.layoutManager = LinearLayoutManager(activity)
         binding.rvShorts.adapter = adapter
 
         val snapHelper = PagerSnapHelper()  // added this so as to scroll to only next item, not go beyond it directly
         snapHelper.attachToRecyclerView(binding.rvShorts)
+
+        Firebase.firestore.collection("Shorts").get().addOnSuccessListener { fullShorts ->
+            datalist.clear()
+            for (doc in fullShorts){
+                val shorts = doc.toObject(DataModelVideoDetails::class.java)
+                shorts.videoId = doc.id
+                Firebase.firestore.collection("Shorts").document(shorts.videoId).set(shorts)
+                datalist.add(shorts)
+            }
+
+            binding.rvShorts.isVisible = true
+            binding.progressBar5.isVisible = false
+            adapter.notifyDataSetChanged()
+        }
     }
 
     companion object {

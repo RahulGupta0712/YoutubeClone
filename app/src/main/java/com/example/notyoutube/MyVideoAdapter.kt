@@ -33,6 +33,8 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
         holder.binding.title1.text = dataList.get(position).title
         holder.binding.viewCount1.text = "0"
 
+        holder.binding.showVisibility.setImageResource(if(dataList[position].visibility == "Public") R.drawable.intenet_network else R.drawable.password)
+
         val time =
             (System.currentTimeMillis()-dataList[position].timePosted)/1000
         val minutes = time / 60

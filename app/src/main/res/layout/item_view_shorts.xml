@@ -263,7 +263,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/float_transparent"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/user_avatar" />
 
 

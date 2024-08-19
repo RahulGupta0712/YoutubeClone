@@ -69,7 +69,7 @@
         android:id="@+id/thumbnailUploadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/green"
         android:drawableLeft="@drawable/upload_button"
         android:text="Upload Thumbnail"
@@ -77,7 +77,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/visibility"
         app:strokeColor="@color/red"
         app:strokeWidth="2dp" />
 
@@ -143,5 +143,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thumbnailUploadButton" />
+
+    <Spinner
+        android:id="@+id/visibility"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/DescriptionEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
