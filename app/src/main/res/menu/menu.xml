@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/download"
-        android:title="Download Video"
+        android:title="@string/download_video"
         />
     <item
         android:id="@+id/share"
-        android:title="Share Video"
+        android:title="@string/share_video"
         />
     <item
         android:id="@+id/save"
-        android:title="Save to Playlist"
+        android:title="@string/save_to_playlist"
         />
 </menu>

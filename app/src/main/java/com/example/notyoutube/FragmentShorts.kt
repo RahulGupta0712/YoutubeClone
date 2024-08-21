@@ -1,59 +1,82 @@
 package com.example.notyoutube
 
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+
 import android.view.View
 import android.view.ViewGroup
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentShorts.newInstance] factory method to
- * create an instance of this fragment.
- */
+import androidx.recyclerview.widget.PagerSnapHelper
+
+import com.example.notyoutube.databinding.FragmentShortsBinding
+import com.github.ybq.android.spinkit.style.WanderingCubes
+
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+
+import render.animations.Render
+import render.animations.Zoom
+
 class FragmentShorts : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding :FragmentShortsBinding
+    private lateinit var adapter: shortsAdapter
+    private lateinit var datalist:ArrayList<DataModelVideoDetails>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shorts, container, false)
+        binding = FragmentShortsBinding.inflate(inflater, container, false)
+        val render = Render(context as AppCompatActivity)
+        render.setAnimation(Zoom().In(binding.root))
+        render.setDuration(300)
+        render.start()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentShorts.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentShorts().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.rvShorts.isVisible = false
+        binding.progressBar5.isVisible = true
+
+        binding.progressBar5.indeterminateDrawable = WanderingCubes()
+
+        val activity = context as AppCompatActivity
+        datalist = ArrayList()
+        adapter = shortsAdapter(datalist, activity)
+        binding.rvShorts.layoutManager = LinearLayoutManager(activity)
+        binding.rvShorts.adapter = adapter
+
+        val snapHelper = PagerSnapHelper()  // added this so as to scroll to only next item, not go beyond it directly
+        snapHelper.attachToRecyclerView(binding.rvShorts)
+
+        Firebase.firestore.collection("Shorts").get().addOnSuccessListener { fullShorts ->
+            datalist.clear()
+            for (doc in fullShorts){
+                val shorts = doc.toObject(DataModelVideoDetails::class.java)
+                shorts.videoId = doc.id
+                Firebase.firestore.collection("Shorts").document(shorts.videoId).set(shorts)
+                datalist.add(shorts)
             }
+
+            binding.rvShorts.isVisible = true
+            binding.progressBar5.isVisible = false
+            adapter.notifyDataSetChanged()
+        }
     }
+    
+
+
 }

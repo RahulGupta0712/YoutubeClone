@@ -14,37 +14,41 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintBottom_toBottomOf="@+id/watchU"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView13"
-        app:srcCompat="@drawable/youtube" />
+        app:layout_constraintTop_toTopOf="@+id/watchU"
+        android:contentDescription="@string/app_logo"
+        app:srcCompat="@drawable/notyoutube_icon" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/watchU"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="5dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center_vertical"
-        android:text="YouTube"
-        android:textColor="@color/white"
+        android:text="@string/app_name"
+        android:textColor="#6495ED"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView15"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
 
     <ImageView
         android:id="@+id/imageView16"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginEnd="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintBottom_toBottomOf="@+id/watchU"
         app:layout_constraintEnd_toStartOf="@+id/imageView17"
-        app:layout_constraintTop_toTopOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/watchU"
         app:srcCompat="@drawable/cast"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:contentDescription="@string/cast_button"
+        />
 
     <ImageView
         android:id="@+id/imageView17"
@@ -55,6 +59,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView18"
         app:layout_constraintTop_toTopOf="@+id/imageView16"
         app:srcCompat="@drawable/record_video"
+        android:contentDescription="@string/record_button"
         app:tint="@color/white" />
 
     <ImageView
@@ -66,6 +71,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView19"
         app:layout_constraintTop_toTopOf="@+id/imageView17"
         app:srcCompat="@drawable/search"
+        android:contentDescription="@string/search_button"
         app:tint="@color/white" />
 
     <Button
@@ -76,7 +82,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView16"
         app:layout_constraintEnd_toEndOf="@+id/imageView16"
         app:layout_constraintStart_toStartOf="@+id/imageView16"
-        app:layout_constraintTop_toTopOf="@+id/imageView16" />
+        app:layout_constraintTop_toTopOf="@+id/imageView16"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/imageView19"
@@ -88,6 +95,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView18"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/user_avatar"
+        android:contentDescription="@string/profile"
         app:tint="@color/white" />
 
     <Button
@@ -98,7 +106,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView19"
         app:layout_constraintEnd_toEndOf="@+id/imageView19"
         app:layout_constraintStart_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toTopOf="@+id/imageView19" />
+        app:layout_constraintTop_toTopOf="@+id/imageView19"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/searchButton"
@@ -108,6 +117,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView18"
         app:layout_constraintStart_toStartOf="@+id/imageView18"
         app:layout_constraintTop_toTopOf="@+id/imageView18" />
+
+    <Button
+        android:id="@+id/recordButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@color/float_transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView17"
+        app:layout_constraintStart_toStartOf="@+id/imageView17"
+        app:layout_constraintTop_toTopOf="@+id/imageView17" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -121,110 +139,36 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/homeButton"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13">
+        app:layout_constraintTop_toBottomOf="@+id/watchU">
 
     </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/homeButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="30dp"
-        android:background="@color/float_transparent"
-        android:scaleType="fitCenter"
-        android:tint="@color/floral_white"
+
+    <me.ibrahimsn.lib.NiceBottomBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        app:backgroundColor="@color/black"
+        app:iconMargin="0dp"
+        app:iconSize="30dp"
+        app:indicatorColor="@color/indian_red"
+        app:indicatorEnabled="true"
+        app:indicatorGravity="top"
+        app:indicatorInterpolator="accelerateDecelerate"
+        app:indicatorWidth="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/home" />
-
-    <ImageButton
-        android:id="@+id/shortsButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="80dp"
-        android:background="@color/float_transparent"
-        android:scaleType="fitCenter"
-        android:tint="@color/floral_white"
-        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
-        app:layout_constraintStart_toEndOf="@+id/homeButton"
-        app:layout_constraintTop_toTopOf="@+id/homeButton"
-        app:srcCompat="@drawable/reel" />
-
-    <ImageButton
-        android:id="@+id/subscriptionButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="80dp"
-        android:background="@color/float_transparent"
-        android:scaleType="fitCenter"
-        android:tint="@color/floral_white"
-        app:layout_constraintBottom_toBottomOf="@+id/shortsButton"
-        app:layout_constraintEnd_toStartOf="@+id/libraryButton"
-        app:layout_constraintTop_toTopOf="@+id/shortsButton"
-        app:srcCompat="@drawable/subscriptions" />
-
-    <ImageButton
-        android:id="@+id/libraryButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="20dp"
-        android:background="@color/float_transparent"
-        android:scaleType="fitCenter"
-        android:tint="@color/floral_white"
-        app:layout_constraintBottom_toBottomOf="@+id/subscriptionButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/subscriptionButton"
-        app:srcCompat="@drawable/library" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_menu"
+        app:textColor="@color/ghost_white"
+        app:textColorActive="@color/red"
+        app:textSize="11sp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textColor="@color/white_smoke"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/homeButton"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toStartOf="@+id/homeButton"
-        app:layout_constraintTop_toBottomOf="@+id/homeButton" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Shorts"
-        android:textColor="@color/white_smoke"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/shortsButton"
-        app:layout_constraintStart_toStartOf="@+id/shortsButton"
-        app:layout_constraintTop_toBottomOf="@+id/shortsButton" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Subscriptions"
-        android:textColor="@color/white_smoke"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/subscriptionButton"
-        app:layout_constraintStart_toStartOf="@+id/subscriptionButton"
-        app:layout_constraintTop_toBottomOf="@+id/subscriptionButton" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Library"
-        android:textColor="@color/white_smoke"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/libraryButton"
-        app:layout_constraintStart_toStartOf="@+id/libraryButton"
-        app:layout_constraintTop_toBottomOf="@+id/libraryButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

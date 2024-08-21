@@ -5,20 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.notyoutube.Profile
-import com.example.notyoutube.R
-import com.example.notyoutube.dataAdapter
-import com.example.notyoutube.dataStore
-import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
 import com.example.notyoutube.databinding.FragmentProfileHomeBinding
 
 class ProfileHomeFragment : Fragment() {
-    private lateinit var adapter2: dataAdapter
+
     private lateinit var binding: FragmentProfileHomeBinding
-    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -26,7 +18,7 @@ class ProfileHomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfileHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,26 +27,32 @@ class ProfileHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter2 = dataAdapter(dataStore().getData(), context as Profile)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.adapter = adapter2
+        // popular videos
+//        val data = dataVideos().getData()
+//        data.shuffle()
+//        val popularVideosAdapter = MyVideoAdapter(data, context as AppCompatActivity)
+//        binding.popularVideosHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.popularVideosHomeProfile.adapter = popularVideosAdapter
+//
+//
+//        // videos
+//        val VideosAdapter = MyVideoAdapter(dataVideos().getData(), context as AppCompatActivity)
+//        binding.videosHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.videosHomeProfile.adapter = VideosAdapter
 
-        navController = Navigation.findNavController(view)
 
-        adapter2.onItemClick = { position ->
-            when (position) {
-                1 -> navController.navigate(R.id.action_profileHomeFragment_to_profileVideosFragment)
-                2 -> navController.navigate(R.id.action_profileHomeFragment_to_profileShortsFragment)
-                3 -> navController.navigate(R.id.action_profileHomeFragment_to_profileLiveFragment)
-                4 -> navController.navigate(R.id.action_profileHomeFragment_to_profilePlaylistsFragment)
-                5 -> navController.navigate(R.id.action_profileHomeFragment_to_profileCommunityFragment)
-            }
-        }
+        // shorts
+//        val dataShorts = DataListShortsFragment().getData()
+//        val shortsAdapter = DataAdapterShortsProfile(context as AppCompatActivity, dataShorts)
+//        binding.shortsHomeProfile.layoutManager = GridLayoutManager(context as AppCompatActivity, 3)
+//        binding.shortsHomeProfile.adapter = shortsAdapter
+
+        // playlists
+
+//        val playlistAdapter = DataAdapterPlaylists(context as AppCompatActivity, DataListPlaylist().getData())
+//        binding.playlistsHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.playlistsHomeProfile.adapter = playlistAdapter
 
     }
 
-    companion object {
-
-    }
 }

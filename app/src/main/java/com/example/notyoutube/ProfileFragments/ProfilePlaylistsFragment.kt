@@ -5,29 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.notyoutube.Profile
-import com.example.notyoutube.R
-import com.example.notyoutube.dataAdapter
-import com.example.notyoutube.dataStore
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+import com.example.notyoutube.DataAdapterPlaylists
 import com.example.notyoutube.databinding.FragmentProfilePlaylistsBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfilePlaylistsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfilePlaylistsFragment : Fragment() {
-    private lateinit var adapter2: dataAdapter
+
     private lateinit var binding: FragmentProfilePlaylistsBinding
-    private lateinit var navController: NavController
+    private lateinit var Adapter:DataAdapterPlaylists
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,35 +27,41 @@ class ProfilePlaylistsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfilePlaylistsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter2 = dataAdapter(dataStore().getData(), context as Profile)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.adapter = adapter2
+//        Adapter = DataAdapterPlaylists(context as AppCompatActivity, DataListPlaylist().getData())
+//        binding.rvPlaylists.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.rvPlaylists.adapter = Adapter
 
-        navController = Navigation.findNavController(view)
+        val datalist = listOf("Date added", "Last video added")
+        val Adapter = ArrayAdapter(context as AppCompatActivity, android.R.layout.simple_spinner_item, datalist)
+        Adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        binding.spinner5.adapter = Adapter
 
-        adapter2.onItemClick = { position ->
-            when (position) {
-                0 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileHomeFragment)
-                1 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileVideosFragment)
-                2 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileShortsFragment)
-                3 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileLiveFragment)
-                5 -> navController.navigate(R.id.action_profilePlaylistsFragment_to_profileCommunityFragment)
+        binding.spinner5.onItemSelectedListener = object :OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(context as AppCompatActivity, "Sorting by : ${parent?.getItemAtPosition(position)}", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
             }
         }
 
     }
 
-    companion object {
 
-    }
 }

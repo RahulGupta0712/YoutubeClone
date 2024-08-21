@@ -1,36 +1,23 @@
 package com.example.notyoutube
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.notyoutube.ProfileFragments.ProfileCommunityFragment
-import com.example.notyoutube.ProfileFragments.ProfileHomeFragment
-import com.example.notyoutube.ProfileFragments.ProfileLiveFragment
-import com.example.notyoutube.ProfileFragments.ProfilePlaylistsFragment
-import com.example.notyoutube.ProfileFragments.ProfileShortsFragment
-import com.example.notyoutube.ProfileFragments.ProfileVideosFragment
 import com.example.notyoutube.databinding.ItemViewBinding
 
 class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
     RecyclerView.Adapter<dataAdapter.MyViewHolder>() {
 
-    var onItemClick : ((Int) -> Unit)? = null   // click listener for an item
+
     inner class MyViewHolder(var binding: ItemViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init{
-            binding.root.setOnClickListener{    // when anywhere inside item is clicked, then this is shown
-                onItemClick?.invoke(adapterPosition)
-            }
-        }
-    }
+        RecyclerView.ViewHolder(binding.root)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var binding = ItemViewBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemViewBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -38,7 +25,20 @@ class dataAdapter(var dataList: ArrayList<dataModel>, var context: Context) :
         return dataList.size
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.binding.typeView.text = dataList.get(position).viewType
+    private var selectedPosition = 0
+    var onItemClick : ((Int) -> Unit)? = null   // click listener for an item (it is a lambda function)
+    override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        holder.binding.typeView.text = dataList[position].viewType
+        if(selectedPosition == position)
+            holder.binding.typeView.setTextColor(ContextCompat.getColor(context, R.color.white))
+        else
+            holder.binding.typeView.setTextColor(ContextCompat.getColor(context, R.color.gray))  // default color grey
+
+        holder.binding.root.setOnClickListener{
+            notifyItemChanged(selectedPosition) // change color of previous selected item to grey
+            selectedPosition = position
+            holder.binding.typeView.setTextColor(ContextCompat.getColor(context, R.color.white)) // when clicked, change to white
+            onItemClick?.invoke(holder.adapterPosition) // invoke click listener
+        }
     }
 }

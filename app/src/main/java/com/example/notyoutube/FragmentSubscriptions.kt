@@ -1,59 +1,119 @@
 package com.example.notyoutube
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.notyoutube.databinding.FragmentSubscriptionsBinding
+import com.github.ybq.android.spinkit.style.ChasingDots
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentSubscriptions.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentSubscriptions : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private lateinit var adapterSubs: dataAdapterSubs
+    private lateinit var binding: FragmentSubscriptionsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var databaseRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subscriptions, container, false)
+        binding = FragmentSubscriptionsBinding.inflate(inflater, container, false)
+        auth = FirebaseAuth.getInstance()
+        databaseRef = FirebaseDatabase.getInstance().reference
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentSubscriptions.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentSubscriptions().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private lateinit var datalist: ArrayList<String>
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.progressBar6.isVisible = true
+        binding.frameFeedSubs.isVisible = false
+        binding.rvChannelsSubscribed.isVisible = false
+        binding.progressBar6.indeterminateDrawable = ChasingDots()
+
+        val activity = context as AppCompatActivity
+
+        datalist = ArrayList()
+        adapterSubs = dataAdapterSubs(datalist, activity)
+        binding.rvChannelsSubscribed.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvChannelsSubscribed.adapter = adapterSubs
+
+        val user = auth.currentUser
+        user?.let {
+            // finding the subscribed channels by the user, if user is not signed in then he sees a blank screen
+            databaseRef.child("users").child(user.uid).child("Subscribed Channels")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        datalist.clear()
+                        for (snap in snapshot.children) {
+                            val channelId = snap.getValue(String::class.java)
+                            channelId?.let {
+                                datalist.add(channelId)
+                            }
+                        }
+
+                        showSubscribedFeed(datalist)
+
+                        binding.progressBar6.isVisible = false
+                        binding.frameFeedSubs.isVisible = true
+                        binding.rvChannelsSubscribed.isVisible = true
+
+                        adapterSubs.notifyDataSetChanged()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+
+                })
+        }
+
+
+    }
+
+    private fun showSubscribedFeed(datalist: ArrayList<String>) {
+        // show subscribed channels feed --- content from subscribed channels
+        // first check if this is started for the first time
+        try {
+            val manager = requireActivity().supportFragmentManager
+            val sz = manager.backStackEntryCount
+            if (sz > 0) {
+                val name = manager.getBackStackEntryAt(sz - 1).name
+                if (name == "FragmentSubscriptions") {
+                    val trans = manager.beginTransaction()
+                    trans.replace(
+                        R.id.frame_feed_subs,
+                        SubscribedChannelsFeedFragment(datalist)
+                    )
+                    trans.commit()
                 }
             }
+        } catch (e: Exception) {
+            Log.d("fragment", "showSubscribedFeed: activity attached is null")
+        }
+
     }
+
+
+
 }
