@@ -66,8 +66,8 @@
     <string name="z_m">Z M</string>
     <string name="title">Title</string>
     <string name="x_m">X M</string>
-    <string name="views"> views</string>
-    <string name="ago"> ago</string>
+    <string name="views">\ views</string>
+    <string name="ago">\ ago</string>
     <string name="xm">XM</string>
     <string name="xk">XK</string>
     <string name="upload_video">Upload Video</string>
@@ -96,7 +96,7 @@
     <string name="y">y</string>
     <string name="_100">100</string>
     <string name="Public">Public</string>
-    <string name="dot"> . </string>
+    <string name="dot">\ . \ </string>
     <string name="playlist">Playlist</string>
     <string name="_100k">100K</string>
     <string name="mm_ss">MM:SS</string>

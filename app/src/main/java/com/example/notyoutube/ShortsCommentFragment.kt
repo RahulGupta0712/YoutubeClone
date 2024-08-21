@@ -30,6 +30,7 @@ class ShortsCommentFragment(private var comments : String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        data = dataListCommentShorts().getData()
+        data = ArrayList()
         binding.commentCountShortsInside.text = comments
         binding.recyclerViewShortsComment.layoutManager = LinearLayoutManager(context as AppCompatActivity)
         adapterObject = dataAdapterCommentShorts(data, context as AppCompatActivity)
