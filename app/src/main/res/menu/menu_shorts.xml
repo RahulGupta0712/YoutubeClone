@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/description"
+        android:id="@+id/descriptionShorts"
+
+        />
+
+    <item
+        android:title="@string/save_to_watch_later"
+        android:id="@+id/saveShorts"
+        />
+
+    <item
+        android:title="@string/captions"
+        android:id="@+id/captionsShorts"
+        />
+    <item
+        android:title="@string/quality"
+        android:id="@+id/qualityShorts"
+        />
+    <item
+        android:title="@string/not_interested"
+        android:id="@+id/notInterestedShorts"
+        />
+    <item
+        android:title="@string/don_t_recommend_this_channel"
+        android:id="@+id/dontRecommendShorts"
+        />
+    <item
+        android:title="@string/report"
+        android:id="@+id/reportShorts"
+        />
+    <item
+        android:title="@string/send_feedback"
+        android:id="@+id/sendFeedbackShorts"
+        />
+
+</menu>

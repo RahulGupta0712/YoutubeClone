@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".videoFullModeProfile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/abcd00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/abcd00"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/background00"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/cover">
+
+        </ImageView>
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.CubeGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/dark_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/background00"
+            app:layout_constraintEnd_toEndOf="@+id/background00"
+            app:layout_constraintStart_toStartOf="@+id/background00"
+            app:layout_constraintTop_toTopOf="@+id/background00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline200"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="10dp" />
+
+    <TextView
+        android:id="@+id/title200"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/title"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/abcd00" />
+
+    <TextView
+        android:id="@+id/viewCount00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/x_m"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/title200" />
+
+    <TextView
+        android:id="@+id/textView300"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/views"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCount00"
+        app:layout_constraintStart_toEndOf="@+id/viewCount00"
+        app:layout_constraintTop_toTopOf="@+id/viewCount00" />
+
+    <TextView
+        android:id="@+id/timeAgo00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/x_months"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/textView300"
+        app:layout_constraintStart_toEndOf="@+id/textView300"
+        app:layout_constraintTop_toTopOf="@+id/textView300" />
+
+    <TextView
+        android:id="@+id/textView500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ago"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/timeAgo00"
+        app:layout_constraintStart_toEndOf="@+id/timeAgo00"
+        app:layout_constraintTop_toTopOf="@+id/timeAgo00" />
+
+    <TextView
+        android:id="@+id/channelName00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/channel_name"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView600"
+        app:layout_constraintStart_toEndOf="@+id/cardView600"
+        app:layout_constraintTop_toTopOf="@+id/cardView600" />
+
+    <TextView
+        android:id="@+id/subsCount00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/x_m"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/channelName00"
+        app:layout_constraintStart_toEndOf="@+id/channelName00"
+        app:layout_constraintTop_toTopOf="@+id/channelName00" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView600"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintStart_toEndOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/description00">
+
+
+        <ImageButton
+            android:id="@+id/profile00"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/float_transparent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_avatar" />
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/sub00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="@color/azure"
+        android:text="@string/subscribe"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/subsCount00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/subsCount00"
+        app:layout_constraintVertical_bias="0.551" />
+
+    <ImageButton
+        android:id="@+id/like00"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/float_transparent"
+        app:layout_constraintStart_toStartOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/cardView600"
+        app:srcCompat="@drawable/like"
+        app:tint="@color/ghost_white" />
+
+    <ImageButton
+        android:id="@+id/imageButton300"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:background="@color/float_transparent"
+        android:rotationX="180"
+        android:rotationY="180"
+        app:layout_constraintBottom_toBottomOf="@+id/like00"
+        app:layout_constraintStart_toEndOf="@+id/likeCount00"
+        app:layout_constraintTop_toTopOf="@+id/like00"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/like"
+        app:tint="@color/ghost_white" />
+
+    <TextView
+        android:id="@+id/likeCount00"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/xm"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/like00"
+        app:layout_constraintStart_toEndOf="@+id/like00"
+        app:layout_constraintTop_toTopOf="@+id/like00" />
+
+    <ImageButton
+        android:id="@+id/imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:background="@color/float_transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton300"
+        app:layout_constraintStart_toEndOf="@+id/imageButton300"
+        app:layout_constraintTop_toTopOf="@+id/imageButton300"
+        app:srcCompat="@drawable/comment"
+        app:tint="@color/ghost_white" />
+
+    <TextView
+        android:id="@+id/commentCount00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/xk"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/description00"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/dim_gray"
+        android:padding="10dp"
+        android:textColor="@color/floral_white"
+        android:textSize="16sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/sub00"
+        app:layout_constraintStart_toStartOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/viewCount00" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

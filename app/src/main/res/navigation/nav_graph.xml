@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/profileHomeFragment">
+
+    <fragment
+        android:id="@+id/profileCommunityFragment"
+        android:name="com.example.notyoutube.ProfileFragments.ProfileCommunityFragment"
+        android:label="fragment_profile_community"
+        tools:layout="@layout/fragment_profile_community" >
+        <action
+            android:id="@+id/action_profileCommunityFragment_to_profileShortsFragment"
+            app:destination="@id/profileShortsFragment" />
+        <action
+            android:id="@+id/action_profileCommunityFragment_to_profileHomeFragment"
+            app:destination="@id/profileHomeFragment" />
+        <action
+            android:id="@+id/action_profileCommunityFragment_to_profileVideosFragment"
+            app:destination="@id/profileVideosFragment" />
+        <action
+            android:id="@+id/action_profileCommunityFragment_to_profilePlaylistsFragment"
+            app:destination="@id/profilePlaylistsFragment" />
+        <action
+            android:id="@+id/action_profileCommunityFragment_to_profileLiveFragment"
+            app:destination="@id/profileLiveFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileHomeFragment"
+        android:name="com.example.notyoutube.ProfileFragments.ProfileHomeFragment"
+        android:label="fragment_profile_home"
+        tools:layout="@layout/fragment_profile_home" >
+        <action
+            android:id="@+id/action_profileHomeFragment_to_profileShortsFragment"
+            app:destination="@id/profileShortsFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_profileCommunityFragment"
+            app:destination="@id/profileCommunityFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_profileLiveFragment"
+            app:destination="@id/profileLiveFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_profilePlaylistsFragment"
+            app:destination="@id/profilePlaylistsFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_profileVideosFragment"
+            app:destination="@id/profileVideosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileLiveFragment"
+        android:name="com.example.notyoutube.ProfileFragments.ProfileLiveFragment"
+        android:label="fragment_profile_live"
+        tools:layout="@layout/fragment_profile_live" >
+        <action
+            android:id="@+id/action_profileLiveFragment_to_profilePlaylistsFragment"
+            app:destination="@id/profilePlaylistsFragment" />
+        <action
+            android:id="@+id/action_profileLiveFragment_to_profileCommunityFragment"
+            app:destination="@id/profileCommunityFragment" />
+        <action
+            android:id="@+id/action_profileLiveFragment_to_profileShortsFragment"
+            app:destination="@id/profileShortsFragment" />
+        <action
+            android:id="@+id/action_profileLiveFragment_to_profileHomeFragment"
+            app:destination="@id/profileHomeFragment" />
+        <action
+            android:id="@+id/action_profileLiveFragment_to_profileVideosFragment"
+            app:destination="@id/profileVideosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profilePlaylistsFragment"
+        android:name="com.example.notyoutube.ProfileFragments.ProfilePlaylistsFragment"
+        android:label="fragment_profile_playlists"
+        tools:layout="@layout/fragment_profile_playlists" >
+        <action
+            android:id="@+id/action_profilePlaylistsFragment_to_profileLiveFragment"
+            app:destination="@id/profileLiveFragment" />
+        <action
+            android:id="@+id/action_profilePlaylistsFragment_to_profileVideosFragment"
+            app:destination="@id/profileVideosFragment" />
+        <action
+            android:id="@+id/action_profilePlaylistsFragment_to_profileHomeFragment"
+            app:destination="@id/profileHomeFragment" />
+        <action
+            android:id="@+id/action_profilePlaylistsFragment_to_profileShortsFragment"
+            app:destination="@id/profileShortsFragment" />
+        <action
+            android:id="@+id/action_profilePlaylistsFragment_to_profileCommunityFragment"
+            app:destination="@id/profileCommunityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileShortsFragment"
+        android:name="com.example.notyoutube.ProfileFragments.ProfileShortsFragment"
+        android:label="fragment_profile_shorts"
+        tools:layout="@layout/fragment_profile_shorts" >
+        <action
+            android:id="@+id/action_profileShortsFragment_to_profileCommunityFragment"
+            app:destination="@id/profileCommunityFragment" />
+        <action
+            android:id="@+id/action_profileShortsFragment_to_profileLiveFragment"
+            app:destination="@id/profileLiveFragment" />
+        <action
+            android:id="@+id/action_profileShortsFragment_to_profilePlaylistsFragment"
+            app:destination="@id/profilePlaylistsFragment" />
+        <action
+            android:id="@+id/action_profileShortsFragment_to_profileVideosFragment"
+            app:destination="@id/profileVideosFragment" />
+        <action
+            android:id="@+id/action_profileShortsFragment_to_profileHomeFragment"
+            app:destination="@id/profileHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileVideosFragment"
+        android:name="com.example.notyoutube.ProfileFragments.ProfileVideosFragment"
+        android:label="fragment_video_home"
+        tools:layout="@layout/fragment_video_home" >
+        <action
+            android:id="@+id/action_profileVideosFragment_to_profileHomeFragment"
+            app:destination="@id/profileHomeFragment" />
+        <action
+            android:id="@+id/action_profileVideosFragment_to_profileShortsFragment"
+            app:destination="@id/profileShortsFragment" />
+        <action
+            android:id="@+id/action_profileVideosFragment_to_profileCommunityFragment"
+            app:destination="@id/profileCommunityFragment" />
+        <action
+            android:id="@+id/action_profileVideosFragment_to_profileLiveFragment"
+            app:destination="@id/profileLiveFragment" />
+        <action
+            android:id="@+id/action_profileVideosFragment_to_profilePlaylistsFragment"
+            app:destination="@id/profilePlaylistsFragment" />
+    </fragment>
+</navigation>
