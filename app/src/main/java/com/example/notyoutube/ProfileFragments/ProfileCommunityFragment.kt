@@ -1,34 +1,27 @@
 package com.example.notyoutube.ProfileFragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import cn.pedant.SweetAlert.SweetAlertDialog
-
 import com.example.notyoutube.CommunityPostInfo
 import com.example.notyoutube.DataAdapterCommunity2
-
 import com.example.notyoutube.R
 import com.example.notyoutube.databinding.EditPostBinding
 import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
-
 import com.github.ybq.android.spinkit.style.ThreeBounce
-
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -39,7 +32,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.storage.storage
 import com.shashank.sony.fancytoastlib.FancyToast
-
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.time.LocalDateTime
@@ -59,7 +51,7 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // initialise variable of firebase
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference
@@ -69,16 +61,14 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
         return binding.root
     }
 
-
     private lateinit var Adapter2: DataAdapterCommunity2
     private lateinit var datalist: ArrayList<CommunityPostInfo>
-    private lateinit var imagePostList:ArrayList<String>
-
+    private lateinit var imagePostList:ArrayList<String>    // contains urls for images
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        imagePostList = ArrayList<String>()
+        imagePostList = ArrayList()
 
         // loader
         val loader = binding.loaderImagePost as ProgressBar
@@ -100,18 +90,18 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
                 currentUser?.let {
                     val ref = databaseRef.child("users").child(currentUser.uid).child("Community Posts")
                     val key = ref.push().key
-                    if (key != null) {
+                    key?.let {
                         val time = LocalDateTime.now()
                         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")
                         val formattedTime = time.format(formatter)
                         ref.child(key).setValue(CommunityPostInfo(key, post, imagePostList, formattedTime))
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    Toast.makeText(context as AppCompatActivity,"Post posted", Toast.LENGTH_SHORT).show()
-                                    binding.post.setText("")
+                                    Toast.makeText(context as AppCompatActivity,"Post uploaded", Toast.LENGTH_SHORT).show()
+                                    binding.post.setText(getString(R.string.empty))
                                     imagePostList.clear()
                                 } else {
-                                    Toast.makeText(context, "Failed to post", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Upload failed", Toast.LENGTH_SHORT).show()
                                     imagePostList.clear()
                                 }
                             }
@@ -123,7 +113,7 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
 
         // read operation -- show all posts
         val currentUser = auth.currentUser
-        datalist = ArrayList<CommunityPostInfo>()
+        datalist = ArrayList()
 
         binding.root.visibility = View.INVISIBLE
 
@@ -139,39 +129,46 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
                                 .child("Profile Picture")
                                 .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
-                                        var profilePath = snapshot.getValue<String>()
-                                        if (profilePath == null) {
-                                            profilePath = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUpsDK5dkH7envHCdUECqq0XzCWK1Dv96XcQ&s"
-                                            databaseRef.child("users").child(currentUser.uid).child("Profile Picture").setValue(profilePath)
-                                        }
-                                        
-                                        Adapter2 = DataAdapterCommunity2(datalist,profilePath,channelName,context as AppCompatActivity,this@ProfileCommunityFragment)
-                                        binding.rvTextposts.layoutManager = LinearLayoutManager(context)
-                                        binding.rvTextposts.adapter = Adapter2
 
-                                        // now showing the community posts by this channel
-                                        databaseRef.child("users").child(currentUser.uid)
-                                            .child("Community Posts")
-                                            .addValueEventListener(object : ValueEventListener {
-                                                override fun onDataChange(snapshot: DataSnapshot) {
-                                                    datalist.clear()
-                                                    for (snap in snapshot.children) {
-                                                        val post_info =snap.getValue<CommunityPostInfo>()
-                                                        post_info?.let {
-                                                            datalist.add(post_info)
+                                        val profilePath = snapshot.getValue<String>()
+                                        profilePath?.let {
+                                            Adapter2 = DataAdapterCommunity2(
+                                                datalist,
+                                                profilePath,
+                                                channelName,
+                                                context as AppCompatActivity,
+                                                this@ProfileCommunityFragment
+                                            )
+                                            binding.rvTextposts.layoutManager =
+                                                LinearLayoutManager(context)
+                                            binding.rvTextposts.adapter = Adapter2
+
+                                            // now showing the community posts by this channel
+                                            databaseRef.child("users").child(currentUser.uid)
+                                                .child("Community Posts")
+                                                .addValueEventListener(object : ValueEventListener {
+                                                    @SuppressLint("NotifyDataSetChanged")
+                                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                                        datalist.clear()
+                                                        for (snap in snapshot.children) {
+                                                            val post_info =
+                                                                snap.getValue<CommunityPostInfo>()
+                                                            post_info?.let {
+                                                                datalist.add(post_info)
+                                                            }
                                                         }
+                                                        datalist.reverse()
+                                                        Adapter2.notifyDataSetChanged()
+
+                                                        binding.root.visibility = View.VISIBLE
                                                     }
-                                                    datalist.reverse()
-                                                    Adapter2.notifyDataSetChanged()
 
-                                                    binding.root.visibility = View.VISIBLE
-                                                }
+                                                    override fun onCancelled(error: DatabaseError) {
 
-                                                override fun onCancelled(error: DatabaseError) {
+                                                    }
 
-                                                }
-
-                                            })
+                                                })
+                                        }
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
@@ -239,7 +236,6 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
             }
     }
 
-
     override fun onEditClick(postKey : String, postText: String, imagePostList : ArrayList<String>, postTime : String) {
         val editPost = EditPostBinding.inflate(LayoutInflater.from(context))
         editPost.newPost.setText(postText)
@@ -254,7 +250,7 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
                     val post = editPost.newPost.text.toString()
                     databaseRef.child("users").child(currentUser.uid).child("Community Posts")
                         .child(postKey).setValue(CommunityPostInfo(postKey, post, imagePostList, postTime))
-                        .addOnCompleteListener() { task ->
+                        .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Toast.makeText(context, "Post updated !", Toast.LENGTH_SHORT).show()
                             } else {

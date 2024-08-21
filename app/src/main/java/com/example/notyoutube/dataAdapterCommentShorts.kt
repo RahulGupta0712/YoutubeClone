@@ -3,7 +3,6 @@ package com.example.notyoutube
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +11,10 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
 class dataAdapterCommentShorts (var dataList : ArrayList<dataModelCommentShorts>, var context:Context) :RecyclerView.Adapter<dataAdapterCommentShorts.MyViewHolder>() {
-    inner class MyViewHolder(var binding : ItemViewShortsCommentBinding) : RecyclerView.ViewHolder(binding.root){}
+    inner class MyViewHolder(var binding : ItemViewShortsCommentBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var binding = ItemViewShortsCommentBinding.inflate(LayoutInflater.from(context),parent, false)
+        val binding = ItemViewShortsCommentBinding.inflate(LayoutInflater.from(context),parent, false)
         return MyViewHolder(binding)
     }
 

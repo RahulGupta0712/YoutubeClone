@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/shorts" />
+            app:srcCompat="@drawable/dp_background" />
 
     </androidx.cardview.widget.CardView>
 
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="100"
+            android:text="@string/_100"
             android:textColor="@color/ghost_white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView10"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:text="Title"
+        android:text="@string/title"
         android:textColor="@color/white_smoke"
         app:layout_constraintEnd_toStartOf="@+id/menuPlaylist"
         app:layout_constraintStart_toEndOf="@+id/dbwbdhkwabhbc"
@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Public"
+        android:text="@string/Public"
         android:textColor="@color/dark_gray"
         app:layout_constraintStart_toStartOf="@+id/titlePlaylist"
         app:layout_constraintTop_toBottomOf="@+id/titlePlaylist" />
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:text=" . "
+        android:text="@string/dot"
         android:textColor="@color/dark_gray"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/visibilityPlaylist"
@@ -94,7 +94,7 @@
         android:id="@+id/textView26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Playlist"
+        android:text="@string/playlist"
         android:textColor="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="@+id/visibilityPlaylist"
         app:layout_constraintStart_toEndOf="@+id/textView25"

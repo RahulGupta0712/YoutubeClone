@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class SubscribedChannelsFeedFragment(var subscribedChannels : ArrayList<String>) : Fragment() {
+class SubscribedChannelsFeedFragment(private var subscribedChannels : ArrayList<String>) : Fragment() {
 
     private lateinit var binding:FragmentSubscribedChannelsFeedBinding
 
@@ -26,7 +26,7 @@ class SubscribedChannelsFeedFragment(var subscribedChannels : ArrayList<String>)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentSubscribedChannelsFeedBinding.inflate(inflater, container, false)
         return binding.root
@@ -83,7 +83,5 @@ class SubscribedChannelsFeedFragment(var subscribedChannels : ArrayList<String>)
 
     }
 
-    companion object {
 
-    }
 }

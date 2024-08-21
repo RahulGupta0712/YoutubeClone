@@ -3,17 +3,13 @@ package com.example.notyoutube
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notyoutube.databinding.ItemViewImagePostCommunityProfileBinding
 import com.squareup.picasso.Picasso
 
-class DataAdapterImagePost(var imageList : ArrayList<String>, var context : Context, var postKey : String) : RecyclerView.Adapter<DataAdapterImagePost.MyViewHolder>() {
-    inner class MyViewHolder(var binding : ItemViewImagePostCommunityProfileBinding) : RecyclerView.ViewHolder(binding.root){}
+class DataAdapterImagePost(private var imageList : ArrayList<String>, var context : Context) : RecyclerView.Adapter<DataAdapterImagePost.MyViewHolder>() {
+    inner class MyViewHolder(var binding : ItemViewImagePostCommunityProfileBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemViewImagePostCommunityProfileBinding.inflate(LayoutInflater.from(context), parent, false)

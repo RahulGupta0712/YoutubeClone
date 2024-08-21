@@ -5,13 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.notyoutube.ProfileFragments.dataListCommentShorts
 import com.example.notyoutube.databinding.FragmentShortsCommentBinding
 
-class ShortsCommentFragment(var comments : String) : Fragment() {
+class ShortsCommentFragment(private var comments : String) : Fragment() {
     private lateinit var binding:FragmentShortsCommentBinding
 
     private lateinit var adapterObject:dataAdapterCommentShorts
@@ -23,7 +21,7 @@ class ShortsCommentFragment(var comments : String) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentShortsCommentBinding.inflate(inflater, container, false)
         return binding.root
@@ -31,7 +29,7 @@ class ShortsCommentFragment(var comments : String) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        data = dataListCommentShorts().getData()
+//        data = dataListCommentShorts().getData()
         binding.commentCountShortsInside.text = comments
         binding.recyclerViewShortsComment.layoutManager = LinearLayoutManager(context as AppCompatActivity)
         adapterObject = dataAdapterCommentShorts(data, context as AppCompatActivity)
@@ -45,7 +43,4 @@ class ShortsCommentFragment(var comments : String) : Fragment() {
 
     }
 
-    companion object {
-
-    }
 }

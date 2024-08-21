@@ -10,18 +10,9 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.emreesen.sntoast.SnToast
 import com.emreesen.sntoast.Type
-import com.example.notyoutube.MyVideoAdapter
-import com.example.notyoutube.Profile
 import com.example.notyoutube.R
-
-import com.example.notyoutube.dataLive
-import com.example.notyoutube.dataStore
-import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
 import com.example.notyoutube.databinding.FragmentProfileLiveBinding
 import com.shashank.sony.fancytoastlib.FancyToast
 import www.sanju.motiontoast.MotionToast
@@ -38,7 +29,7 @@ class ProfileLiveFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfileLiveBinding.inflate(inflater, container, false)
         return binding.root
@@ -119,7 +110,4 @@ class ProfileLiveFragment : Fragment() {
     }
 
 
-    companion object {
-
-    }
 }

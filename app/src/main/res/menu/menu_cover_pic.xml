@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/changeCoverPicture"
-        android:title="Change Cover Picture"
+        android:title="@string/change_cover_picture"
         />
 </menu>

@@ -9,7 +9,7 @@ import com.example.notyoutube.databinding.ShortsItemViewSubsBinding
 import com.squareup.picasso.Picasso
 
 class DataAdapterShortsSubs(var datalist : ArrayList<DataModelVideoDetails>, var context : Context) : RecyclerView.Adapter<DataAdapterShortsSubs.MyViewHolder>() {
-    inner class MyViewHolder(var binding : ShortsItemViewSubsBinding):RecyclerView.ViewHolder(binding.root) {}
+    inner class MyViewHolder(var binding : ShortsItemViewSubsBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ShortsItemViewSubsBinding.inflate(LayoutInflater.from(context), parent, false)

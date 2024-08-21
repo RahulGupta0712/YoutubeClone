@@ -1,8 +1,8 @@
 package com.example.notyoutube
 
 import android.content.Context
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -48,7 +48,7 @@ class CastActivity {
                 .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                 .invoke(popup, true)
         } catch (e: Exception) {
-
+            Log.d("error", "castActivity: Some exception occurred")
         } finally {
             pop.show()
         }

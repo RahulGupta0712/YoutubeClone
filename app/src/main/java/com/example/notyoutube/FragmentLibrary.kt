@@ -1,7 +1,6 @@
 package com.example.notyoutube
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,7 @@ class FragmentLibrary : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentLibraryBinding.inflate(inflater, container, false)
         return binding.root
@@ -131,7 +130,7 @@ class FragmentLibrary : Fragment() {
         adapter1.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
         binding.spinner2.adapter = adapter1
 
-        var minute = -1
+        var minute: Int
         binding.spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 minute = parent?.getItemAtPosition(position).toString().toInt()
@@ -147,5 +146,4 @@ class FragmentLibrary : Fragment() {
         binding.textView.startAnimation(anim)
     }
 
-    companion object {}
 }

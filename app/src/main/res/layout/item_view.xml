@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/black"
         android:padding="10dp"
-        android:text="Type of View"
+        android:text="@string/type_of_view"
         android:textColor="@color/gray"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

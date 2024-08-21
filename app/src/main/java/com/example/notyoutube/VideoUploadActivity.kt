@@ -1,12 +1,11 @@
 package com.example.notyoutube
 
-import android.Manifest
+
 import android.content.Intent
-import android.content.pm.PackageManager
+
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -14,9 +13,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
+
 import androidx.core.view.isVisible
 import com.example.notyoutube.databinding.ActivityVideoUploadBinding
 import com.google.firebase.Firebase
@@ -32,8 +29,7 @@ import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
 
 import com.shashank.sony.fancytoastlib.FancyToast
-import www.sanju.motiontoast.MotionToast
-import www.sanju.motiontoast.MotionToastStyle
+
 
 import java.util.UUID
 
@@ -254,13 +250,6 @@ class VideoUploadActivity : AppCompatActivity() {
                 val destinationUri =
                     "Videos/" + UUID.randomUUID().toString() + "_" + System.currentTimeMillis()
                         .toString()
-                val sourceUri = result.data!!.data.toString()
-//                val filePath = SiliCompressor.with(this).compressVideo(sourceUri, destinationUri)
-
-                Log.d("abc", "source: $sourceUri")
-                Log.d("abc", "dest: $destinationUri")
-//                Log.d("abc", "filepath: $filePath")
-
                 val ref = Firebase.storage.reference.child(destinationUri)
 
                 FancyToast.makeText(
@@ -379,9 +368,7 @@ class VideoUploadActivity : AppCompatActivity() {
         ret.setDataSource(this, uri)
         val duration =
             ret.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()
-        if (duration != null) {
-            videoLength = duration / 1000;
-        } else videoLength = 0;
+        videoLength = if (duration != null) (duration / 1000)  else  0
     }
 
     override fun onDestroy() {

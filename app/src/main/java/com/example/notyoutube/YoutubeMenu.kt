@@ -1,6 +1,7 @@
 package com.example.notyoutube
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -38,7 +39,7 @@ class YoutubeMenu {
                                 .build()
                             confirm.dismissWithAnimation()
                         }
-                        .setCancelButton("Cancel") { ramgopal ->
+                        .setCancelButton("Cancel") { ite ->
                             // Custom Toast
                             SnToast.Builder()
                                 .context(context)
@@ -52,7 +53,7 @@ class YoutubeMenu {
                                 .backgroundColor(R.color.fire_brick)// Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
 //                                .icon(R.drawable.money_icon)// Default: It is filled according to the toast type. If an assignment is made, the assigned value is used
                                 .build()
-                            ramgopal.dismissWithAnimation()
+                            ite.dismissWithAnimation()
                         }
                         .show()
                     true
@@ -63,7 +64,7 @@ class YoutubeMenu {
                     dialog.setTitle("Share to")
                     dialog.setMessage("Copy Link")
                     dialog.setIcon(R.drawable.share_icon)
-                    dialog.setNeutralButton("Cancel") { item, which ->
+                    dialog.setNeutralButton("Cancel") { _, _ ->
                         FancyToast.makeText(
                             context,
                             "Error Occurred",
@@ -101,7 +102,7 @@ class YoutubeMenu {
                 .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                 .invoke(popUp, true)
         } catch (e: Exception) {
-
+            Log.d("error", "customMenu: Exception occurred")
         } finally {
             pop.show()
         }

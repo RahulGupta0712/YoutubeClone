@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.notyoutube.databinding.ItemViewPlaylistsBinding
 
 class DataAdapterPlaylists(var context : Context, var datalist:ArrayList<DataModelPlaylists>) : RecyclerView.Adapter<DataAdapterPlaylists.MyViewHolder>() {
-    inner class MyViewHolder(var binding : ItemViewPlaylistsBinding) : RecyclerView.ViewHolder(binding.root){}
+    inner class MyViewHolder(var binding : ItemViewPlaylistsBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemViewPlaylistsBinding.inflate(LayoutInflater.from(context), parent, false)

@@ -3,31 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
     android:id="@+id/Edit"
-    android:title="Edit"
+    android:title="@string/edit"
     android:icon="@drawable/edit"
 
     />
     <item
         android:id="@+id/delete"
-        android:title="Delete"
+        android:title="@string/delete"
         android:icon="@drawable/ic_delete_"
 
         />
     <item
         android:id="@+id/share"
-        android:title="Share"
+        android:title="@string/share"
         android:icon="@drawable/share_icon"
 
         />
     <item
         android:id="@+id/saveToPlaylist"
-        android:title="Save to Playlist"
+        android:title="@string/save_to_playlist"
         android:icon="@drawable/save"
 
         />
     <item
         android:id="@+id/downloadVideo"
-        android:title="Download Video"
+        android:title="@string/download_video"
         android:icon="@drawable/download"
 
         />

@@ -10,27 +10,11 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.example.notyoutube.DataAdapterPlaylists
-import com.example.notyoutube.DataListPlaylist
-import com.example.notyoutube.Profile
-import com.example.notyoutube.R
-import com.example.notyoutube.dataAdapter
-import com.example.notyoutube.dataStore
 import com.example.notyoutube.databinding.FragmentProfilePlaylistsBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfilePlaylistsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfilePlaylistsFragment : Fragment() {
 
     private lateinit var binding: FragmentProfilePlaylistsBinding
@@ -43,7 +27,7 @@ class ProfilePlaylistsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfilePlaylistsBinding.inflate(inflater, container, false)
         return binding.root
@@ -53,9 +37,9 @@ class ProfilePlaylistsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Adapter = DataAdapterPlaylists(context as AppCompatActivity, DataListPlaylist().getData())
-        binding.rvPlaylists.layoutManager = LinearLayoutManager(context as AppCompatActivity)
-        binding.rvPlaylists.adapter = Adapter
+//        Adapter = DataAdapterPlaylists(context as AppCompatActivity, DataListPlaylist().getData())
+//        binding.rvPlaylists.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.rvPlaylists.adapter = Adapter
 
         val datalist = listOf("Date added", "Last video added")
         val Adapter = ArrayAdapter(context as AppCompatActivity, android.R.layout.simple_spinner_item, datalist)
@@ -80,8 +64,4 @@ class ProfilePlaylistsFragment : Fragment() {
     }
 
 
-
-    companion object {
-
-    }
 }

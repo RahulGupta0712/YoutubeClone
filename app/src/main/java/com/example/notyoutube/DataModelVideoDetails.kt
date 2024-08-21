@@ -22,8 +22,7 @@ data class DataModelVideoDetails(var key : String, var title : String, var descr
         parcel.readString()?:"",
         parcel.readString()?:"",
         parcel.readString()?:""
-    ) {
-    }
+    )
 
     constructor() : this("", "", "", "", "", 0, 0, "", "", "","", "")
 

@@ -1,7 +1,6 @@
 package com.example.notyoutube
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
@@ -11,27 +10,23 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.MediaController
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
-import com.example.notyoutube.databinding.ActivityVideoFullModeBinding
+
 import com.example.notyoutube.databinding.ActivityVideoFullModeProfileBinding
-import com.github.ybq.android.spinkit.sprite.Sprite
+
 import com.github.ybq.android.spinkit.style.Circle
-import com.github.ybq.android.spinkit.style.Wave
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.collection.LLRBNode
-import com.google.firebase.database.getValue
+
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 
@@ -48,7 +43,7 @@ class videoFullModeProfile : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
 
         databaseRef = FirebaseDatabase.getInstance().reference
@@ -58,7 +53,7 @@ class videoFullModeProfile : AppCompatActivity() {
         progressBar.indeterminateDrawable = Circle()
 
         val data: DataModelVideoDetails =
-            intent.getParcelableExtra<DataModelVideoDetails>("video")!!  // getting the position in dataList
+            intent.getParcelableExtra("video")!!  // getting the position in dataList
         val mc = MediaController(this@videoFullModeProfile)
         mc.setAnchorView(binding.videoView)
 
@@ -77,7 +72,7 @@ class videoFullModeProfile : AppCompatActivity() {
 
         Picasso.get().load(data.profileUrl).into(binding.profile00)
         binding.title200.text = data.title
-        binding.viewCount00.text = "0"
+        binding.viewCount00.text = getString(R.string.zero)
         val time = (System.currentTimeMillis() - data.timePosted) / 1000
         val minutes = time / 60
         val hour = minutes / 60
@@ -96,9 +91,9 @@ class videoFullModeProfile : AppCompatActivity() {
         binding.timeAgo00.text = show
         binding.channelName00.text = data.channelName
         Picasso.get().load(data.thumbnailUrl).into(binding.background00)
-        binding.subsCount00.text = "0"
-        binding.likeCount00.text = "0"
-        binding.commentCount00.text = "0"
+        binding.subsCount00.text = getString(R.string.zero)
+        binding.likeCount00.text = getString(R.string.zero)
+        binding.commentCount00.text = getString(R.string.zero)
         binding.description00.text = data.description
         if (data.description.isEmpty()) binding.description00.visibility = View.GONE
 
@@ -154,7 +149,7 @@ class videoFullModeProfile : AppCompatActivity() {
 
                     FancyToast.makeText(this, "Channel Unsubscribed", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
                     // display as unsubscribed
-                    binding.sub00.text = "Subscribe"
+                    binding.sub00.text = getString(R.string.subscribe)
                     binding.sub00.backgroundTintList = ContextCompat.getColorStateList(
                         this@videoFullModeProfile,
                         R.color.azure
@@ -166,7 +161,7 @@ class videoFullModeProfile : AppCompatActivity() {
                     // channelId is the key as well as value
                     FancyToast.makeText(this, "Channel Subscribed", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
                     // display as subscribed
-                    binding.sub00.text = "Subscribed"
+                    binding.sub00.text = getString(R.string.subscribed)
                     binding.sub00.backgroundTintList = ContextCompat.getColorStateList(
                         this@videoFullModeProfile,
                         R.color.red
@@ -186,7 +181,7 @@ class videoFullModeProfile : AppCompatActivity() {
                         id?.let {
                             if (id == channelId) {
                                 // channel is subscribed by user
-                                binding.sub00.text = "Subscribed"
+                                binding.sub00.text = getString(R.string.subscribed)
                                 binding.sub00.backgroundTintList = ContextCompat.getColorStateList(
                                     this@videoFullModeProfile,
                                     R.color.red

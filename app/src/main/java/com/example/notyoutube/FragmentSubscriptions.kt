@@ -1,27 +1,14 @@
 package com.example.notyoutube
 
-import android.content.Context
-import android.content.res.Resources
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.Interpolator
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.example.notyoutube.ProfileFragments.dataListCommentShorts
 import com.example.notyoutube.databinding.FragmentSubscriptionsBinding
 import com.github.ybq.android.spinkit.style.ChasingDots
 import com.google.firebase.auth.FirebaseAuth
@@ -30,7 +17,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlin.math.max
 
 
 class FragmentSubscriptions : Fragment() {
@@ -46,7 +32,7 @@ class FragmentSubscriptions : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentSubscriptionsBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
@@ -129,8 +115,5 @@ class FragmentSubscriptions : Fragment() {
     }
 
 
-    companion object {
-
-    }
 
 }

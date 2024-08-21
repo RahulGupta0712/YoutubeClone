@@ -1,33 +1,29 @@
 package com.example.notyoutube
 
-import android.content.Context
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
+
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
+
 import com.example.notyoutube.databinding.FragmentShortsBinding
 import com.github.ybq.android.spinkit.style.WanderingCubes
-import com.github.ybq.android.spinkit.style.Wave
+
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObject
-import com.shashank.sony.fancytoastlib.FancyToast
-import render.animations.Fade
+
 import render.animations.Render
 import render.animations.Zoom
 
-class FragmentShorts() : Fragment() {
+class FragmentShorts : Fragment() {
     private lateinit var binding :FragmentShortsBinding
     private lateinit var adapter: shortsAdapter
     private lateinit var datalist:ArrayList<DataModelVideoDetails>
@@ -39,7 +35,7 @@ class FragmentShorts() : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentShortsBinding.inflate(inflater, container, false)
         val render = Render(context as AppCompatActivity)
@@ -57,7 +53,7 @@ class FragmentShorts() : Fragment() {
 
         binding.progressBar5.indeterminateDrawable = WanderingCubes()
 
-        var activity = context as AppCompatActivity
+        val activity = context as AppCompatActivity
         datalist = ArrayList()
         adapter = shortsAdapter(datalist, activity)
         binding.rvShorts.layoutManager = LinearLayoutManager(activity)
@@ -80,10 +76,7 @@ class FragmentShorts() : Fragment() {
             adapter.notifyDataSetChanged()
         }
     }
-
-    companion object {
-
-    }
+    
 
 
 }

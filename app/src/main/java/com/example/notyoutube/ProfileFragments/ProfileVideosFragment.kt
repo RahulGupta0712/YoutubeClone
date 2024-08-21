@@ -1,7 +1,6 @@
 package com.example.notyoutube.ProfileFragments
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +10,12 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.get
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.emreesen.sntoast.SnToast
 import com.emreesen.sntoast.Type
 import com.example.notyoutube.DataModelVideoDetails
 import com.example.notyoutube.MyVideoAdapter
-import com.example.notyoutube.Profile
 import com.example.notyoutube.R
-import com.example.notyoutube.dataAdapter
-import com.example.notyoutube.dataStore
 import com.example.notyoutube.databinding.FragmentVideoHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -47,7 +39,7 @@ class ProfileVideosFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentVideoHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -62,7 +54,7 @@ class ProfileVideosFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference
-        videoList = ArrayList<DataModelVideoDetails>()
+        videoList = ArrayList()
         adapterObject = MyVideoAdapter(videoList, context as AppCompatActivity)
         binding.videos.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         binding.videos.adapter = adapterObject
@@ -129,7 +121,4 @@ class ProfileVideosFragment : Fragment() {
 
     }
 
-    companion object {
-
-    }
 }

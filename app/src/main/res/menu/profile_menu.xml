@@ -7,23 +7,23 @@
         android:onClick="viewTheChannel"
         android:iconTint="@color/white"
         android:iconTintMode="add"
-        android:title="View Your Channel"
+        android:title="@string/view_your_channel"
         />
     <item
         android:id="@+id/logout"
         android:onClick="logout"
         android:iconTint="@color/white"
         android:icon="@drawable/logout_button"
-        android:title="Log Out" />
+        android:title="@string/log_out" />
     <item
         android:id="@+id/settings"
         android:iconTint="@color/white"
         android:icon="@drawable/settings_button"
-        android:title="Settings" />
+        android:title="@string/settings" />
     <item
         android:id="@+id/help"
         android:iconTint="@color/white"
         android:icon="@drawable/help_button"
-        android:title="Help" />
+        android:title="@string/help" />
 
 </menu>

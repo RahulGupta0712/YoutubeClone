@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Channel name"
+                    android:text="@string/channel_name"
                     android:textColor="@color/ghost_white"
                     android:textSize="30sp"
                     android:textStyle="bold"
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginTop="5dp"
-                    android:text="34 subscribers . 20 videos"
+                    android:text="@string/_abc"
                     android:textColor="@color/dark_gray"
                     app:layout_constraintStart_toStartOf="@+id/textView33"
                     app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="More About This Channel"
+                    android:text="@string/more_about_this_channel"
                     android:textColor="@color/dark_gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView5" />
@@ -165,7 +165,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"
                     android:backgroundTint="@color/dim_gray"
-                    android:text="Manage Videos"
+                    android:text="@string/manage_videos"
                     android:textColor="@color/azure"
                     app:layout_constraintEnd_toStartOf="@+id/cardView6"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -246,7 +246,7 @@
                     android:id="@+id/textView33"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\@"
+                    android:text="@string/prefix"
                     android:textColor="@color/light_grey"
                     app:layout_constraintBottom_toBottomOf="@+id/username"
                     app:layout_constraintStart_toStartOf="@+id/channelName"
@@ -266,7 +266,7 @@
             <FrameLayout
                 android:id="@+id/frame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

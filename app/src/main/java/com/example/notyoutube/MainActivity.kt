@@ -12,23 +12,13 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
-import android.view.KeyEvent
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.notyoutube.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -36,8 +26,8 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
 class MainActivity : AppCompatActivity() {
-    val profile_menu = ProfileMenu()
-    val cast_menu = CastActivity()
+    private val profile_menu = ProfileMenu()
+    private val cast_menu = CastActivity()
 
     private val requestCodeCamera = 101
 
@@ -60,10 +50,10 @@ class MainActivity : AppCompatActivity() {
         string.setSpan(ForegroundColorSpan(Color.parseColor("#6495ED")), 5, 6, 0)   // U is blue
         binding.watchU.text = string
 
-        var fragment = FragmentHome()
-        var trans = supportFragmentManager.beginTransaction()
-        trans.replace(R.id.mainFrame, fragment)
-        trans.commit()
+        val fragment1 = FragmentHome()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.mainFrame, fragment1)
+        transaction.commit()
 
         binding.bottomBar.setActiveItem(0)  // starting item index
         binding.bottomBar.setBadge(3)
@@ -71,16 +61,16 @@ class MainActivity : AppCompatActivity() {
         binding.bottomBar.onItemSelected = { item ->
             when (item) {
                 0 -> {
-                    var fragment = FragmentHome()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentHome()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack(null)
                     trans.commit()
                 }
 
                 1 -> {
-                    var fragment = FragmentShorts()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentShorts()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack(null)
                     trans.commit()
@@ -93,16 +83,16 @@ class MainActivity : AppCompatActivity() {
 
                 3 -> {
                     binding.bottomBar.removeBadge(3)
-                    var fragment = FragmentSubscriptions()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentSubscriptions()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack("FragmentSubscriptions")
                     trans.commit()
                 }
 
                 4 -> {
-                    var fragment = FragmentLibrary()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentLibrary()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack(null)
                     trans.commit()
@@ -111,18 +101,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomBar.onItemReselected = { item ->
+            // Refresh
             when (item) {
                 0 -> {
-                    var fragment = FragmentHome()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentHome()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack(null)
                     trans.commit()
                 }
 
                 1 -> {
-                    var fragment = FragmentShorts()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentShorts()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack(null)
                     trans.commit()
@@ -134,19 +125,15 @@ class MainActivity : AppCompatActivity() {
 
                 3 -> {
                     binding.bottomBar.removeBadge(3)
-                    var fragment = FragmentSubscriptions()
-                    var trans = supportFragmentManager.beginTransaction()
+                    val fragment = FragmentSubscriptions()
+                    val trans = supportFragmentManager.beginTransaction()
                     trans.replace(R.id.mainFrame, fragment)
                     trans.addToBackStack("FragmentSubscriptions")
                     trans.commit()
                 }
 
                 4 -> {
-                    var fragment = FragmentLibrary()
-                    var trans = supportFragmentManager.beginTransaction()
-                    trans.replace(R.id.mainFrame, fragment)
-                    trans.addToBackStack(null)
-                    trans.commit()
+
                 }
             }
         }
@@ -159,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         binding.castButton.setOnClickListener {
             cast_menu.castActivity(this, it)
         }
+
         binding.recordButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this@MainActivity,
@@ -198,68 +186,38 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
         binding.searchButton.setOnClickListener {
             Handler(Looper.getMainLooper()).postDelayed({
-                startActivity(Intent(this, videoRecorder::class.java))
+                startActivity(Intent(this, Search::class.java))
             }, 0)
         }
     }
 
     fun viewTheChannel(item: MenuItem) {
-        SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-            .setTitleText("View Your Channel")
-            .setContentText("This will re-direct you to outside NotYoutube. Do You want to continue ?")
-            .setConfirmButton("YES") {
-                FancyToast.makeText(
-                    this,
-                    "Viewing Your Channel",
-                    FancyToast.LENGTH_LONG,
-                    FancyToast.INFO,
-                    false
-                ).show()
-                startActivity(Intent(this, ProfileLogin::class.java))
-                it.dismiss()
-            }
-            .setCancelButton("NO") {
-                FancyToast.makeText(
-                    this,
-                    "Getting Back",
-                    FancyToast.LENGTH_LONG,
-                    FancyToast.CONFUSING,
-                    false
-                ).show()
-                it.dismissWithAnimation()
-            }
-            .show()
-
+        startActivity(Intent(this, ProfileLogin::class.java))
     }
 
     fun logout(item: MenuItem) {
+        val user = auth.currentUser
+        val userInfo = if(user == null) "" else user.email
+
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle("Logout your Channel")
-        dialog.setMessage("Are You Sure ${auth.currentUser?.email} ?")
+        dialog.setMessage("Are You Sure $userInfo")
         dialog.setIcon(R.drawable.logout_button)
-        dialog.setPositiveButton("YES") { it,
-                                          which ->
+        dialog.setPositiveButton("YES") { it,_ ->
             auth.signOut()    // sign out the channel from app
             FancyToast.makeText(
                 this,
                 "Logout Successful",
-                FancyToast.LENGTH_LONG,
+                FancyToast.LENGTH_SHORT,
                 FancyToast.SUCCESS,
                 false
             ).show()
             it.dismiss()
         }
-        dialog.setNegativeButton("NO") { dialogInterface,
-                                         which ->
-            FancyToast.makeText(
-                this,
-                "Logout Unsuccessful",
-                FancyToast.LENGTH_LONG,
-                FancyToast.ERROR,
-                false
-            ).show()
+        dialog.setNegativeButton("NO") { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
         val alert_dialog = dialog.create()

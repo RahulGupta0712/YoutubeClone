@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.notyoutube.databinding.EditVideoShortsBinding
 import com.example.notyoutube.databinding.ItemViewProfileHomeShortsBinding
-import com.example.notyoutube.databinding.ItemViewShortsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -23,7 +21,7 @@ class DataAdapterShortsProfile(
     var datalist: ArrayList<DataModelVideoDetails>
 ) : RecyclerView.Adapter<DataAdapterShortsProfile.MyViewHolder>() {
     inner class MyViewHolder(var binding: ItemViewProfileHomeShortsBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
@@ -38,7 +36,7 @@ class DataAdapterShortsProfile(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Picasso.get().load(datalist[position].thumbnailUrl).into(holder.binding.thumbnailShortsHomeProfile)
-        holder.binding.profileHomeViewCount.text = "0"
+        holder.binding.profileHomeViewCount.text = context.getString(R.string.zero)
         holder.binding.root.setOnClickListener {
             val intent = Intent(context as AppCompatActivity, ItemViewShorts::class.java)
             intent.putExtra("data", datalist[position])
@@ -82,15 +80,15 @@ class DataAdapterShortsProfile(
                             .setTitleText("Edit Shorts")
                             .setContentText("You can only edit your title and description, if you want to change thumbnail or shorts, then delete the post and re-upload")
                             .setCustomView(edit.root)
-                            .setConfirmButton("Save"){
+                            .setConfirmButton("Save"){ dia ->
                                 val new_title = edit.newTitle.text.toString()
                                 val new_description = edit.newDescription.text.toString()
                                 updateDatabase(datalist[position].key, new_title, new_description)
                                 FancyToast.makeText(context, "Shorts Updated", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
-                                it.dismiss()
+                                dia.dismiss()
                             }
-                            .setCancelButton("Cancel"){
-                                it.dismiss()
+                            .setCancelButton("Cancel"){dia ->
+                                dia.dismiss()
                             }
                             .show()
 
@@ -105,7 +103,7 @@ class DataAdapterShortsProfile(
                     R.id.deleteShort -> {
                         SweetAlertDialog(context as AppCompatActivity, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("Delete Shorts")
-                            .setConfirmButton("YES"){
+                            .setConfirmButton("YES"){ dia ->
                                 val auth = FirebaseAuth.getInstance()
                                 val databaseRef = FirebaseDatabase.getInstance().reference
                                 val user = auth.currentUser
@@ -113,10 +111,10 @@ class DataAdapterShortsProfile(
                                     databaseRef.child("users").child(user.uid).child("Shorts").child(datalist[position].key).removeValue()
                                 }
                                 FancyToast.makeText(context, "Shorts Deleted", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
-                                it.dismiss()
+                                dia.dismiss()
                             }
-                            .setCancelButton("NO"){
-                                it.dismiss()
+                            .setCancelButton("NO"){dia ->
+                                dia.dismiss()
                             }
                             .show()
                         true

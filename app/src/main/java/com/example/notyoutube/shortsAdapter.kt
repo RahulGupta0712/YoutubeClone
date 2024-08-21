@@ -3,23 +3,17 @@ package com.example.notyoutube
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnPreparedListener
-import android.media.MediaPlayer.OnSeekCompleteListener
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
+
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.MediaController
-import android.widget.PopupMenu
+
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
+
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notyoutube.databinding.ItemViewShortsBinding
@@ -32,16 +26,15 @@ import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import render.animations.Bounce
 import render.animations.Render
-import render.animations.Slide
-import render.animations.Zoom
+
 
 class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context: Context) :
     RecyclerView.Adapter<shortsAdapter.MyViewHolder>() {
     inner class MyViewHolder(var binding: ItemViewShortsBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var binding = ItemViewShortsBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemViewShortsBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -52,8 +45,8 @@ class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context:
     private var currentPos = 0
     override fun onBindViewHolder(holder: MyViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
-        Picasso.get().load(dataList.get(position).thumbnailUrl).into(holder.binding.shortsBackgroundVideo)
-        Picasso.get().load(dataList.get(position).profileUrl).into(holder.binding.profileShorts)
+        Picasso.get().load(dataList[position].thumbnailUrl).into(holder.binding.shortsBackgroundVideo)
+        Picasso.get().load(dataList[position].profileUrl).into(holder.binding.profileShorts)
 
         // show video
         holder.binding.shortsView.setVideoURI(Uri.parse(dataList[position].videoUrl))
@@ -111,11 +104,11 @@ class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context:
         }
 
         holder.binding.songIconShorts.setImageResource(R.drawable.music_button)     // need to make it based on user in future
-        holder.binding.ChannelNameShorts.text = dataList.get(position).channelName
-        holder.binding.titleShorts.text = dataList.get(position).title
-        holder.binding.songNameShorts.text = "Original Audio"   // need to make it based on user in future
-        holder.binding.likeCountShorts.text = "0"
-        holder.binding.commentCountShorts.text = "0"
+        holder.binding.ChannelNameShorts.text = dataList[position].channelName
+        holder.binding.titleShorts.text = dataList[position].title
+        holder.binding.songNameShorts.text = context.getString(R.string.original_audio)   // need to make it based on user in future
+        holder.binding.likeCountShorts.text = context.getString(R.string.zero)
+        holder.binding.commentCountShorts.text = context.getString(R.string.zero)
 
         holder.binding.likeButtonShorts.setOnClickListener {
             FancyToast.makeText(
@@ -156,7 +149,6 @@ class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context:
         holder.binding.shareButtonShorts.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "video/*"
-            val packageName = "com.example.notyoutube"
             intent.putExtra(Intent.EXTRA_STREAM,Uri.parse(dataList[position].videoUrl))
             context.startActivity(Intent.createChooser(intent, "Share the Video"))
         }

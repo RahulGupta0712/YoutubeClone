@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item
     android:id="@+id/changeProfilePicture"
-    android:title="Change Profile Picture"
+    android:title="@string/change_profile_picture"
     />
 </menu>

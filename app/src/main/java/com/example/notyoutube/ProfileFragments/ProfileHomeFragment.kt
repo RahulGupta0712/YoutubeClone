@@ -5,21 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.notyoutube.DataAdapterPlaylists
-import com.example.notyoutube.DataAdapterShortsProfile
-import com.example.notyoutube.DataListPlaylist
-import com.example.notyoutube.DataListShortsFragment
-import com.example.notyoutube.MyVideoAdapter
-import com.example.notyoutube.Profile
-import com.example.notyoutube.R
-import com.example.notyoutube.dataAdapter
-import com.example.notyoutube.dataStore
-import com.example.notyoutube.databinding.FragmentProfileCommunityBinding
 import com.example.notyoutube.databinding.FragmentProfileHomeBinding
 
 class ProfileHomeFragment : Fragment() {
@@ -33,7 +18,7 @@ class ProfileHomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfileHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,12 +49,10 @@ class ProfileHomeFragment : Fragment() {
 
         // playlists
 
-        val playlistAdapter = DataAdapterPlaylists(context as AppCompatActivity, DataListPlaylist().getData())
-        binding.playlistsHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
-        binding.playlistsHomeProfile.adapter = playlistAdapter
+//        val playlistAdapter = DataAdapterPlaylists(context as AppCompatActivity, DataListPlaylist().getData())
+//        binding.playlistsHomeProfile.layoutManager = LinearLayoutManager(context as AppCompatActivity)
+//        binding.playlistsHomeProfile.adapter = playlistAdapter
 
     }
-    companion object {
 
-    }
 }

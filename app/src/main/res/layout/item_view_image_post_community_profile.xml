@@ -30,7 +30,7 @@
             android:layout_marginEnd="20dp"
             android:background="@color/forest_green"
             android:padding="5dp"
-            android:text="y"
+            android:text="@string/y"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@+id/imagePost"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:background="@color/forest_green"
             android:padding="5dp"
-            android:text=" / "
+            android:text="@string/slash"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/totalImages"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:background="@color/forest_green"
             android:padding="5dp"
-            android:text="x"
+            android:text="@string/x"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/textView40"
             app:layout_constraintTop_toTopOf="parent" />

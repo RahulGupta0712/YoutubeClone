@@ -1,6 +1,7 @@
 package com.example.notyoutube
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -50,14 +51,14 @@ class menuShorts {
         }
 
         try{
-            val fieldpopUp = PopupMenu::class.java.getDeclaredField("popUp")
-            fieldpopUp.isAccessible = true
-            val popUp = fieldpopUp.get(pop)
+            val fieldPopUp = PopupMenu::class.java.getDeclaredField("popUp")
+            fieldPopUp.isAccessible = true
+            val popUp = fieldPopUp.get(pop)
             popUp.javaClass
                 .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                 .invoke(popUp, true)
         }catch (e : Exception){
-
+            Log.d("error", "showMenu: Exception occurred")
         }
         finally {
             pop.show()

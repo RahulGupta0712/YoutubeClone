@@ -1,32 +1,27 @@
 package com.example.notyoutube
 
-import android.content.Context
+
 import android.content.Intent
 import android.net.Uri
-import android.os.AsyncTask
+
 import android.os.Bundle
-import android.util.Log
+
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.NumberPicker.OnValueChangeListener
+
 import android.widget.PopupMenu
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import cn.pedant.SweetAlert.SweetAlertDialog
+
 import com.example.notyoutube.ProfileFragments.ProfileCommunityFragment
 import com.example.notyoutube.ProfileFragments.ProfileHomeFragment
 import com.example.notyoutube.ProfileFragments.ProfileLiveFragment
@@ -35,9 +30,9 @@ import com.example.notyoutube.ProfileFragments.ProfileShortsFragment
 import com.example.notyoutube.ProfileFragments.ProfileVideosFragment
 import com.example.notyoutube.databinding.ActivityProfileBinding
 import com.example.notyoutube.databinding.EditChannelPopupBinding
-import com.example.notyoutube.databinding.ProfileVideosBinding
+
 import com.github.ybq.android.spinkit.style.DoubleBounce
-import com.github.ybq.android.spinkit.style.Wave
+
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -50,7 +45,6 @@ import com.google.firebase.storage.storage
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import java.util.UUID
-import kotlin.properties.Delegates
 
 class Profile : AppCompatActivity() {
     private val binding: ActivityProfileBinding by lazy {
@@ -161,23 +155,24 @@ class Profile : AppCompatActivity() {
             val dialog = AlertDialog.Builder(this)
                 .setView(edit_channel.root)
                 .setTitle("Edit Channel Details")
-                .setPositiveButton("SAVE") { it, _ ->
+                .setPositiveButton("SAVE") { ite, _ ->
                     val newUsername = edit_channel.newUsernameChannel.text.toString()
                     val newChannelName = edit_channel.newChannelName.text.toString()
                     updateDatabase(newUsername, newChannelName)
-                    it.dismiss()
+                    ite.dismiss()
                 }
-                .setNegativeButton("Cancel") { it, _ ->
-                    it.dismiss()
+                .setNegativeButton("Cancel") { ite, _ ->
+                    ite.dismiss()
                 }
-                .show()
+
+            dialog.show()
         }
 
         adapter2 = dataAdapter(dataStore().getData(), this)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerView.adapter = adapter2
-        binding.recyclerView.setItemAnimator(null);
+        binding.recyclerView.setItemAnimator(null)
 
         fragment = ProfileHomeFragment()    // default
         val transaction = supportFragmentManager.beginTransaction()

@@ -20,7 +20,7 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
     inner class MyViewHolder(var binding:ProfileVideosBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        var binding = ProfileVideosBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ProfileVideosBinding.inflate(LayoutInflater.from(context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -30,8 +30,8 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Picasso.get().load(dataList[position].thumbnailUrl).into(holder.binding.thumbnail1)
-        holder.binding.title1.text = dataList.get(position).title
-        holder.binding.viewCount1.text = "0"
+        holder.binding.title1.text = dataList[position].title
+        holder.binding.viewCount1.text = context.getString(R.string.zero)
 
         holder.binding.showVisibility.setImageResource(if(dataList[position].visibility == "Public") R.drawable.intenet_network else R.drawable.password)
 
@@ -58,9 +58,9 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
         val min = sec / 60
         sec %= 60
 
-        var h = adjust(hr)
-        var m = adjust(min)
-        var s = adjust(sec)
+        val h = adjust(hr)
+        val m = adjust(min)
+        val s = adjust(sec)
 
         holder.binding.time1.text =
             if(h == "00"){
@@ -70,17 +70,17 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
                 "$h:$m:$s"
             }
 
-        holder.binding.likeCount.text = "0"
-        holder.binding.commentCount.text = "0"
-        holder.binding.stream.text = ""
+        holder.binding.likeCount.text = context.getString(R.string.zero)
+        holder.binding.commentCount.text = context.getString(R.string.zero)
+        holder.binding.stream.text = context.getString(R.string.empty)
 
         holder.binding.root.setOnClickListener{
-            var intent = Intent(context, videoFullModeProfile::class.java)
+            val intent = Intent(context, videoFullModeProfile::class.java)
             intent.putExtra("video", dataList[position])
             context.startActivity(intent)
         }
         holder.binding.title1.setOnClickListener{
-            Toast.makeText(context,dataList.get(position).title, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,dataList[position].title, Toast.LENGTH_SHORT).show()
         }
 
         holder.binding.menuButtonVideosProfile.setOnClickListener{
@@ -99,15 +99,15 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
                             .setTitleText("Edit Video")
                             .setContentText("You can only edit your title and description, if you want to change thumbnail or shorts, then delete the post and re-upload")
                             .setCustomView(edit.root)
-                            .setConfirmButton("Save"){
+                            .setConfirmButton("Save"){dia ->
                                 val new_title = edit.newTitle.text.toString()
                                 val new_description = edit.newDescription.text.toString()
                                 updateDatabase(dataList[position].key, new_title, new_description)
                                 FancyToast.makeText(context, "Video Updated", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
-                                it.dismiss()
+                                dia.dismiss()
                             }
-                            .setCancelButton("Cancel"){
-                                it.dismiss()
+                            .setCancelButton("Cancel"){dia ->
+                                dia.dismiss()
                             }
                             .show()
 
@@ -116,7 +116,7 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
                     R.id.delete -> {
                         SweetAlertDialog(context as AppCompatActivity, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("Delete Video")
-                            .setConfirmButton("YES"){
+                            .setConfirmButton("YES"){dia ->
                                 val auth = FirebaseAuth.getInstance()
                                 val databaseRef = FirebaseDatabase.getInstance().reference
                                 val user = auth.currentUser
@@ -124,10 +124,10 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
                                     databaseRef.child("users").child(user.uid).child("Videos").child(dataList[position].key).removeValue()
                                 }
                                 FancyToast.makeText(context, "Video Deleted", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
-                                it.dismiss()
+                                dia.dismiss()
                             }
-                            .setCancelButton("NO"){
-                                it.dismiss()
+                            .setCancelButton("NO"){dia ->
+                                dia.dismiss()
                             }
                             .show()
                         true
@@ -170,17 +170,10 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
     }
 
     private fun adjust(time : Long):String{
-        if(time == 0L){
-            // 0 digit
-            return "00"
-        }
-        else if(time > 0L && time < 10L){
-            // 1 digit
-            return "0$time"
-        }
-        else{
-            // > 1 digit
-            return "$time"
+        return when(time){
+            0L -> "00"
+            in 1..9 -> "0$time"
+            else -> "$time"
         }
     }
 

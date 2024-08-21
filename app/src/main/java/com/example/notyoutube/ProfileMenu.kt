@@ -1,16 +1,10 @@
 package com.example.notyoutube
 
 import android.content.Context
-import android.content.Intent
-import android.os.Handler
-import android.os.Looper
-import android.view.MenuItem
+import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat.startActivity
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.shashank.sony.fancytoastlib.FancyToast
 
 class ProfileMenu {
@@ -49,7 +43,7 @@ class ProfileMenu {
                 .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                 .invoke(popUp, true)
         } catch (e: Exception) {
-
+            Log.d("error", "profileMenu: Exception occurred")
         } finally {
             pop.setForceShowIcon(true)
             pop.show()

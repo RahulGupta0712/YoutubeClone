@@ -4,12 +4,8 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.MediaController
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.example.notyoutube.databinding.ItemViewShortsBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -18,7 +14,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 
@@ -47,14 +42,14 @@ class ItemViewShorts : AppCompatActivity() {
             binding.ChannelNameShorts.text = data.channelName
             Picasso.get().load(data.thumbnailUrl).into(binding.shortsBackgroundVideo)
 
-            binding.likeCountShorts.text = "0"
-            binding.commentCountShorts.text = "0"
+            binding.likeCountShorts.text = getString(R.string.zero)
+            binding.commentCountShorts.text = getString(R.string.zero)
 
             // show shorts
             binding.shortsView.setVideoURI(Uri.parse(data.videoUrl))
             binding.shortsView.start()
 
-            binding.songNameShorts.text = "Original Audio"
+            binding.songNameShorts.text = getString(R.string.original_audio)
 
             binding.shortsView.setOnPreparedListener {
                 binding.shortsBackgroundVideo.isVisible = false

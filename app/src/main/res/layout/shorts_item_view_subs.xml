@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/shorts1" />
+        app:srcCompat="@drawable/reel" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView9"
@@ -44,7 +44,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:padding="2dp"
-        android:text="Title"
+        android:text="@string/title"
         android:textColor="@color/floral_white"
         app:layout_constraintBottom_toBottomOf="@+id/cardView9"
         app:layout_constraintEnd_toEndOf="@+id/thumbnailShortsSubs"
