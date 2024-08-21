@@ -41,14 +41,12 @@
         <activity
             android:name=".videoFullModeProfile"
             android:exported="false" />
-        <activity
-            android:name=".videoFullMode"
-            android:exported="false" />
+
         <activity
             android:name=".Profile"
             android:exported="false" />
         <activity
-            android:name=".videoRecorder"
+            android:name=".Search"
             android:exported="false" />
         <activity
             android:name=".SplashScreen"

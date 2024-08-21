@@ -66,8 +66,6 @@ class FragmentShorts : Fragment() {
             datalist.clear()
             for (doc in fullShorts){
                 val shorts = doc.toObject(DataModelVideoDetails::class.java)
-                shorts.videoId = doc.id
-                Firebase.firestore.collection("Shorts").document(shorts.videoId).set(shorts)
                 datalist.add(shorts)
             }
 

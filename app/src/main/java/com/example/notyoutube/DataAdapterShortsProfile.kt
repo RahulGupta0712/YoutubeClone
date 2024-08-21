@@ -2,6 +2,7 @@ package com.example.notyoutube
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.notyoutube.databinding.EditVideoShortsBinding
 import com.example.notyoutube.databinding.ItemViewProfileHomeShortsBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.firestore
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 
@@ -41,26 +44,6 @@ class DataAdapterShortsProfile(
             val intent = Intent(context as AppCompatActivity, ItemViewShorts::class.java)
             intent.putExtra("data", datalist[position])
             (context as AppCompatActivity).startActivity(intent)
-
-//            val trans = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-
-//            var dataList = shortsDataList().getData()
-//            val n = dataList.size
-//
-//            // finding the shorts which is clicked, in datalist and then we start the shorts fragment and start from this shorts only, also we are changing the channel Name and profile picture of channel
-//            for(i in 0..<n){
-//                dataList[i].channel_name = "The Memes"
-//                dataList[i].profileShorts = R.drawable.emoji
-//                if(dataList[i].shorts_backgroundVideo == datalist[position].thumbnail){
-//                    val temp = dataList[0]
-//                    dataList[0] = dataList[i]
-//                    dataList[i] = temp
-//                }
-//            }
-
-//            trans.add(R.id.frameProfile, FragmentShorts(dataList))
-//            trans.addToBackStack(null)
-//            trans.commit()
         }
 
         // inflate menu
@@ -109,8 +92,31 @@ class DataAdapterShortsProfile(
                                 val user = auth.currentUser
                                 user?.let {
                                     databaseRef.child("users").child(user.uid).child("Shorts").child(datalist[position].key).removeValue()
+                                    val id = datalist[position].videoId
+                                    Log.d("new", "id : $id")
+                                    if(id.isNotEmpty()) {
+                                        val db = Firebase.firestore
+                                        db.collection("Shorts").document(id).delete()
+                                            .addOnSuccessListener {
+                                                FancyToast.makeText(
+                                                    context,
+                                                    "Shorts Deleted",
+                                                    FancyToast.LENGTH_SHORT,
+                                                    FancyToast.SUCCESS,
+                                                    false
+                                                ).show()
+                                            }
+                                            .addOnFailureListener {
+                                                FancyToast.makeText(
+                                                    context,
+                                                    "Shorts Deletion Failed",
+                                                    FancyToast.LENGTH_SHORT,
+                                                    FancyToast.ERROR,
+                                                    false
+                                                ).show()
+                                            }
+                                    }
                                 }
-                                FancyToast.makeText(context, "Shorts Deleted", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
                                 dia.dismiss()
                             }
                             .setCancelButton("NO"){dia ->

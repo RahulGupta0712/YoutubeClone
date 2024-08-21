@@ -2,6 +2,7 @@ package com.example.notyoutube
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.notyoutube.databinding.EditVideoShortsBinding
 import com.example.notyoutube.databinding.ProfileVideosBinding
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.firestore
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 
-class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var context : Context) : RecyclerView.Adapter<MyVideoAdapter.MyViewHolder>() {
+class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, var context : Context) : RecyclerView.Adapter<MyVideoAdapter.MyViewHolder>() {
     inner class MyViewHolder(var binding:ProfileVideosBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -122,8 +125,32 @@ class MyVideoAdapter(var dataList : ArrayList<DataModelVideoDetails>, var contex
                                 val user = auth.currentUser
                                 user?.let {
                                     databaseRef.child("users").child(user.uid).child("Videos").child(dataList[position].key).removeValue()
+                                    val id = dataList[position].videoId
+                                    Log.d("new", "id : ${dataList[position].videoId}")
+                                    if(id.isNotEmpty()) {
+                                        val db = Firebase.firestore
+                                        db.collection("Videos").document(id).delete()
+                                            .addOnSuccessListener {
+                                                FancyToast.makeText(
+                                                    context,
+                                                    "Video Deleted",
+                                                    FancyToast.LENGTH_SHORT,
+                                                    FancyToast.SUCCESS,
+                                                    false
+                                                ).show()
+                                            }
+                                            .addOnFailureListener {
+                                                FancyToast.makeText(
+                                                    context,
+                                                    "Video Deletion Failed",
+                                                    FancyToast.LENGTH_SHORT,
+                                                    FancyToast.ERROR,
+                                                    false
+                                                ).show()
+                                            }
+                                    }
                                 }
-                                FancyToast.makeText(context, "Video Deleted", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
+
                                 dia.dismiss()
                             }
                             .setCancelButton("NO"){dia ->

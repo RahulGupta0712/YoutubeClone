@@ -48,8 +48,6 @@ class FragmentHome : Fragment() {
 
             for(doc in data){
                 val video = doc.toObject(DataModelVideoDetails::class.java)
-                video.videoId = doc.id
-                Firebase.firestore.collection("Videos").document(video.videoId).set(video)
                 datalist.add(video)
             }
 

@@ -105,16 +105,6 @@ class VideoUploadActivity : AppCompatActivity() {
 
         binding.postButton.setOnClickListener {
 
-//            // check condition
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
-//                // When permission is granted
-////                selectVideo();
-//            }
-//            else {
-//                // When permission is not granted -> request permission
-//                ActivityCompat.requestPermissions(this, arrayOf( Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),1);
-//            }
-
             val title = binding.titleEditTextVideo.text.toString()
             val desc = binding.DescriptionEditText.text.toString()
 
@@ -176,10 +166,9 @@ class VideoUploadActivity : AppCompatActivity() {
 
                                                         // add in main feed --- firestore database
                                                         if (visibility == "Public") {
-                                                            firestore.collection(type)
-                                                                .add(video)  // depending on type - video or shorts
+                                                            video.videoId = key
+                                                            firestore.collection(type).document(key).set(video)  // depending on type - video or shorts
                                                         }
-
 
                                                         ref.child(key).setValue(video)
                                                             .addOnSuccessListener {
