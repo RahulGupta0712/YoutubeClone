@@ -14,6 +14,7 @@ import com.example.notyoutube.databinding.EditVideoShortsBinding
 import com.example.notyoutube.databinding.ItemViewProfileHomeShortsBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.firestore
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -38,39 +39,64 @@ class DataAdapterShortsProfile(
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Picasso.get().load(datalist[position].thumbnailUrl).into(holder.binding.thumbnailShortsHomeProfile)
+        Picasso.get().load(datalist[position].thumbnailUrl)
+            .into(holder.binding.thumbnailShortsHomeProfile)
         holder.binding.profileHomeViewCount.text = context.getString(R.string.zero)
         holder.binding.root.setOnClickListener {
             val intent = Intent(context as AppCompatActivity, ItemViewShorts::class.java)
-            intent.putExtra("data", datalist[position])
+            intent.putExtra("videoId", datalist[position].videoId)
+            intent.putExtra("channelId", datalist[position].channelId)
             (context as AppCompatActivity).startActivity(intent)
         }
 
         // inflate menu
         holder.binding.menuButtonShortsProfile.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+
+            // menu will only be shown to the shorts owner as it contains edit and delete features
             val popup = PopupMenu(context, it)
             popup.menuInflater.inflate(R.menu.menu_shorts_profile, popup.menu)
             popup.show()
 
+            if (user == null || user.uid != datalist[position].channelId) {
+                // either user is not signed-in or this user is not the owner of shorts, so don't give edit and delete access
+                popup.menu.findItem(R.id.EditShorts).isVisible = false
+                popup.menu.findItem(R.id.deleteShort).isVisible = false
+            }
+
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.EditShorts -> {
-                        val edit = EditVideoShortsBinding.inflate(LayoutInflater.from(context as AppCompatActivity))
+                        val edit =
+                            EditVideoShortsBinding.inflate(LayoutInflater.from(context as AppCompatActivity))
                         edit.newTitle.setText(datalist[position].title)
                         edit.newDescription.setText(datalist[position].description)
 
-                        SweetAlertDialog(context as AppCompatActivity, SweetAlertDialog.NORMAL_TYPE)
+                        SweetAlertDialog(
+                            context as AppCompatActivity,
+                            SweetAlertDialog.NORMAL_TYPE
+                        )
                             .setTitleText("Edit Shorts")
                             .setContentText("You can only edit your title and description, if you want to change thumbnail or shorts, then delete the post and re-upload")
                             .setCustomView(edit.root)
-                            .setConfirmButton("Save"){ dia ->
+                            .setConfirmButton("Save") { dia ->
                                 val new_title = edit.newTitle.text.toString()
                                 val new_description = edit.newDescription.text.toString()
-                                updateDatabase(datalist[position].key, new_title, new_description)
-                                FancyToast.makeText(context, "Shorts Updated", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
+                                updateDatabase(
+                                    datalist[position].key,
+                                    new_title,
+                                    new_description
+                                )
+                                FancyToast.makeText(
+                                    context,
+                                    "Shorts Updated",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS,
+                                    false
+                                ).show()
                                 dia.dismiss()
                             }
-                            .setCancelButton("Cancel"){dia ->
+                            .setCancelButton("Cancel") { dia ->
                                 dia.dismiss()
                             }
                             .show()
@@ -79,22 +105,24 @@ class DataAdapterShortsProfile(
                     }
 
                     R.id.DownloadShorts -> {
-                        Toast.makeText(context, "Downloading Shorts....", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Downloading Shorts....", Toast.LENGTH_SHORT)
+                            .show()
                         true
                     }
 
                     R.id.deleteShort -> {
-                        SweetAlertDialog(context as AppCompatActivity, SweetAlertDialog.WARNING_TYPE)
+                        SweetAlertDialog(
+                            context as AppCompatActivity,
+                            SweetAlertDialog.WARNING_TYPE
+                        )
                             .setTitleText("Delete Shorts")
-                            .setConfirmButton("YES"){ dia ->
-                                val auth = FirebaseAuth.getInstance()
+                            .setConfirmButton("YES") { dia ->
                                 val databaseRef = FirebaseDatabase.getInstance().reference
-                                val user = auth.currentUser
                                 user?.let {
-                                    databaseRef.child("users").child(user.uid).child("Shorts").child(datalist[position].key).removeValue()
                                     val id = datalist[position].videoId
                                     Log.d("new", "id : $id")
-                                    if(id.isNotEmpty()) {
+                                    if (id.isNotEmpty()) {
+                                        // deleting from firestore database
                                         val db = Firebase.firestore
                                         db.collection("Shorts").document(id).delete()
                                             .addOnSuccessListener {
@@ -105,6 +133,23 @@ class DataAdapterShortsProfile(
                                                     FancyToast.SUCCESS,
                                                     false
                                                 ).show()
+                                                // update video count
+                                                if (datalist[position].visibility == "Public") {
+                                                    databaseRef.child("users").child(user.uid)
+                                                        .child("VideosCount").get()
+                                                        .addOnSuccessListener { res ->
+                                                            val sc = res.value.toString().toLong()
+                                                            databaseRef.child("users")
+                                                                .child(user.uid)
+                                                                .child("VideosCount")
+                                                                .setValue(sc - 1)
+                                                                .addOnCompleteListener{
+                                                                    databaseRef.child("users").child(user.uid).child("Shorts")
+                                                                        .child(datalist[position].key).removeValue()
+                                                                }
+                                                        }
+                                                }
+
                                             }
                                             .addOnFailureListener {
                                                 FancyToast.makeText(
@@ -116,10 +161,12 @@ class DataAdapterShortsProfile(
                                                 ).show()
                                             }
                                     }
+
+                                    notifyDataSetChanged()
                                 }
                                 dia.dismiss()
                             }
-                            .setCancelButton("NO"){dia ->
+                            .setCancelButton("NO") { dia ->
                                 dia.dismiss()
                             }
                             .show()
@@ -134,19 +181,22 @@ class DataAdapterShortsProfile(
                     else -> false
                 }
             }
+
         }
 
 
     }
 
-    private fun updateDatabase(key : String, newTitle:String, newDesc : String){
+    private fun updateDatabase(key: String, newTitle: String, newDesc: String) {
         val auth = FirebaseAuth.getInstance()
         val databaseRef = FirebaseDatabase.getInstance().reference
 
         val user = auth.currentUser
         user?.let {
-            databaseRef.child("users").child(user.uid).child("Shorts").child(key).child("title").setValue(newTitle)
-            databaseRef.child("users").child(user.uid).child("Shorts").child(key).child("description").setValue(newDesc)
+            databaseRef.child("users").child(user.uid).child("Shorts").child(key).child("title")
+                .setValue(newTitle)
+            databaseRef.child("users").child(user.uid).child("Shorts").child(key)
+                .child("description").setValue(newDesc)
         }
     }
 }

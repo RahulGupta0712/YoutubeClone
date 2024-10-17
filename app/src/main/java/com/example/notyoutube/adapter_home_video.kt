@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notyoutube.databinding.SingleVideoHomeBinding
 import com.squareup.picasso.Picasso
@@ -79,7 +80,8 @@ class adapter_home_video(var dataList: ArrayList<DataModelVideoDetails>, var con
 
         holder.binding.thumbnail.setOnClickListener {
             val intent = Intent(context, videoFullModeProfile::class.java)
-            intent.putExtra("video", dataList[position])
+            intent.putExtra("videoId", dataList[position].videoId)
+            intent.putExtra("channelId", dataList[position].channelId)
             context.startActivity(intent)
         }
 
@@ -89,6 +91,13 @@ class adapter_home_video(var dataList: ArrayList<DataModelVideoDetails>, var con
                 "Showing the video: " + dataList[position].title,
                 Toast.LENGTH_SHORT
             ).show()
+        }
+
+        // show profile
+        holder.binding.profile.setOnClickListener{
+            val intent = Intent(context, Profile::class.java)
+            intent.putExtra("channelId", dataList[position].channelId)
+            context.startActivity(intent)
         }
     }
 

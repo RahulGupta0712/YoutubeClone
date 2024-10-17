@@ -5,26 +5,44 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notyoutube.databinding.ActivitySinglePostCommunityPostProfileBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 import kotlin.math.max
 
-class DataAdapterCommunity2(var datalist: ArrayList<CommunityPostInfo>, var profile:String, var channelName: String, var context: Context, private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<DataAdapterCommunity2.MyViewHolder>() {
+class DataAdapterCommunity2(
+    var datalist: ArrayList<CommunityPostInfo>,
+    var profile: String,
+    var channelName: String,
+    var context: Context,
+    private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<DataAdapterCommunity2.MyViewHolder>() {
     inner class MyViewHolder(var binding: ActivitySinglePostCommunityPostProfileBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    interface OnItemClickListener{
-        fun onEditClick(postKey :String, postText:String, imagePost : ArrayList<String>, postTime:String)
-        fun onDeleteClick(postKey : String)
+    interface OnItemClickListener {
+        fun onEditClick(
+            postKey: String,
+            postText: String,
+            imagePost: ArrayList<String>,
+            postTime: String
+        )
+
+        fun onDeleteClick(postKey: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ActivitySinglePostCommunityPostProfileBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ActivitySinglePostCommunityPostProfileBinding.inflate(
+            LayoutInflater.from(context),
+            parent,
+            false
+        )
         return MyViewHolder(binding)
     }
 
@@ -82,15 +100,29 @@ class DataAdapterCommunity2(var datalist: ArrayList<CommunityPostInfo>, var prof
             val activity = context as AppCompatActivity
             activity.startActivity(Intent.createChooser(intent, ""))
         }
-        holder.binding.menuButtonCommunityPost.setOnClickListener{
-            val popup = PopupMenu(context,holder.binding.menuButtonCommunityPost)
+        holder.binding.menuButtonCommunityPost.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+
+            // show menu to the post owner only as it contains edit and delete features
+            val popup = PopupMenu(context, holder.binding.menuButtonCommunityPost)
             popup.menuInflater.inflate(R.menu.menu_community_post, popup.menu)
             popup.show()
 
+            if (user == null || user.uid != datalist[position].channelId) {
+                // either user is not signed-in or this user is not the owner of shorts, so don't give edit and delete access
+                popup.menu.findItem(R.id.editPost).isVisible = false
+                popup.menu.findItem(R.id.deletePost).isVisible = false
+            }
+
             popup.setOnMenuItemClickListener {
-                when(it.itemId){
+                when (it.itemId) {
                     R.id.editPost -> {
-                        itemClickListener.onEditClick(datalist[position].postKey,datalist[position].textPost,datalist[position].imageList, datalist[position].postTime)
+                        itemClickListener.onEditClick(
+                            datalist[position].postKey,
+                            datalist[position].textPost,
+                            datalist[position].imageList,
+                            datalist[position].postTime
+                        )
                         true
                     }
 
@@ -99,18 +131,26 @@ class DataAdapterCommunity2(var datalist: ArrayList<CommunityPostInfo>, var prof
                         true
                     }
 
+                    R.id.reportPost -> {
+                        Toast.makeText(context, "Post reported !", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+
                     else -> false
                 }
             }
+
         }
 
         // show image posts in horizontal recycler view
-        holder.binding.rvImagePosts.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
-        val Adapter = DataAdapterImagePost(datalist[position].imageList, context as AppCompatActivity)
+        holder.binding.rvImagePosts.layoutManager =
+            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+        val Adapter =
+            DataAdapterImagePost(datalist[position].imageList, context as AppCompatActivity)
         holder.binding.rvImagePosts.adapter = Adapter
 
         val snapHelper = PagerSnapHelper()
         val currentSnapHelper = holder.binding.rvImagePosts.onFlingListener as? PagerSnapHelper
-        if(currentSnapHelper == null) snapHelper.attachToRecyclerView(holder.binding.rvImagePosts)
+        if (currentSnapHelper == null) snapHelper.attachToRecyclerView(holder.binding.rvImagePosts)
     }
 }

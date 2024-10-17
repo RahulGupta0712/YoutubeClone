@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.notyoutube.databinding.FragmentProfileHomeBinding
 
-class ProfileHomeFragment : Fragment() {
+class ProfileHomeFragment(var channelId : String) : Fragment() {
 
     private lateinit var binding: FragmentProfileHomeBinding
 

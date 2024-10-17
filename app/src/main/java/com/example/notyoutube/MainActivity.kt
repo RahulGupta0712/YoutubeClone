@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.KeyEvent
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.FragmentManager
 import com.example.notyoutube.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancytoastlib.FancyToast
@@ -100,44 +102,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.bottomBar.onItemReselected = { item ->
-            // Refresh
-            when (item) {
-                0 -> {
-                    val fragment = FragmentHome()
-                    val trans = supportFragmentManager.beginTransaction()
-                    trans.replace(R.id.mainFrame, fragment)
-                    trans.addToBackStack(null)
-                    trans.commit()
-                }
-
-                1 -> {
-                    val fragment = FragmentShorts()
-                    val trans = supportFragmentManager.beginTransaction()
-                    trans.replace(R.id.mainFrame, fragment)
-                    trans.addToBackStack(null)
-                    trans.commit()
-                }
-
-                2 -> {
-
-                }
-
-                3 -> {
-                    binding.bottomBar.removeBadge(3)
-                    val fragment = FragmentSubscriptions()
-                    val trans = supportFragmentManager.beginTransaction()
-                    trans.replace(R.id.mainFrame, fragment)
-                    trans.addToBackStack("FragmentSubscriptions")
-                    trans.commit()
-                }
-
-                4 -> {
-
-                }
-            }
-        }
-
 
         binding.profileButton.setOnClickListener {
             profile_menu.profileMenu(this, it)
@@ -207,15 +171,30 @@ class MainActivity : AppCompatActivity() {
         dialog.setMessage("Are You Sure $userInfo")
         dialog.setIcon(R.drawable.logout_button)
         dialog.setPositiveButton("YES") { it,_ ->
-            auth.signOut()    // sign out the channel from app
-            FancyToast.makeText(
-                this,
-                "Logout Successful",
-                FancyToast.LENGTH_SHORT,
-                FancyToast.SUCCESS,
-                false
-            ).show()
-            it.dismiss()
+            if(auth.currentUser != null) {
+                auth.signOut()    // sign out the channel from app
+                FancyToast.makeText(
+                    this,
+                    "Logout Successful",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.SUCCESS,
+                    false
+                ).show()
+                it.dismiss()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+            else{
+                FancyToast.makeText(
+                    this,
+                    "No User logged In",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.ERROR,
+                    false
+                ).show()
+                it.dismiss()
+            }
+
         }
         dialog.setNegativeButton("NO") { dialogInterface, _ ->
             dialogInterface.dismiss()
@@ -247,6 +226,23 @@ class MainActivity : AppCompatActivity() {
                 ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular)
             )
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            var cnt = supportFragmentManager.backStackEntryCount
+            if(cnt > 0 && supportFragmentManager.getBackStackEntryAt(cnt - 1).name == "comment fragment") {
+                while (cnt > 0 && supportFragmentManager.getBackStackEntryAt(cnt - 1).name == "comment fragment") {
+                    cnt--;
+                    supportFragmentManager.popBackStackImmediate()
+                }
+                return true
+            }
+            else{
+                return super.onKeyDown(keyCode, event)
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
 }

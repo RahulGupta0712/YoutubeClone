@@ -4,9 +4,11 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import com.example.notyoutube.databinding.ItemViewShortsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -32,89 +34,111 @@ class ItemViewShorts : AppCompatActivity() {
         binding.menuShortsButton.bringToFront()
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference
-        val data = intent.getParcelableExtra<DataModelVideoDetails>("data")!!
+        val videoId = intent.getStringExtra("videoId")!!
+        val channelId = intent.getStringExtra("channelId")!!
+
+        // re-sizing layout
+        val params = binding.root.layoutParams as ViewGroup.MarginLayoutParams
+        params.setMargins(0, 70, 0, 50)
+        binding.root.layoutParams = params
 
         val user = auth.currentUser
-        if (user != null) {
 
-            Picasso.get().load(data.profileUrl).into(binding.profileShorts)
-            binding.titleShorts.text = data.title
-            binding.ChannelNameShorts.text = data.channelName
-            Picasso.get().load(data.thumbnailUrl).into(binding.shortsBackgroundVideo)
+        databaseRef.child("users").child(channelId).child("Shorts").child(videoId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val data = snapshot.getValue(DataModelVideoDetails::class.java)
 
-            binding.likeCountShorts.text = getString(R.string.zero)
-            binding.commentCountShorts.text = getString(R.string.zero)
+                    data?.let {
+                        Picasso.get().load(data.profileUrl).into(binding.profileShorts)
+                        binding.titleShorts.text = data.title
+                        binding.ChannelNameShorts.text = data.channelName
+                        Picasso.get().load(data.thumbnailUrl).into(binding.shortsBackgroundVideo)
 
-            // show shorts
-            binding.shortsView.setVideoURI(Uri.parse(data.videoUrl))
-            binding.shortsView.start()
+                        binding.likeCountShorts.text = getString(R.string.zero)
+                        binding.commentCountShorts.text = getString(R.string.zero)
 
-            binding.songNameShorts.text = getString(R.string.original_audio)
+                        // show shorts
+                        binding.shortsView.setVideoURI(Uri.parse(data.videoUrl))
+                        binding.shortsView.start()
 
-            binding.shortsView.setOnPreparedListener {
-                binding.shortsBackgroundVideo.isVisible = false
-                binding.progressBar3.isVisible = false
-            }
+                        binding.songNameShorts.text = getString(R.string.original_audio)
 
-            binding.shortsView.isVisible = true
+                        binding.shortsView.setOnPreparedListener {
+                            binding.shortsBackgroundVideo.isVisible = false
+                            binding.progressBar3.isVisible = false
+                        }
 
+                        binding.shortsView.isVisible = true
 
-            binding.shortsView.setOnInfoListener { _, what, _ ->
-                when (what) {
-                    MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> {
-                        // Video started rendering
-                        Log.d("abc", "video rendering started")
-                    }
-
-                    MediaPlayer.MEDIA_INFO_BUFFERING_START -> {
-                        // Buffering started
-                        Log.d("abc", "buffering started")
-                        binding.progressBar3.isVisible = true
-                    }
-
-                    MediaPlayer.MEDIA_INFO_BUFFERING_END -> {
-                        // Buffering ended
-                        Log.d("abc", "buffering ended")
-                        binding.progressBar3.isVisible = false
-                    }
-                }
-                true
-            }
-
-            binding.shortsView.setOnCompletionListener {
-                binding.shortsView.start()
-                binding.progressBar3.isVisible = true
-            }
-
-
-            // don't show the subscribe button if already subscribed or shorts is uploaded by same user
-            if (user.uid == data.channelId) {
-                // same channel
-                binding.subscribeButtonShorts.isVisible = false
-            } else {
-                // check if subscribed
-                databaseRef.child("users").child(user.uid).child("Subscribed Channels")
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            for (snap in snapshot.children) {
-                                val id = snap.getValue(String::class.java)
-                                id?.let {
-                                    if (id == data.channelId) {
-                                        // subscribed, don't show
-                                        binding.subscribeButtonShorts.isVisible = false
-                                    }
+                        binding.shortsView.setOnInfoListener { _, what, _ ->
+                            when (what) {
+                                MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> {
+                                    // Video started rendering
+                                    Log.d("abc", "video rendering started")
+                                    binding.progressBar3.isVisible = false
                                 }
+
+                                MediaPlayer.MEDIA_INFO_BUFFERING_START -> {
+                                    // Buffering started
+                                    Log.d("abc", "buffering started")
+                                    binding.progressBar3.isVisible = true
+                                }
+
+                                MediaPlayer.MEDIA_INFO_BUFFERING_END -> {
+                                    // Buffering ended
+                                    Log.d("abc", "buffering ended")
+                                    binding.progressBar3.isVisible = false
+                                }
+                            }
+                            true
+                        }
+
+                        binding.shortsView.setOnCompletionListener {
+                            binding.shortsView.start()
+                        }
+
+
+                        // don't show the subscribe button if already subscribed or shorts is uploaded by same user
+                        if (user != null) {
+                            if (user.uid == data.channelId) {
+                                // same channel
+                                binding.subscribeButtonShorts.isVisible = false
+                            } else {
+                                // check if subscribed
+                                databaseRef.child("users").child(user.uid)
+                                    .child("Subscribed Channels")
+                                    .addValueEventListener(object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            for (snap in snapshot.children) {
+                                                val id = snap.getValue(String::class.java)
+                                                id?.let {
+                                                    if (id == data.channelId) {
+                                                        // subscribed, don't show
+                                                        binding.subscribeButtonShorts.isVisible =
+                                                            false
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError) {
+
+                                        }
+
+                                    })
+
                             }
                         }
 
-                        override fun onCancelled(error: DatabaseError) {
+                    }
+                }
 
-                        }
+                override fun onCancelled(error: DatabaseError) {
 
-                    })
+                }
+            })
 
-            }
-        }
 
         binding.subscribeButtonShorts.setOnClickListener {
             if (user == null) {
@@ -136,7 +160,16 @@ class ItemViewShorts : AppCompatActivity() {
                     false
                 ).show()
                 databaseRef.child("users").child(user.uid).child("Subscribed Channels")
-                    .child(data.channelId).setValue(data.channelId)
+                    .child(channelId).setValue(channelId)
+
+                databaseRef.child("users").child(channelId).child("Subscribers")
+                    .child(user.uid).setValue(user.uid)
+
+
+                databaseRef.child("users").child(channelId).child("SubscribersCount").get().addOnSuccessListener {
+                    val sc = it.value.toString().toLong()
+                    databaseRef.child("users").child(channelId).child("SubscribersCount").setValue(sc+1)
+                }
                 binding.subscribeButtonShorts.isVisible = false
             }
         }

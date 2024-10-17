@@ -15,7 +15,7 @@ import com.example.notyoutube.DataAdapterPlaylists
 import com.example.notyoutube.databinding.FragmentProfilePlaylistsBinding
 
 
-class ProfilePlaylistsFragment : Fragment() {
+class ProfilePlaylistsFragment(var channelId : String) : Fragment() {
 
     private lateinit var binding: FragmentProfilePlaylistsBinding
     private lateinit var Adapter:DataAdapterPlaylists

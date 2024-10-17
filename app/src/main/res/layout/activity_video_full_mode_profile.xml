@@ -8,7 +8,18 @@
     android:background="@color/black"
     tools:context=".videoFullModeProfile">
 
+    <ProgressBar
+        android:id="@+id/progressBar9"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
@@ -146,6 +157,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="100dp"
+        app:cardElevation="0dp"
         app:layout_constraintStart_toEndOf="@+id/guideline200"
         app:layout_constraintTop_toBottomOf="@+id/description00">
 
@@ -249,6 +261,24 @@
         app:layout_constraintEnd_toEndOf="@+id/sub00"
         app:layout_constraintStart_toStartOf="@+id/guideline200"
         app:layout_constraintTop_toBottomOf="@+id/viewCount00" />
+
+    <FrameLayout
+        android:id="@+id/frameForComments"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline200"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="linearLayout,abcd00,guideline200,title200,viewCount00,textView300,timeAgo00,textView500,channelName00,subsCount00,cardView600,sub00,like00,imageButton300,likeCount00,imageView,commentCount00,description00,frameForComments" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

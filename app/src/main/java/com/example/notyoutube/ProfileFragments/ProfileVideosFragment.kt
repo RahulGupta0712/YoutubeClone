@@ -28,9 +28,9 @@ import com.shashank.sony.fancytoastlib.FancyToast
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
-class ProfileVideosFragment : Fragment() {
-    private lateinit var adapterObject : MyVideoAdapter
-    private lateinit var binding:FragmentVideoHomeBinding
+class ProfileVideosFragment(var channelId: String) : Fragment() {
+    private lateinit var adapterObject: MyVideoAdapter
+    private lateinit var binding: FragmentVideoHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +45,9 @@ class ProfileVideosFragment : Fragment() {
         return binding.root
     }
 
-    private lateinit var auth:FirebaseAuth
-    private lateinit var databaseRef:DatabaseReference
-    private lateinit var videoList : ArrayList<DataModelVideoDetails>
+    private lateinit var auth: FirebaseAuth
+    private lateinit var databaseRef: DatabaseReference
+    private lateinit var videoList: ArrayList<DataModelVideoDetails>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,17 +56,17 @@ class ProfileVideosFragment : Fragment() {
         databaseRef = FirebaseDatabase.getInstance().reference
         videoList = ArrayList()
         adapterObject = MyVideoAdapter(videoList, context as AppCompatActivity)
-        binding.videos.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        binding.videos.layoutManager =
+            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         binding.videos.adapter = adapterObject
 
-        val user = auth.currentUser
-        user?.let{
-            databaseRef.child("users").child(user.uid).child("Videos").addValueEventListener(object : ValueEventListener{
+        databaseRef.child("users").child(channelId).child("Videos")
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     videoList.clear()
-                    for(snap in snapshot.children){
+                    for (snap in snapshot.children) {
                         val data = snap.getValue<DataModelVideoDetails>()
-                        data?.let{
+                        data?.let {
                             videoList.add(data)
                         }
                     }
@@ -81,18 +81,34 @@ class ProfileVideosFragment : Fragment() {
                 }
 
             })
-        }
+
 
         val datalist = listOf("Latest", "Popular", "Oldest")
-        val adapter = ArrayAdapter(context as AppCompatActivity, android.R.layout.simple_list_item_1, datalist)
+        val adapter = ArrayAdapter(
+            context as AppCompatActivity,
+            android.R.layout.simple_list_item_1,
+            datalist
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
         binding.spinner3.adapter = adapter
 
-        binding.spinner3.onItemSelectedListener = object:OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        binding.spinner3.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val item = parent?.getItemAtPosition(position)
-                when(position){
-                    0 -> FancyToast.makeText(context as AppCompatActivity, "Sorting the videos by Latest video first", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
+                when (position) {
+                    0 -> FancyToast.makeText(
+                        context as AppCompatActivity,
+                        "Sorting the videos by Latest video first",
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.SUCCESS,
+                        false
+                    ).show()
+
                     1 -> {
                         // custom toast
                         SnToast.Builder()
@@ -109,7 +125,19 @@ class ProfileVideosFragment : Fragment() {
                             .backgroundColor(R.color.forest_green)
                             .build()
                     }
-                    2 -> MotionToast.darkColorToast(context as AppCompatActivity, "Sort videos", "Sorting the videos by oldest video first", MotionToastStyle.INFO, MotionToast.GRAVITY_CENTER, 2000, ResourcesCompat.getFont(context as AppCompatActivity, www.sanju.motiontoast.R.font.helvetica_regular))
+
+                    2 -> MotionToast.darkColorToast(
+                        context as AppCompatActivity,
+                        "Sort videos",
+                        "Sorting the videos by oldest video first",
+                        MotionToastStyle.INFO,
+                        MotionToast.GRAVITY_CENTER,
+                        2000,
+                        ResourcesCompat.getFont(
+                            context as AppCompatActivity,
+                            www.sanju.motiontoast.R.font.helvetica_regular
+                        )
+                    )
                 }
             }
 

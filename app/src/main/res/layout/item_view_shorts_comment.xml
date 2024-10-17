@@ -144,4 +144,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/replyCountCommentShorts"
         app:layout_constraintStart_toEndOf="@+id/replyCountCommentShorts"
         app:layout_constraintTop_toTopOf="@+id/replyCountCommentShorts" />
+
+    <ProgressBar
+        android:id="@+id/progressBar10"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="cardView,channelNameShortsComment,textView17,timeAgoCommentShorts,textView19,commentCommentShorts,menuButtonCommentShorts,likeButtonCommentShorts,dislikeButtonCommentShorts,commentButtonCommentShorts,replyCountCommentShorts,textView22" />
 </androidx.constraintlayout.widget.ConstraintLayout>

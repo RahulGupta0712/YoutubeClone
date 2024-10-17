@@ -19,8 +19,10 @@ import com.google.firebase.firestore.firestore
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
 
-class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, var context : Context) : RecyclerView.Adapter<MyVideoAdapter.MyViewHolder>() {
-    inner class MyViewHolder(var binding:ProfileVideosBinding) : RecyclerView.ViewHolder(binding.root)
+class MyVideoAdapter(private var dataList: ArrayList<DataModelVideoDetails>, var context: Context) :
+    RecyclerView.Adapter<MyVideoAdapter.MyViewHolder>() {
+    inner class MyViewHolder(var binding: ProfileVideosBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ProfileVideosBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -36,17 +38,19 @@ class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, va
         holder.binding.title1.text = dataList[position].title
         holder.binding.viewCount1.text = context.getString(R.string.zero)
 
-        holder.binding.showVisibility.setImageResource(if(dataList[position].visibility == "Public") R.drawable.intenet_network else R.drawable.password)
+        val user = FirebaseAuth.getInstance().currentUser
+
+        holder.binding.showVisibility.setImageResource(if (dataList[position].visibility == "Public") R.drawable.intenet_network else R.drawable.password)
 
         val time =
-            (System.currentTimeMillis()-dataList[position].timePosted)/1000
+            (System.currentTimeMillis() - dataList[position].timePosted) / 1000
         val minutes = time / 60
         val hour = minutes / 60
         val days = hour / 24
         val month = days / 30
         val year = days / 365
 
-        val show=
+        val show =
             if (year > 0) "$year year(s)"
             else if (month > 0) "$month month(s)"
             else if (days > 0) "$days day(s)"
@@ -66,10 +70,9 @@ class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, va
         val s = adjust(sec)
 
         holder.binding.time1.text =
-            if(h == "00"){
+            if (h == "00") {
                 "$m:$s"
-            }
-        else{
+            } else {
                 "$h:$m:$s"
             }
 
@@ -77,57 +80,81 @@ class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, va
         holder.binding.commentCount.text = context.getString(R.string.zero)
         holder.binding.stream.text = context.getString(R.string.empty)
 
-        holder.binding.root.setOnClickListener{
+        holder.binding.root.setOnClickListener {
             val intent = Intent(context, videoFullModeProfile::class.java)
-            intent.putExtra("video", dataList[position])
+            intent.putExtra("videoId", dataList[position].videoId)
+            intent.putExtra("channelId", dataList[position].channelId)
             context.startActivity(intent)
         }
-        holder.binding.title1.setOnClickListener{
-            Toast.makeText(context,dataList[position].title, Toast.LENGTH_SHORT).show()
+        holder.binding.title1.setOnClickListener {
+            Toast.makeText(context, dataList[position].title, Toast.LENGTH_SHORT).show()
         }
 
-        holder.binding.menuButtonVideosProfile.setOnClickListener{
+        holder.binding.menuButtonVideosProfile.setOnClickListener {
             val popup = PopupMenu(context, it)
             popup.menuInflater.inflate(R.menu.menu_profile_videos_single_videos, popup.menu)
             popup.show()
 
-            popup.setOnMenuItemClickListener {item ->
-                when(item.itemId){
+            if (user == null || dataList[position].channelId != user.uid) {
+                // no access to edit and delete video to users other than owner
+                popup.menu.findItem(R.id.Edit).setVisible(false);
+                popup.menu.findItem(R.id.delete).setVisible(false);
+            }
+
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
                     R.id.Edit -> {
-                        val edit = EditVideoShortsBinding.inflate(LayoutInflater.from(context as AppCompatActivity))
+                        val edit =
+                            EditVideoShortsBinding.inflate(LayoutInflater.from(context as AppCompatActivity))
                         edit.newTitle.setText(dataList[position].title)
                         edit.newDescription.setText(dataList[position].description)
 
-                        SweetAlertDialog(context as AppCompatActivity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                        SweetAlertDialog(
+                            context as AppCompatActivity,
+                            SweetAlertDialog.CUSTOM_IMAGE_TYPE
+                        )
                             .setTitleText("Edit Video")
                             .setContentText("You can only edit your title and description, if you want to change thumbnail or shorts, then delete the post and re-upload")
                             .setCustomView(edit.root)
-                            .setConfirmButton("Save"){dia ->
+                            .setConfirmButton("Save") { dia ->
                                 val new_title = edit.newTitle.text.toString()
                                 val new_description = edit.newDescription.text.toString()
-                                updateDatabase(dataList[position].key, new_title, new_description)
-                                FancyToast.makeText(context, "Video Updated", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
+                                updateDatabase(
+                                    dataList[position].key,
+                                    new_title,
+                                    new_description
+                                )
+                                FancyToast.makeText(
+                                    context,
+                                    "Video Updated",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS,
+                                    false
+                                ).show()
                                 dia.dismiss()
                             }
-                            .setCancelButton("Cancel"){dia ->
+                            .setCancelButton("Cancel") { dia ->
                                 dia.dismiss()
                             }
                             .show()
 
                         true
                     }
+
                     R.id.delete -> {
-                        SweetAlertDialog(context as AppCompatActivity, SweetAlertDialog.WARNING_TYPE)
+                        SweetAlertDialog(
+                            context as AppCompatActivity,
+                            SweetAlertDialog.WARNING_TYPE
+                        )
                             .setTitleText("Delete Video")
-                            .setConfirmButton("YES"){dia ->
-                                val auth = FirebaseAuth.getInstance()
+                            .setConfirmButton("YES") { dia ->
                                 val databaseRef = FirebaseDatabase.getInstance().reference
-                                val user = auth.currentUser
                                 user?.let {
-                                    databaseRef.child("users").child(user.uid).child("Videos").child(dataList[position].key).removeValue()
+                                    databaseRef.child("users").child(user.uid).child("Videos")
+                                        .child(dataList[position].key).removeValue()
                                     val id = dataList[position].videoId
                                     Log.d("new", "id : ${dataList[position].videoId}")
-                                    if(id.isNotEmpty()) {
+                                    if (id.isNotEmpty()) {
                                         val db = Firebase.firestore
                                         db.collection("Videos").document(id).delete()
                                             .addOnSuccessListener {
@@ -138,6 +165,18 @@ class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, va
                                                     FancyToast.SUCCESS,
                                                     false
                                                 ).show()
+                                                // update video count
+                                                if (dataList[position].visibility == "Public") {
+                                                    databaseRef.child("users").child(user.uid)
+                                                        .child("VideosCount").get()
+                                                        .addOnSuccessListener {
+                                                            val sc = it.value.toString().toLong()
+                                                            databaseRef.child("users")
+                                                                .child(user.uid)
+                                                                .child("VideosCount")
+                                                                .setValue(sc - 1)
+                                                        }
+                                                }
                                             }
                                             .addOnFailureListener {
                                                 FancyToast.makeText(
@@ -153,51 +192,63 @@ class MyVideoAdapter(private var dataList : ArrayList<DataModelVideoDetails>, va
 
                                 dia.dismiss()
                             }
-                            .setCancelButton("NO"){dia ->
+                            .setCancelButton("NO") { dia ->
                                 dia.dismiss()
                             }
                             .show()
                         true
                     }
+
                     R.id.saveToPlaylist -> {
-                        Toast.makeText(context, "Saving the Video to Playlist...", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Saving the Video to Playlist...",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         true
                     }
+
                     R.id.share -> {
                         val intent = Intent(Intent.ACTION_SEND)
                         intent.type = "image/*"
 //                        intent.putExtra(Intent.EXTRA_STREAM, dataList.get(position).thumbnail)
-                        context.startActivity(Intent.createChooser(intent, "Share Video Thumbnail"))
-                        true
-                    }
-                    R.id.share ->{
-                        Toast.makeText(context, "Sharing video 🔃", Toast.LENGTH_SHORT).show()
-                        true
-                    }
-                    R.id.downloadVideo -> {
-                        Toast.makeText(context, "Downloading the video 📩", Toast.LENGTH_SHORT).show()
+                        context.startActivity(
+                            Intent.createChooser(
+                                intent,
+                                "Share Video Thumbnail"
+                            )
+                        )
                         true
                     }
 
-                    else->false
+                    R.id.downloadVideo -> {
+                        Toast.makeText(context, "Downloading the video 📩", Toast.LENGTH_SHORT)
+                            .show()
+                        true
+                    }
+
+                    else -> false
                 }
             }
+
         }
     }
 
-    private fun updateDatabase(key : String, newTitle:String, newDesc : String){
+    private fun updateDatabase(key: String, newTitle: String, newDesc: String) {
         val auth = FirebaseAuth.getInstance()
         val databaseRef = FirebaseDatabase.getInstance().reference
 
         val user = auth.currentUser
         user?.let {
-            databaseRef.child("users").child(user.uid).child("Videos").child(key).child("title").setValue(newTitle)
-            databaseRef.child("users").child(user.uid).child("Videos").child(key).child("description").setValue(newDesc)
+            databaseRef.child("users").child(user.uid).child("Videos").child(key).child("title")
+                .setValue(newTitle)
+            databaseRef.child("users").child(user.uid).child("Videos").child(key)
+                .child("description").setValue(newDesc)
         }
     }
 
-    private fun adjust(time : Long):String{
-        return when(time){
+    private fun adjust(time: Long): String {
+        return when (time) {
             0L -> "00"
             in 1..9 -> "0$time"
             else -> "$time"

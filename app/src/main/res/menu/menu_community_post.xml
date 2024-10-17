@@ -8,4 +8,8 @@
         android:id="@+id/deletePost"
         android:title="@string/delete_post"
         />
+    <item
+        android:id="@+id/reportPost"
+        android:title="@string/report_post"
+        />
 </menu>

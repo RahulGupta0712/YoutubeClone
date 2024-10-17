@@ -141,8 +141,8 @@ class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context:
             render.start()
 
             val trans = activity.supportFragmentManager.beginTransaction()
-            trans.replace(R.id.frameComment, ShortsCommentFragment(holder.binding.commentCountShorts.text.toString()))
-            trans.addToBackStack(null)
+            trans.replace(R.id.frameComment, ShortsCommentFragment(dataList[position].videoId, dataList[position].channelId, false))
+            trans.addToBackStack("comment fragment")
             trans.commit()
         }
 
@@ -153,9 +153,8 @@ class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context:
             context.startActivity(Intent.createChooser(intent, "Share the Video"))
         }
 
-
         holder.binding.menuShortsButton.setOnClickListener {
-            menuShorts().showMenu(context, it)
+            menuShorts().showMenu(context, it, dataList[position].description)
         }
 
         // don't show the subscribe button if already subscribed or shorts is uploaded by same user
@@ -202,8 +201,24 @@ class shortsAdapter(var dataList: ArrayList<DataModelVideoDetails>, var context:
                 // subscribe
                 FancyToast.makeText(context, "Channel Subscribed", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
                 databaseRef.child("users").child(user.uid).child("Subscribed Channels").child(dataList[position].channelId).setValue(dataList[position].channelId)
+                databaseRef.child("users").child(dataList[position].channelId).child("SubscribersCount").get().addOnSuccessListener {
+                    val sc = it.value.toString().toLong()
+                    databaseRef.child("users").child(dataList[position].channelId).child("SubscribersCount").setValue(sc+1)
+                }
                 holder.binding.subscribeButtonShorts.isVisible = false
             }
+        }
+
+        // show profile
+        holder.binding.profileShorts.setOnClickListener{
+            val intent = Intent(context, Profile::class.java)
+            intent.putExtra("channelId", dataList[position].channelId)
+            context.startActivity(intent)
+        }
+        holder.binding.ChannelNameShorts.setOnClickListener{
+            val intent = Intent(context, Profile::class.java)
+            intent.putExtra("channelId", dataList[position].channelId)
+            context.startActivity(intent)
         }
     }
 

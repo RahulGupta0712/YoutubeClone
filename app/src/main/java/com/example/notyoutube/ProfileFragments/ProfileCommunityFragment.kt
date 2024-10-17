@@ -38,7 +38,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickListener {
+class ProfileCommunityFragment(var channelId: String) : Fragment(),
+    DataAdapterCommunity2.OnItemClickListener {
 
     private lateinit var binding: FragmentProfileCommunityBinding
     private lateinit var auth: FirebaseAuth
@@ -63,7 +64,7 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
 
     private lateinit var Adapter2: DataAdapterCommunity2
     private lateinit var datalist: ArrayList<CommunityPostInfo>
-    private lateinit var imagePostList:ArrayList<String>    // contains urls for images
+    private lateinit var imagePostList: ArrayList<String>    // contains urls for images
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,6 +74,12 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
         // loader
         val loader = binding.loaderImagePost as ProgressBar
         loader.indeterminateDrawable = ThreeBounce()
+
+        val currentUser = auth.currentUser
+        if (currentUser == null || currentUser.uid != channelId) {
+            // don't show add post feature to external users, it is only for the channel owner
+            binding.group.visibility = View.GONE
+        }
 
         // create operation
         binding.addPostButton.setOnClickListener {
@@ -88,20 +95,27 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
             } else {
                 val currentUser = auth.currentUser
                 currentUser?.let {
-                    val ref = databaseRef.child("users").child(currentUser.uid).child("Community Posts")
+                    val ref =
+                        databaseRef.child("users").child(currentUser.uid).child("Community Posts")
                     val key = ref.push().key
                     key?.let {
                         val time = LocalDateTime.now()
                         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")
                         val formattedTime = time.format(formatter)
-                        ref.child(key).setValue(CommunityPostInfo(key, post, imagePostList, formattedTime))
+                        ref.child(key)
+                            .setValue(CommunityPostInfo(key, post, imagePostList, formattedTime, channelId))
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    Toast.makeText(context as AppCompatActivity,"Post uploaded", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context as AppCompatActivity,
+                                        "Post uploaded",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     binding.post.setText(getString(R.string.empty))
                                     imagePostList.clear()
                                 } else {
-                                    Toast.makeText(context, "Upload failed", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Upload failed", Toast.LENGTH_SHORT)
+                                        .show()
                                     imagePostList.clear()
                                 }
                             }
@@ -112,81 +126,80 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
         }
 
         // read operation -- show all posts
-        val currentUser = auth.currentUser
         datalist = ArrayList()
 
         binding.root.visibility = View.INVISIBLE
 
-        if (currentUser != null) {
-            databaseRef.child("users").child(currentUser.uid).child("Channel Name")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val channelName = snapshot.getValue<String>()
-                        if (channelName != null) {
-                            // retrieved channel name here
-                            // now go and find profile
-                            databaseRef.child("users").child(currentUser.uid)
-                                .child("Profile Picture")
-                                .addValueEventListener(object : ValueEventListener {
-                                    override fun onDataChange(snapshot: DataSnapshot) {
 
-                                        val profilePath = snapshot.getValue<String>()
-                                        profilePath?.let {
-                                            Adapter2 = DataAdapterCommunity2(
-                                                datalist,
-                                                profilePath,
-                                                channelName,
-                                                context as AppCompatActivity,
-                                                this@ProfileCommunityFragment
-                                            )
-                                            binding.rvTextposts.layoutManager =
-                                                LinearLayoutManager(context)
-                                            binding.rvTextposts.adapter = Adapter2
+        databaseRef.child("users").child(channelId).child("Channel Name")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val channelName = snapshot.getValue<String>()
+                    if (channelName != null) {
+                        // retrieved channel name here
+                        // now go and find profile
+                        databaseRef.child("users").child(channelId)
+                            .child("Profile Picture")
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
 
-                                            // now showing the community posts by this channel
-                                            databaseRef.child("users").child(currentUser.uid)
-                                                .child("Community Posts")
-                                                .addValueEventListener(object : ValueEventListener {
-                                                    @SuppressLint("NotifyDataSetChanged")
-                                                    override fun onDataChange(snapshot: DataSnapshot) {
-                                                        datalist.clear()
-                                                        for (snap in snapshot.children) {
-                                                            val post_info =
-                                                                snap.getValue<CommunityPostInfo>()
-                                                            post_info?.let {
-                                                                datalist.add(post_info)
-                                                            }
+                                    val profilePath = snapshot.getValue<String>()
+                                    profilePath?.let {
+                                        Adapter2 = DataAdapterCommunity2(
+                                            datalist,
+                                            profilePath,
+                                            channelName,
+                                            context as AppCompatActivity,
+                                            this@ProfileCommunityFragment
+                                        )
+                                        binding.rvTextposts.layoutManager =
+                                            LinearLayoutManager(context)
+                                        binding.rvTextposts.adapter = Adapter2
+
+                                        // now showing the community posts by this channel
+                                        databaseRef.child("users").child(channelId)
+                                            .child("Community Posts")
+                                            .addValueEventListener(object : ValueEventListener {
+                                                @SuppressLint("NotifyDataSetChanged")
+                                                override fun onDataChange(snapshot: DataSnapshot) {
+                                                    datalist.clear()
+                                                    for (snap in snapshot.children) {
+                                                        val post_info =
+                                                            snap.getValue<CommunityPostInfo>()
+                                                        post_info?.let {
+                                                            datalist.add(post_info)
                                                         }
-                                                        datalist.reverse()
-                                                        Adapter2.notifyDataSetChanged()
-
-                                                        binding.root.visibility = View.VISIBLE
                                                     }
+                                                    datalist.reverse()
+                                                    Adapter2.notifyDataSetChanged()
 
-                                                    override fun onCancelled(error: DatabaseError) {
+                                                    binding.root.visibility = View.VISIBLE
+                                                }
 
-                                                    }
+                                                override fun onCancelled(error: DatabaseError) {
 
-                                                })
-                                        }
+                                                }
+
+                                            })
                                     }
+                                }
 
-                                    override fun onCancelled(error: DatabaseError) {
+                                override fun onCancelled(error: DatabaseError) {
 
-                                    }
+                                }
 
-                                })
-                        } else {
-                            binding.root.visibility = View.VISIBLE
-                        }
+                            })
+                    } else {
+                        binding.root.visibility = View.VISIBLE
                     }
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
+                override fun onCancelled(error: DatabaseError) {
 
-                    }
+                }
 
-                })
-        }
+            })
+
 
         binding.uploadImageButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -201,7 +214,18 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 val imagesData = result.data!!.clipData
 
-                MotionToast.darkColorToast(context as AppCompatActivity, "Uploading Image(s)", "Wait for all images to be uploaded", MotionToastStyle.INFO, MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, ResourcesCompat.getFont(context as AppCompatActivity, www.sanju.motiontoast.R.font.helvetica_regular))
+                MotionToast.darkColorToast(
+                    context as AppCompatActivity,
+                    "Uploading Image(s)",
+                    "Wait for all images to be uploaded",
+                    MotionToastStyle.INFO,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(
+                        context as AppCompatActivity,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
 
                 if (imagesData != null) {
                     // hide the post button till all images are uploaded and added to datalist
@@ -211,32 +235,46 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
                     val size = imagesData.itemCount
                     for (pos in 0..<size) {
                         val imageUri = imagesData.getItemAt(pos).uri
-                        uploadImage(imageUri, pos+1, size)
+                        uploadImage(imageUri, pos + 1, size)
                     }
                 }
             }
 
         }
 
-    private fun uploadImage(data: Uri?, pos:Int, size : Int) {
-        val ref = Firebase.storage.reference.child("Community Post Photos/" + UUID.randomUUID() + "_" + System.currentTimeMillis().toString())
+    private fun uploadImage(data: Uri?, pos: Int, size: Int) {
+        val ref = Firebase.storage.reference.child(
+            "Community Post Photos/" + UUID.randomUUID() + "_" + System.currentTimeMillis()
+                .toString()
+        )
         ref.putFile(data!!)
             .addOnSuccessListener {
                 ref.downloadUrl
                     .addOnSuccessListener { url ->
                         imagePostList.add(url.toString())
-                        if(pos == size){
+                        if (pos == size) {
                             // make the post button visible as all images are uploaded and added in imagelist
                             binding.addPostButton.visibility = View.VISIBLE
                             binding.loaderImagePost.visibility = View.INVISIBLE
-                            if(context != null) // exception can occur due to network failure of user
-                                FancyToast.makeText(context as AppCompatActivity, "All images uploaded successfully", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show()
+                            if (context != null) // exception can occur due to network failure of user
+                                FancyToast.makeText(
+                                    context as AppCompatActivity,
+                                    "All images uploaded successfully",
+                                    FancyToast.LENGTH_LONG,
+                                    FancyToast.SUCCESS,
+                                    false
+                                ).show()
                         }
                     }
             }
     }
 
-    override fun onEditClick(postKey : String, postText: String, imagePostList : ArrayList<String>, postTime : String) {
+    override fun onEditClick(
+        postKey: String,
+        postText: String,
+        imagePostList: ArrayList<String>,
+        postTime: String
+    ) {
         val editPost = EditPostBinding.inflate(LayoutInflater.from(context))
         editPost.newPost.setText(postText)
 
@@ -248,8 +286,12 @@ class ProfileCommunityFragment : Fragment(), DataAdapterCommunity2.OnItemClickLi
                 val currentUser = auth.currentUser
                 currentUser?.let {
                     val post = editPost.newPost.text.toString()
+                    val time = LocalDateTime.now()
+                    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")
+                    val formattedTime = time.format(formatter)
                     databaseRef.child("users").child(currentUser.uid).child("Community Posts")
-                        .child(postKey).setValue(CommunityPostInfo(postKey, post, imagePostList, postTime))
+                        .child(postKey)
+                        .setValue(CommunityPostInfo(postKey, post, imagePostList, formattedTime, channelId))
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Toast.makeText(context, "Post updated !", Toast.LENGTH_SHORT).show()

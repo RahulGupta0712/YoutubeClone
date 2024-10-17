@@ -4,17 +4,24 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.shashank.sony.fancytoastlib.FancyToast
 
 class menuShorts {
-    fun showMenu(context : Context, view : View){
+    fun showMenu(context : Context, view : View, desc : String){
         val pop = PopupMenu(context, view )
         pop.inflate(R.menu.menu_shorts)
 
         pop.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.descriptionShorts ->{
-                    FancyToast.makeText(context, "Coming Soon...", FancyToast.LENGTH_SHORT, FancyToast.DEFAULT, false).show()
+                    SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Description")
+                        .setContentText("\n$desc\n")
+                        .setConfirmButton("Close"){ dia->
+                            dia.dismiss()
+                        }
+                        .show()
                     true
                 }
                 R.id.saveShorts ->{

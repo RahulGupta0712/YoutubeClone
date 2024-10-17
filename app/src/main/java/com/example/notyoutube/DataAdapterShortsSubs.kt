@@ -28,7 +28,14 @@ class DataAdapterShortsSubs(var datalist : ArrayList<DataModelVideoDetails>, var
 
         holder.binding.root.setOnClickListener{
             val intent = Intent(context, ItemViewShorts::class.java)
-            intent.putExtra("data", datalist[position])
+            intent.putExtra("videoId", datalist[position].videoId)
+            intent.putExtra("channelId", datalist[position].channelId)
+            context.startActivity(intent)
+        }
+
+        holder.binding.profileChannelSubs.setOnClickListener{
+            val intent = Intent(context, Profile::class.java)
+            intent.putExtra("channelId", datalist[position].channelId)
             context.startActivity(intent)
         }
     }

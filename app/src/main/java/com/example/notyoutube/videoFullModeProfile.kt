@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 
 import com.example.notyoutube.databinding.ActivityVideoFullModeProfileBinding
 
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener
 
 import com.shashank.sony.fancytoastlib.FancyToast
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 class videoFullModeProfile : AppCompatActivity() {
     private val binding: ActivityVideoFullModeProfileBinding by lazy {
@@ -42,6 +44,9 @@ class videoFullModeProfile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+        binding.progressBar9.isVisible=true
+        binding.group2.isVisible=false
+
 
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
@@ -52,86 +57,114 @@ class videoFullModeProfile : AppCompatActivity() {
             findViewById<View>(R.id.spin_kit) as ProgressBar    // spin_kit is id of the loader (you can customise it)
         progressBar.indeterminateDrawable = Circle()
 
-        val data: DataModelVideoDetails =
-            intent.getParcelableExtra("video")!!  // getting the position in dataList
+        val videoId = intent.getStringExtra("videoId")!!
+        val channelId = intent.getStringExtra("channelId")!!
         val mc = MediaController(this@videoFullModeProfile)
         mc.setAnchorView(binding.videoView)
 
-        val channelId = data.channelId
+        databaseRef.child("users").child(channelId).child("Videos").child(videoId).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(DataModelVideoDetails::class.java)
 
-        // showing subscribe button status
-        if (user != null) {
-            if (user.uid == channelId) {
-                // this video is uploaded by same user which is viewing currently
-                binding.sub00.isVisible = false
-            } else {
-                // search if this channel is subscribed by user, if it is, then show Subscribed, else Subscribe
-                checkSubscribed(channelId, user.uid)
+                data?.let{
+                    Picasso.get().load(data.profileUrl).into(binding.profile00)
+                    binding.title200.text = data.title
+                    binding.viewCount00.text = getString(R.string.zero)
+                    val time = (System.currentTimeMillis() - data.timePosted) / 1000
+                    val minutes = time / 60
+                    val hour = minutes / 60
+                    val days = hour / 24
+                    val month = days / 30
+                    val year = days / 365
+
+                    val show =
+                        if (year > 0) "$year year(s)"
+                        else if (month > 0) "$month month(s)"
+                        else if (days > 0) "$days day(s)"
+                        else if (hour > 0) "$hour hr"
+                        else if (minutes > 0) "$minutes min"
+                        else "$time sec"
+
+                    binding.timeAgo00.text = show
+                    binding.channelName00.text = data.channelName
+                    Picasso.get().load(data.thumbnailUrl).into(binding.background00)
+                    binding.subsCount00.text = getString(R.string.zero)
+                    binding.likeCount00.text = getString(R.string.zero)
+                    binding.commentCount00.text = getString(R.string.zero)
+                    binding.description00.text = data.description
+                    if (data.description.isEmpty()) binding.description00.visibility = View.GONE
+
+                    /// show the screen after getting the data
+                    binding.progressBar9.isVisible=false
+                    binding.group2.isVisible=true
+
+                    // showing subscribe button status
+                    if (user != null) {
+                        if (user.uid == channelId) {
+                            // this video is uploaded by same user which is viewing currently
+                            binding.sub00.isVisible = false
+                        } else {
+                            // search if this channel is subscribed by user, if it is, then show Subscribed, else Subscribe
+                            checkSubscribed(channelId, user.uid)
+                        }
+                    }
+
+                    // show subscribers count
+                    databaseRef.child("users").child(channelId).child("SubscribersCount").addValueEventListener(object:ValueEventListener{
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val subsCount = snapshot.getValue(Long::class.java)
+                            subsCount?.let{
+                                binding.subsCount00.text = subsCount.toString()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+
+                    })
+
+
+                    // show video
+                    binding.videoView.setVideoURI(Uri.parse(data.videoUrl))
+                    binding.videoView.setMediaController(mc)
+
+                    binding.videoView.setOnPreparedListener {
+                        binding.background00.isVisible = false
+                        binding.spinKit.isVisible = false
+                    }
+                    binding.videoView.isVisible = true
+
+                    binding.videoView.start()
+
+                    binding.videoView.setOnInfoListener { _, what, _ ->
+                        when (what) {
+                            MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> {
+                                // Video started rendering
+
+                            }
+
+                            MediaPlayer.MEDIA_INFO_BUFFERING_START -> {
+                                // Buffering started
+
+                                binding.spinKit.isVisible = true
+                            }
+
+                            MediaPlayer.MEDIA_INFO_BUFFERING_END -> {
+                                // Buffering ended
+                                binding.spinKit.isVisible = false
+
+                            }
+                        }
+                        true
+                    }
+
+                }
             }
-        }
 
-        Picasso.get().load(data.profileUrl).into(binding.profile00)
-        binding.title200.text = data.title
-        binding.viewCount00.text = getString(R.string.zero)
-        val time = (System.currentTimeMillis() - data.timePosted) / 1000
-        val minutes = time / 60
-        val hour = minutes / 60
-        val days = hour / 24
-        val month = days / 30
-        val year = days / 365
+            override fun onCancelled(error: DatabaseError) {
 
-        val show =
-            if (year > 0) "$year year(s)"
-            else if (month > 0) "$month month(s)"
-            else if (days > 0) "$days day(s)"
-            else if (hour > 0) "$hour hr"
-            else if (minutes > 0) "$minutes min"
-            else "$time sec"
-
-        binding.timeAgo00.text = show
-        binding.channelName00.text = data.channelName
-        Picasso.get().load(data.thumbnailUrl).into(binding.background00)
-        binding.subsCount00.text = getString(R.string.zero)
-        binding.likeCount00.text = getString(R.string.zero)
-        binding.commentCount00.text = getString(R.string.zero)
-        binding.description00.text = data.description
-        if (data.description.isEmpty()) binding.description00.visibility = View.GONE
-
-        // show video
-        binding.videoView.setVideoURI(Uri.parse(data.videoUrl))
-        binding.videoView.setMediaController(mc)
-        Log.d("abc", "onDataChange: 95")
-        binding.videoView.setOnPreparedListener {
-            Log.d("abc", "onDataChange: 97")
-            binding.background00.isVisible = false
-            binding.spinKit.isVisible = false
-        }
-        binding.videoView.isVisible = true
-
-        binding.videoView.start()
-        Log.d("abc", "onDataChange: 102")
-        binding.videoView.setOnInfoListener { _, what, _ ->
-            when (what) {
-                MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> {
-                    // Video started rendering
-                    Log.d("abc", "video rendering started")
-                }
-
-                MediaPlayer.MEDIA_INFO_BUFFERING_START -> {
-                    // Buffering started
-                    Log.d("abc", "buffering started")
-                    binding.spinKit.isVisible = true
-                }
-
-                MediaPlayer.MEDIA_INFO_BUFFERING_END -> {
-                    // Buffering ended
-                    binding.spinKit.isVisible = false
-                    Log.d("abc", "buffering ended")
-                }
             }
-            true
-        }
-
+        })
 
         binding.sub00.setOnClickListener {
             if (user == null) {
@@ -146,6 +179,13 @@ class videoFullModeProfile : AppCompatActivity() {
                 if (binding.sub00.text.toString() == "Subscribed") {
                     // unsubscribe the channel --- DELETE operation
                     databaseRef.child("users").child(user.uid).child("Subscribed Channels").child(channelId).removeValue()
+                    databaseRef.child("users").child(channelId).child("Subscribers").child(user.uid).removeValue()
+
+                    // decrease subs
+                     databaseRef.child("users").child(channelId).child("SubscribersCount").get().addOnSuccessListener {
+                        val sc = it.value.toString().toLong()
+                        databaseRef.child("users").child(channelId).child("SubscribersCount").setValue(sc-1)
+                    }
 
                     FancyToast.makeText(this, "Channel Unsubscribed", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
                     // display as unsubscribed
@@ -158,6 +198,15 @@ class videoFullModeProfile : AppCompatActivity() {
                 } else {
                     // subscribe the channel --- CREATE operation
                     databaseRef.child("users").child(user.uid).child("Subscribed Channels").child(channelId).setValue(channelId)
+                    databaseRef.child("users").child(channelId).child("Subscribers").child(user.uid).setValue(user.uid)
+
+                    // increase subs
+                    databaseRef.child("users").child(channelId).child("SubscribersCount").get().addOnSuccessListener {
+                        val sc = it.value.toString().toLong()
+                        databaseRef.child("users").child(channelId).child("SubscribersCount").setValue(sc+1)
+                    }
+
+
                     // channelId is the key as well as value
                     FancyToast.makeText(this, "Channel Subscribed", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
                     // display as subscribed
@@ -169,6 +218,29 @@ class videoFullModeProfile : AppCompatActivity() {
                     binding.sub00.setTextColor(Color.WHITE)
                 }
             }
+        }
+
+        // show comments
+        binding.imageView.setOnClickListener{
+            val trans = supportFragmentManager.beginTransaction()
+            trans.replace(
+                R.id.frameForComments,
+                ShortsCommentFragment(videoId, channelId, true)
+            )
+            trans.addToBackStack("comment fragment")
+            trans.commit()
+        }
+
+        // show profile
+        binding.profile00.setOnClickListener{
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("channelId", channelId)
+            startActivity(intent)
+        }
+        binding.channelName00.setOnClickListener{
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("channelId", channelId)
+            startActivity(intent)
         }
     }
 

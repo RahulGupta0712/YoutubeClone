@@ -52,17 +52,31 @@ class ProfileSignUp : AppCompatActivity() {
                     .addOnCompleteListener(this){ task ->
                         if(task.isSuccessful){
                             FancyToast.makeText(this, "Registration Successful", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
-                            FancyToast.makeText(this, "Moving to Login Page", FancyToast.LENGTH_LONG, FancyToast.INFO, false).show()
+                            FancyToast.makeText(this, "Verify your e-mail to continue...", FancyToast.LENGTH_LONG, FancyToast.INFO, false).show()
 
-                            // adding channel name to user's data
-                            val currentUser = auth.currentUser
-                            currentUser?.let {
-                               databaseReference.child("users").child(currentUser.uid).child("Channel Name").setValue(channelName)
-                               databaseReference.child("users").child(currentUser.uid).child("Username").setValue("xyz")
+                            auth.currentUser!!.sendEmailVerification().addOnCompleteListener{ verified ->
+                                if(verified.isSuccessful){
+                                    // adding channel name to user's data
+                                    val currentUser = auth.currentUser
+                                    currentUser?.let {
+                                        databaseReference.child("users").child(currentUser.uid).child("Channel Name").setValue(channelName)
+                                        databaseReference.child("users").child(currentUser.uid).child("Username").setValue("xyz")
+                                        databaseReference.child("users").child(currentUser.uid).child("SubscribersCount").setValue(0)
+                                        databaseReference.child("users").child(currentUser.uid).child("VideosCount").setValue(0)
+                                    }
+
+                                    if(currentUser!!.isEmailVerified) {
+                                        FancyToast.makeText(this, "Moving to Login Page", FancyToast.LENGTH_LONG, FancyToast.INFO, false).show()
+                                        startActivity(Intent(this, ProfileLogin::class.java))
+                                        finish()
+                                    }
+                                }
+                                else{
+                                    // not verified
+                                    FancyToast.makeText(this, "Verification failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+                                    auth.currentUser!!.delete()
+                                }
                             }
-
-                            startActivity(Intent(this, ProfileLogin::class.java))
-                            finish()
                         }
                         else{
                             // some exception occurred, show the error message
@@ -74,8 +88,15 @@ class ProfileSignUp : AppCompatActivity() {
         }
 
         binding.signInButton.setOnClickListener{
-            startActivity(Intent(this, ProfileLogin::class.java))
-            finish()
+            val currentUser = auth.currentUser
+            if(currentUser == null || currentUser.isEmailVerified) {
+                FancyToast.makeText(this, "Moving to Login Page", FancyToast.LENGTH_LONG, FancyToast.INFO, false).show()
+                startActivity(Intent(this, ProfileLogin::class.java))
+                finish()
+            }
+            else{
+                FancyToast.makeText(this, "Please Verify your e-mail first", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show()
+            }
         }
     }
 }

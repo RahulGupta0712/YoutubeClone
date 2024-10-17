@@ -89,7 +89,7 @@
     <string name="playlists">Playlists</string>
     <string name="sort_by">Sort By</string>
     <string name="comments">Comments</string>
-    <string name="_19_m">19 M</string>
+    <string name="_19_m">0</string>
     <string name="type_of_view">Type of View</string>
     <string name="x">x</string>
     <string name="slash">/</string>
@@ -106,8 +106,10 @@
     <string name="_10_years">10 years</string>
     <string name="your_comment_will_appear_here">Your comment will appear here</string>
     <string name="_10m">10M</string>
-    <string name="replies">replies</string>
+    <string name="replies">\ replies</string>
     <string name="_5m">5M</string>
     <string name="_6k">6K</string>
     <string name="streamed">Streamed</string>
+    <string name="share_post">Share Post</string>
+    <string name="report_post">Report Post</string>
 </resources>

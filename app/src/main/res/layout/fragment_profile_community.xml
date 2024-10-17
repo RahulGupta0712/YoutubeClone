@@ -52,8 +52,8 @@
         style="@style/SpinKitView.Large.CubeGrid"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:visibility="invisible"
         android:layout_gravity="center"
+        android:visibility="invisible"
         app:SpinKit_Color="@color/beige"
         app:layout_constraintBottom_toBottomOf="@+id/addPostButton"
         app:layout_constraintEnd_toEndOf="@+id/addPostButton"
@@ -68,9 +68,15 @@
         android:background="@color/float_transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/add_image"
-        app:tint="@color/pale_violet_red"
         app:layout_constraintBottom_toBottomOf="@+id/addPostButton"
         app:layout_constraintEnd_toStartOf="@+id/addPostButton"
-        app:layout_constraintTop_toTopOf="@+id/addPostButton" />
+        app:layout_constraintTop_toTopOf="@+id/addPostButton"
+        app:tint="@color/pale_violet_red" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="post,addPostButton,uploadImageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

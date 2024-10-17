@@ -18,7 +18,7 @@ import com.shashank.sony.fancytoastlib.FancyToast
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
-class ProfileLiveFragment : Fragment() {
+class ProfileLiveFragment(var channelId : String) : Fragment() {
 
     private lateinit var binding: FragmentProfileLiveBinding
 

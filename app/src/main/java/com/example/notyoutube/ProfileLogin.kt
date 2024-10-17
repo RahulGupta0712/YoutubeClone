@@ -14,16 +14,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.shashank.sony.fancytoastlib.FancyToast
 
 class ProfileLogin : AppCompatActivity() {
-    private val binding by lazy{
+    private val binding by lazy {
         ActivityProfileLoginBinding.inflate(layoutInflater)
     }
 
-    private lateinit var auth:FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +42,11 @@ class ProfileLogin : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference
 
-        binding.signInButton.setOnClickListener{
+        binding.signInButton.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
 
-            if(email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty()) {
                 FancyToast.makeText(
                     this,
                     "Incomplete credentials",
@@ -51,31 +54,47 @@ class ProfileLogin : AppCompatActivity() {
                     FancyToast.ERROR,
                     false
                 ).show()
-            }
-            else{
+            } else {
                 // login the user with this email and password
                 auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this){task ->
-                        if(task.isSuccessful){
-                            FancyToast.makeText(this, "Login Successful", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show()
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            FancyToast.makeText(
+                                this,
+                                "Login Successful",
+                                FancyToast.LENGTH_LONG,
+                                FancyToast.SUCCESS,
+                                false
+                            ).show()
                             startActivity(Intent(this, Profile::class.java))
                             finish()
-                        }
-                        else{
-                            FancyToast.makeText(this, "Login Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                            FancyToast.makeText(this, "${task.exception?.message}", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+                        } else {
+                            FancyToast.makeText(
+                                this,
+                                "Login Failed",
+                                FancyToast.LENGTH_SHORT,
+                                FancyToast.ERROR,
+                                false
+                            ).show()
+                            FancyToast.makeText(
+                                this,
+                                "${task.exception?.message}",
+                                FancyToast.LENGTH_SHORT,
+                                FancyToast.ERROR,
+                                false
+                            ).show()
                         }
                     }
 
             }
         }
 
-        binding.signUpButton.setOnClickListener{
+        binding.signUpButton.setOnClickListener {
             startActivity(Intent(this, ProfileSignUp::class.java))
             finish()
         }
 
-        binding.googleSignIn.setOnClickListener{
+        binding.googleSignIn.setOnClickListener {
             // login the user using google
             val gso = GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -87,43 +106,129 @@ class ProfileLogin : AppCompatActivity() {
             googleSignInClient.signOut()
             launcher.launch(googleSignInClient.signInIntent)
         }
-    }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
-        if(result.resultCode == Activity.RESULT_OK){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-
-            if(task.isSuccessful){
-                val account = task.result
-                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-
-                auth.signInWithCredential(credential)
-                    .addOnCompleteListener(this){ res->
-                        if(res.isSuccessful){
-                            FancyToast.makeText(this, "Google Sign-In Successful", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, false).show()
-                            startActivity(Intent(this, Profile::class.java))
-                            finish()
-                        }
-                        else{
-                            FancyToast.makeText(this, "Google Sign-In Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                            FancyToast.makeText(this, "${res.exception?.message}", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                        }
-                    }
-            }
-            else{
-                FancyToast.makeText(this, "Google Sign-In Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-                FancyToast.makeText(this, "${task.exception?.message}", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
-            }
-        }
-        else{
-            FancyToast.makeText(this, "Google Sign-In Failed", FancyToast.LENGTH_SHORT, FancyToast.ERROR, false).show()
+        binding.forgotPassword.setOnClickListener {
+            val email = binding.email.text.toString()
+            if (email.isNotEmpty()) {
+                FancyToast.makeText(
+                    this,
+                    "Password Reset Link sent to the e-mail",
+                    FancyToast.LENGTH_LONG,
+                    FancyToast.INFO,
+                    false
+                ).show()
+                auth.sendPasswordResetEmail(email)
+            } else
+                FancyToast.makeText(
+                    this,
+                    "Provide the email",
+                    FancyToast.LENGTH_LONG,
+                    FancyToast.INFO,
+                    false
+                ).show()
         }
     }
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+                if (task.isSuccessful) {
+                    val account = task.result
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+                    auth.signInWithCredential(credential)
+                        .addOnCompleteListener(this) { res ->
+                            if (res.isSuccessful) {
+                                FancyToast.makeText(
+                                    this,
+                                    "Google Sign-In Successful",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS,
+                                    false
+                                ).show()
+
+                                val currentUser = auth.currentUser
+
+                                // initialise few properties when user is signed in for first time
+                                currentUser?.let {
+                                    databaseReference.child("users").child(currentUser.uid)
+                                        .addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
+                                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                                if (!dataSnapshot.exists()) {
+                                                    // New user, set initial properties
+                                                    databaseReference.child("users")
+                                                        .child(currentUser.uid)
+                                                        .setValue(
+                                                            hashMapOf(
+                                                                "Channel Name" to "channelName",
+                                                                "Username" to "username",
+                                                                "SubscribersCount" to 0,
+                                                                "VideosCount" to 0
+                                                            )
+                                                        )
+
+                                                }
+                                            }
+
+                                            override fun onCancelled(error: DatabaseError) {
+
+                                            }
+                                        })
+                                }
+
+                                startActivity(Intent(this, Profile::class.java))
+                                finish()
+                            } else {
+                                FancyToast.makeText(
+                                    this,
+                                    "Google Sign-In Failed",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.ERROR,
+                                    false
+                                ).show()
+                                FancyToast.makeText(
+                                    this,
+                                    "${res.exception?.message}",
+                                    FancyToast.LENGTH_SHORT,
+                                    FancyToast.ERROR,
+                                    false
+                                ).show()
+                            }
+                        }
+                } else {
+                    FancyToast.makeText(
+                        this,
+                        "Google Sign-In Failed",
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.ERROR,
+                        false
+                    ).show()
+                    FancyToast.makeText(
+                        this,
+                        "${task.exception?.message}",
+                        FancyToast.LENGTH_SHORT,
+                        FancyToast.ERROR,
+                        false
+                    ).show()
+                }
+            } else {
+                FancyToast.makeText(
+                    this,
+                    "Google Sign-In Failed",
+                    FancyToast.LENGTH_SHORT,
+                    FancyToast.ERROR,
+                    false
+                ).show()
+            }
+        }
 
     override fun onStart() {
         super.onStart()
 
-        if(auth.currentUser != null){
+        if (auth.currentUser != null) {
             startActivity(Intent(this, Profile::class.java))
             finish()
         }

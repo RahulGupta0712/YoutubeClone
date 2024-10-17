@@ -161,13 +161,21 @@ class VideoUploadActivity : AppCompatActivity() {
                                                             videoUrl!!,
                                                             videoLength,
                                                             System.currentTimeMillis(),
-                                                            visibility, channelName, profilePicUri, currentUser.uid
+                                                            visibility,
+                                                            channelName,
+                                                            profilePicUri,
+                                                            currentUser.uid,
+                                                            "",
+                                                            0,
+                                                            0,
+                                                            0
                                                         )
 
                                                         // add in main feed --- firestore database
                                                         if (visibility == "Public") {
                                                             video.videoId = key
-                                                            firestore.collection(type).document(key).set(video)  // depending on type - video or shorts
+                                                            firestore.collection(type).document(key)
+                                                                .set(video)  // depending on type - video or shorts
                                                         }
 
                                                         ref.child(key).setValue(video)
@@ -179,6 +187,13 @@ class VideoUploadActivity : AppCompatActivity() {
                                                                     FancyToast.SUCCESS,
                                                                     false
                                                                 ).show()
+                                                                // update video count
+                                                                if (visibility == "Public") {
+                                                                    databaseRef.child("users").child(currentUser.uid).child("VideosCount").get().addOnSuccessListener {
+                                                                        val sc = it.value.toString().toLong()
+                                                                        databaseRef.child("users").child(currentUser.uid).child("VideosCount").setValue(sc+1)
+                                                                    }
+                                                                }
                                                                 startActivity(
                                                                     Intent(
                                                                         this@VideoUploadActivity,
@@ -357,7 +372,7 @@ class VideoUploadActivity : AppCompatActivity() {
         ret.setDataSource(this, uri)
         val duration =
             ret.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()
-        videoLength = if (duration != null) (duration / 1000)  else  0
+        videoLength = if (duration != null) (duration / 1000) else 0
     }
 
     override fun onDestroy() {

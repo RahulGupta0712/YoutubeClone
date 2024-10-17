@@ -19,10 +19,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 
 
-class ProfileShortsFragment : Fragment() {
+class ProfileShortsFragment(var channelId: String) : Fragment() {
 
     private lateinit var binding: FragmentProfileShortsBinding
-    private lateinit var Adapter:DataAdapterShortsProfile
+    private lateinit var Adapter: DataAdapterShortsProfile
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -36,8 +36,8 @@ class ProfileShortsFragment : Fragment() {
         return binding.root
     }
 
-    private lateinit var datalist : ArrayList<DataModelVideoDetails>
-    private lateinit var auth:FirebaseAuth
+    private lateinit var datalist: ArrayList<DataModelVideoDetails>
+    private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,14 +51,14 @@ class ProfileShortsFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference
 
-        val user = auth.currentUser
-        if(user != null){
-            databaseReference.child("users").child(user.uid).child("Shorts").addValueEventListener(object : ValueEventListener{
+
+        databaseReference.child("users").child(channelId).child("Shorts")
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     datalist.clear()
-                    for(snap in snapshot.children){
+                    for (snap in snapshot.children) {
                         val short = snap.getValue<DataModelVideoDetails>()
-                        short?.let{
+                        short?.let {
                             datalist.add(short)
                         }
                     }
@@ -72,7 +72,6 @@ class ProfileShortsFragment : Fragment() {
                 }
 
             })
-        }
 
 
     }
